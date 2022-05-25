@@ -1,44 +1,63 @@
-# Java Gradle CircleCI 2.0 configuration file
-# See: https://circleci.com/docs/2.0/language-java/
-version: 2
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+version: 2.1
 jobs:
-  build-job:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  build:
     docker:
-      # specify the version you desire here
-      - image: cimg/openjdk:11.0.13-browsers
+      # specify the version you desire here.
+      # its always a good idea to use circle-ci prebuilt images
+      - image: circleci/openjdk:11-browsers-legacy
+        #specify system properties
+        environment:
+          # To easen your work, set the below values to be the same as those of your development environment
+          # This will ensure your application.properties values will be used accross the dev env and the circle CI images
+          # -----alternatively--------
+          # you may define env variables and create a Datasource bean and configure accordingly.
+          DB_ROOT_USER: root 
+          DB_URL: jdbc:mysql://localhost:3306/tkgdb_dev #farm indicates the name of the database
+          DB_DRIVER: com.mysql.cj.jdbc.Driver
+          DB_PASS: ""
+        # Customize the JVM maximum heap limit
+
+      # Speficy your version of MYSQL
+      - image: circleci/mysql:8.0.13
+        environment:
+          # Remember to always use passwords, and strong ones. Dont be like me.
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
 
     working_directory: ~/repo
 
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
-    # ソースコードをworking_directory(~/repo)に展開
       - checkout
-      - run: 
-          name: ビルド＆テスト実行(compileJava, compileTestJava, test)
-          command: gradle test
-  deploy-job:
-    docker:
-      - image: cimg/base:2022.03
-    steps:
       - run:
-          name: デプロイ
-          command: echo "deploy completed."
-workflows:
-  version: 2
-  test-and-deploy:
-    jobs:
-      - build-job
-      - deploy-job:
-          requires:
-            - build-job
-          filters:
-            # mainブランチへのコミット時のみdeploy-jobを実行
-            branches:
-              only:
-                - main
-                - circleci-project-setup
-                - tkg_dev1
+          name: Wait for Database Connection
+          # preinstalled in circleci/* docker image
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
+      #install mysql client
+      #if default-mysql-client fails, try the old way "sudo apt-get install mysql-client"
+      - run: sudo apt-get install default-mysql-client
+      # create databases
+      - run: mysql -h 127.0.0.1 -u root -e "create database tkgdb_dev"
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: gradle dependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      # run tests!
+      - run: gradle test
