@@ -1,0 +1,4 @@
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY,
+  name CHAR(20) NOT null
+)

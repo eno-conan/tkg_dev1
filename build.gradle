@@ -1,0 +1,58 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "org.flywaydb.flyway" version "8.2.0"
+	id 'java'
+}
+
+group = 'com.eno'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'mysql:mysql-connector-java:8.0.21'
+	implementation 'org.springframework.boot:spring-boot-starter-validation' //for java11
+	implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-api-gateway', version: '1.12.225'
+	implementation group: 'com.amazonaws', name: 'aws-apigateway-sdk-java', version: '1.1.1'
+	implementation 'com.amazonaws:aws-java-sdk-sts:1.12.220'
+	//compile 'org.springframework.boot:spring-boot-starter-validation:2.3.0.RELEASE'//for java17
+	compileOnly 'org.projectlombok:lombok'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+	testImplementation ('org.springframework.boot:spring-boot-starter-test'){
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testCompileOnly 'org.projectlombok:lombok'  // 追加
+    //testCompile group: 'org.dbunit', name: 'dbunit', version: '2.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+    testAnnotationProcessor 'org.projectlombok:lombok'	  // 追加
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+flyway {
+	url = 'jdbc:mysql://localhost:3306/tkgdb_dev?serverTimezone=UTC'
+	user = 'dev_user1'
+	password = 'dev_user1'
+	schemas = ['tkgdb_dev']
+}

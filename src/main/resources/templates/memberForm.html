@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" th:remove="tag">
+<title th:text="${memberFormLabel}"></title>
+</head>
+<body>
+	<h1 th:text="${memberFormLabel}"></h1>
+	<form th:action="@{/send}" method="post" th:object="${memberForm}">
+		<div>
+			<span th:text="名前"></span> <input type="text" th:field="*{firstName}" />
+			<div th:if="${#fields.hasErrors('firstName')}"
+				th:errors="*{firstName}" style="color: red;"></div>
+		</div>
+		<div>
+			<span th:text="苗字"></span> <input type="text" th:field="*{lastName}" />
+			<div th:if="${#fields.hasErrors('lastName')}"
+				th:errors="*{lastName}" style="color: red;"></div>
+		</div>
+		<div>
+			<input type="submit" value="send">
+		</div>
+	</form>
+</body>
+</html>
