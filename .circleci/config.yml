@@ -10,8 +10,8 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       # specify the version you desire here
-      - image: cimg/openjdk:11.0.13-browsers
-      - image: circleci/mysql:8.0.13-ram
+      - image: cimg/openjdk:11.0.13
+      - image: circleci/mysql:8.0.13
         environment:
           MYSQL_ROOT_PASSWORD: rootpw
           MYSQL_DATABASE: test_db
