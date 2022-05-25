@@ -41,9 +41,13 @@ jobs:
           command: dockerize -wait tcp://localhost:3306 -timeout 1m
       #install mysql client
       #if default-mysql-client fails, try the old way "sudo apt-get install mysql-client"
-      - run: sudo apt-get install default-mysql-client
-      # create databases
-      - run: mysql -h 127.0.0.1 -u root -e "create database tkgdb_dev"
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: | 
+            sudo apt-get update
+            sudo apt-get install mysql*
+            mysql -h 127.0.0.1 -u root -e "create database tkgdb_dev"
+        # create databases
 
       # Download and cache dependencies
       - restore_cache:
