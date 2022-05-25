@@ -19,7 +19,7 @@ jobs:
       - checkout
       - run: 
           name: ビルド＆テスト実行(compileJava, compileTestJava, test)
-          command: ./gradlew test
+          command: gradle test
   deploy-job:
     docker:
       - image: cimg/base:2022.03
