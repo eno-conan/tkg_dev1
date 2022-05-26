@@ -1,7 +1,0 @@
-﻿"installed_rank","version","description","type","script","checksum","installed_by","installed_on","execution_time","success"
-1,"1.0.0","classroom","SQL","V1.0.0__classroom.sql",198937704,"dev_user1",2022/05/26 21:15:39,110,1
-2,"1.1.0","worker","SQL","V1.1.0__worker.sql",101208802,"dev_user1",2022/05/26 21:15:39,262,1
-3,"1.2.0","subject grade","SQL","V1.2.0__subject_grade.sql",-1558057524,"dev_user1",2022/05/26 21:15:40,355,1
-4,"1.3.0","timetable","SQL","V1.3.0__timetable.sql",-488796732,"dev_user1",2022/05/26 21:15:40,52,1
-5,"1.4.0","portal","SQL","V1.4.0__portal.sql",-1869293309,"dev_user1",2022/05/26 21:15:40,48,1
-6,"1.5.0","student","SQL","V1.5.0__student.sql",299718377,"dev_user1",2022/05/26 21:15:40,179,1
