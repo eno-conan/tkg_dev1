@@ -1,0 +1,4 @@
+﻿"id","student_id","subject_key","lecturer_id","class_date","reschedule_date_start","reschedule_date_last","reschedule_flg","status","created_at","updated_at"
+4,1,"m1                              ",1,2022/06/09,2022/06/01,2022/06/23,0,0,,
+5,2,"sc1                             ",2,2022/06/09,2022/06/01,2022/06/23,0,0,,
+6,2,"m2                              ",1,2022/06/09,2022/06/01,2022/06/23,0,0,,
