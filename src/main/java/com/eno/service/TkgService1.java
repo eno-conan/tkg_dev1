@@ -1,31 +1,40 @@
 package com.eno.service;
 
-import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eno.entity.Member;
+import com.eno.entity.ClassroomDirector;
+import com.eno.entity.LecturerTeachSubject;
+import com.eno.entity.LecturerWorkableTime;
 import com.eno.entity.StudentScheduleNormal;
 import com.eno.entity.StudentSubject;
 import com.eno.entity.master.Area;
 import com.eno.entity.master.Classroom;
+import com.eno.entity.master.Employee;
 import com.eno.entity.master.Grade;
 import com.eno.entity.master.Lecturer;
 import com.eno.entity.master.Prefecture;
+import com.eno.entity.master.Subject;
 import com.eno.entity.master.TimeTableNormal;
 import com.eno.repository.LecturerRepository;
+import com.eno.repository.LecturerTeachSubjectRepository;
+import com.eno.repository.LecturerWorkableTimeRepository;
 import com.eno.repository.StudentScheduleNormalRepository;
 import com.eno.repository.AreaRepository;
 import com.eno.repository.GradeRepository;
 import com.eno.repository.StudentSubjectRepository;
 import com.eno.repository.ClassroomRepository;
+import com.eno.repository.EmployeeRepository;
+import com.eno.repository.ClassroomDirectorRepository;
 
 @Service
 public class TkgService1 {
@@ -48,6 +57,18 @@ public class TkgService1 {
 	@Autowired
 	private StudentScheduleNormalRepository studentScheduleNormalRepository;
 
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
+	@Autowired
+	private ClassroomDirectorRepository classroomDirectorRepository;
+
+	@Autowired
+	private LecturerWorkableTimeRepository lecturerWorkableTimeRepository;
+
+	@Autowired
+	private LecturerTeachSubjectRepository lecturerTeachSubjectRepository;
+
 	/**
 	 * @return 全都道府県取得
 	 *
@@ -61,6 +82,81 @@ public class TkgService1 {
 			});
 		});
 		return allPrefecture;
+	}
+
+	/**
+	 * 教室登録
+	 */
+	public int registNewClassroom() {
+		Prefecture mPrefecture = new Prefecture();
+		mPrefecture.setId(1);
+		// 作成日時、更新日時は同じ
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		// TODO:インスタンス生成時の引数はフォームクラスにしたい。
+		Classroom newClassroom = new Classroom(mPrefecture, "新宿", "東京都新宿区西新宿", false, timestamp, timestamp);
+		classroomRepository.save(newClassroom);
+		return 0;
+	}
+
+	/**
+	 * 室長登録（社員が実施）※ポータルユーザによっては、実施できないようにすること。
+	 */
+	@Transactional
+	public int registClassroomDirector() throws Exception {
+		Classroom targetclassroom = new Classroom(1);
+		Employee assignedEmployee = new Employee(1);
+		// 作成日時、更新日時は同じ
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		// TODO:インスタンス生成時の引数はフォームクラスにしたい。
+		ClassroomDirector newClassroomDirector = new ClassroomDirector(targetclassroom, assignedEmployee, timestamp,
+				timestamp);
+		classroomDirectorRepository.save(newClassroomDirector);
+		return 0;
+	}
+
+	/**
+	 * 講師登録（社員が実施）※ポータルユーザによっては、実施できないようにすること。
+	 */
+	@Transactional
+	public int registLecturer() throws Exception {
+		Classroom targetclassroom = new Classroom(1);
+		// 作成日時、更新日時は同じ
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		// TODO:インスタンス生成時の引数はフォームクラスにしたい。
+		Lecturer newLecturer = new Lecturer(targetclassroom, "a", new Date(), false, timestamp, timestamp);
+		lecturerRepository.save(newLecturer);
+		return 0;
+	}
+
+	/**
+	 * 講師指導科目設定（新規・更新）： TODO: 初回と2回目以降でHTTPメソッドを変える必要あり（POST,PUT）
+	 */
+	@Transactional
+	public void decideLecturerTeachSubjects() {
+		Lecturer lecturer = new Lecturer(1);
+		Subject subject = new Subject("m3");
+		Classroom classroom = new Classroom(1);
+		// 作成日時、更新日時は同じ
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		LecturerTeachSubject lecturerTeachSubject = new LecturerTeachSubject(lecturer, subject, classroom, true,
+				"comment", timestamp, timestamp);
+		lecturerTeachSubjectRepository.save(lecturerTeachSubject);
+	}
+
+	/**
+	 * 講師定期コマ送信： TODO: 初回と2回目以降でHTTPメソッドを変える必要あり（POST,PUT）
+	 */
+	@Transactional
+	public void decideLecturerWorkableTimeNormal() throws Exception {
+		List<LecturerWorkableTime> lecturerWorkableTime = new ArrayList<>();
+		final int TIME_TABLE_COUNT = 18;
+		Classroom targetclassroom = new Classroom(1);
+		Lecturer lecturer = new Lecturer(1);
+		for (int timeTableId = 1; timeTableId <= TIME_TABLE_COUNT; timeTableId++) {
+			TimeTableNormal timeTableNormal = new TimeTableNormal(timeTableId);
+			lecturerWorkableTime.add(new LecturerWorkableTime(targetclassroom, lecturer, timeTableNormal, false));
+		}
+		lecturerWorkableTimeRepository.saveAll(lecturerWorkableTime);
 	}
 
 	/**
@@ -107,7 +203,6 @@ public class TkgService1 {
 	 *
 	 */
 	public List<StudentSubject> findAllStundentsSubjects() {
-//		List<StudentSubject> allStudentsSubjects = studentSubjectRepository.findAll();
 		List<TimeTableNormal> timeTableIdsOnMonday = setTargetTimeTableIds();
 		List<StudentSubject> allStudentsSubjects = studentSubjectRepository
 				.findByTimeTableNormalIn(timeTableIdsOnMonday);
@@ -134,7 +229,7 @@ public class TkgService1 {
 			ssn.setRescheduleFlg(false);
 			ssn.setStatus(0);
 
-			//テーブルに保存
+			// テーブルに保存
 			studentScheduleNormalRepository.save(ssn);
 		});
 	}

@@ -20,46 +20,71 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.eno.entity.LecturerTeachSubject;
+import com.eno.entity.LecturerWorkableTime;
 import com.eno.entity.StudentScheduleNormal;
 import com.eno.entity.StudentSubject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "m_lecturer")
 @Data
+@NoArgsConstructor
 public class Lecturer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "classroom_id")
 	@JsonIgnore
 	private Classroom classroom;
 
-	@Column(name="name",length = 128, nullable = false, unique = true)
+	@Column(name = "name", length = 128, nullable = false, unique = true)
 	private String lecturerName;
-	
-	@Column(name="birthday")
+
+	@Column(name = "birthday")
 	private Date birthday;
-	
-	@Column(name="delete_flg")
+
+	@Column(name = "delete_flg")
 	private boolean deleteFlg;
 
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-	
+
 	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<StudentSubject> studentSubjects;
-	
+
 	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<StudentScheduleNormal> studentScheduleNormal;
+	
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LecturerTeachSubject> lecturerTeachSubject;
+	
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LecturerWorkableTime> lecturerWorkableTime;
+
+	public Lecturer(Integer id) {
+		this.id = id;
+	}
+	
+	
+	public Lecturer(Classroom classroom, String lecturerName, Date birthday, boolean deleteFlg, Timestamp createdAt,
+			Timestamp updatedAt) {
+		this.classroom = classroom;
+		this.lecturerName = lecturerName;
+		this.birthday = birthday;
+		this.deleteFlg = deleteFlg;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 
 }

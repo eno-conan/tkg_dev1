@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.eno.entity.LecturerWorkableTime;
 import com.eno.entity.StudentSubject;
 
 import lombok.Data;
@@ -34,6 +35,9 @@ public class TimeTableNormal {
 
 	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<StudentSubject> studentSubjects;
+	
+	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<LecturerWorkableTime> lecturerWorkableTime;
 
 	public TimeTableNormal(Integer id) {
 		this.id = id;

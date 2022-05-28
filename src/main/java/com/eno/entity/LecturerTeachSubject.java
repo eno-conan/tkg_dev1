@@ -2,18 +2,12 @@ package com.eno.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -22,18 +16,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.eno.entity.master.Classroom;
 import com.eno.entity.master.Lecturer;
-import com.eno.entity.master.Prefecture;
-import com.eno.entity.master.Student;
 import com.eno.entity.master.Subject;
 import com.eno.entity.master.TimeTableNormal;
 
 import lombok.Data;
 
 @Entity
-@Table(name = "student_subject")
+@Table(name = "lecturer_teach_subject")
 @Data
-public class StudentSubject implements Serializable{
+public class LecturerTeachSubject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -42,25 +35,40 @@ public class StudentSubject implements Serializable{
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "student_id", nullable = false)
-	private Student student;
+	@JoinColumn(name = "lecturer_id")
+	private Lecturer lecturer;
 
 	@ManyToOne
 	@JoinColumn(name = "subject_key")
 	private Subject subject;
 
 	@ManyToOne
-	@JoinColumn(name = "assigned_lecturer_id")
-	private Lecturer lecturer;
+	@JoinColumn(name = "classroom_id", nullable = false)
+	private Classroom classroom;
 
-	@ManyToOne
-	@JoinColumn(name = "time_table_normal_id", nullable = false)
-	private TimeTableNormal timeTableNormal;
+	@Column(name = "teach_flg", length = 2)
+	private boolean teachFlg;
 
-	@Column(name = "created_at")
+	@Column(name = "comment", length = 64)
+	private String comment;
+	
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name = "updated_at")
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
+
+	public LecturerTeachSubject(Lecturer lecturer, Subject subject, Classroom classroom, boolean teachFlg,
+			String comment, Timestamp createdAt, Timestamp updatedAt) {
+		this.lecturer = lecturer;
+		this.subject = subject;
+		this.classroom = classroom;
+		this.teachFlg = teachFlg;
+		this.comment = comment;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+	
+	
 
 }
