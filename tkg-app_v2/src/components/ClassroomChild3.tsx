@@ -4,6 +4,7 @@ import { Row, Col, Container } from "react-bootstrap";
 
 import "./style.css";
 
+// 親Componentから受け取る情報を定義
 interface IfirstChildProps {
   name: string;
   updateName: (arg: string) => void;

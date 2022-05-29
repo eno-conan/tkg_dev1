@@ -8,7 +8,7 @@ import {
   Routes,
   // unstable_HistoryRouter as HistoryRouter,
 } from "react-router-dom";
-import ActiveSearch from "./components/ActiveSearch";
+import ActiveSearch from "./components/sample/ActiveSearch";
 import SearchClassroom from "./components/SearchClassroom";
 import DetailClassroom from "./components/DetailClassroom";
 // import { createBrowserHistory } from "history";
@@ -29,11 +29,11 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<ActiveSearch />} />
               <Route path="/task" element={<TaskListComponent />} />
-              <Route path="/checkprops" element={<ClassroomParent />} />
+              <Route path="/props" element={<ClassroomParent />} />
               <Route path="/classroom" element={<SearchClassroom />}>
-                <Route path="id" element={<DetailClassroom />} />
-                <Route path="nested" element={<div>Nested!</div>} />
+                {/* <Route path="id" element={<DetailClassroom />} /> */}
               </Route>
+              {/* <Route path="nested" element={<div>Nested!</div>} /> */}
               {/*          <Route path="/courses" element={<Courses />}>
             <Route path="search" element={<Search />} />
             <Route path="list" element={<List/>}/>

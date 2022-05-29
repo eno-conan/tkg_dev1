@@ -78,7 +78,7 @@ const TaskListComponent = () => {
         </Row>
         <h2 className={"display-4"}>Tasks</h2>
         {tasks.map((task, index) => (
-          <TaskComponent setTasks={setTasks} task={task} key={index} />
+          <TaskComponent task={task} setTasks={setTasks} key={index} />
         ))}
       </Container>
     </div>

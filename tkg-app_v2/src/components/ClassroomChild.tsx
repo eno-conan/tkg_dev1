@@ -1,19 +1,24 @@
 import React from "react";
 import { Row, Col, Container } from "react-bootstrap";
+import { TitleBase } from "./ClassroomParent";
 // import { Navigate, Link } from "react-router-dom";
 
 import "./style.css";
 
-const ClassroomChild = (props: { items: any[] }) => {
+interface EachTitle {
+  eachTitle: TitleBase;
+  // key: any;
+  // setTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
+}
+
+// const ClassroomChild = (props: { items: any[] }) => {
+const ClassroomChild: React.FC<EachTitle> = ({ eachTitle }) => {
   return (
     <div className="App">
       <Container>
         <Row>
           <Col md={6}>
-            <h3>Parent to Children</h3>
-            {props.items.map((item) => (
-              <p>{item.title}</p>
-            ))}
+            <p>{eachTitle.title}</p>
           </Col>
         </Row>
       </Container>

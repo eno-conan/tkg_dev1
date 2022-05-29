@@ -2,57 +2,77 @@ import React, { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import {
   // Navigate,
-  // Link,
+  Link,
   // BrowserRouter,
   // Route,
   // Routes,
   Outlet,
 } from "react-router-dom";
+import DetailClassroom from "./DetailClassroom";
 
 import "./style.css";
 
 // https://codesandbox.io/s/pedantic-fire-c07kb?file=/src/App.tsx:1127-1581
-type member = {
+export type classroom = {
   id: string;
+  prefecture: string;
   name: string;
-  country: string;
-  food: string;
 };
 
-type MemberList = Array<member>;
+export type classroomList = Array<classroom>;
 
-const allMemberList = [
+const allClassrooms = [
   {
     id: "1",
-    name: "太郎",
-    country: "Japan",
-    food: "焼肉",
+    prefecture: "北海道",
+    name: "札幌市",
   },
   {
     id: "2",
-    name: "花子",
-    country: "Japan",
-    food: "ケーキ",
+    prefecture: "北海道",
+    name: "釧路",
+  },
+  {
+    id: "3",
+    prefecture: "北海道",
+    name: "帯広",
+  },
+  {
+    id: "4",
+    prefecture: "青森",
+    name: "盛岡",
+  },
+  {
+    id: "5",
+    prefecture: "岩手",
+    name: "岩手",
+  },
+  {
+    id: "6",
+    prefecture: "秋田",
+    name: "秋田",
   },
 ];
 
 const SearchClassroom = () => {
   const [inputValue, setInputValue] = useState("");
-  const [memberList, setMemberList] = useState<MemberList>(allMemberList);
+  const [classroomList, setClassroomList] =
+    useState<classroomList>(allClassrooms);
+  const [selectClassroom, setSelectClassroom] = useState<string>("");
 
   const search = (value: string) => {
     if (value !== "") {
-      const filteredList = allMemberList.filter((member: member) =>
-        Object.values(member).some(
+      const filteredList = allClassrooms.filter((classroom: classroom) =>
+        Object.values(classroom).some(
           (item: string) =>
             item?.toUpperCase().indexOf(value.trim().toUpperCase()) !== -1
         )
       );
-      setMemberList(filteredList);
+      setClassroomList(filteredList);
       return;
     }
 
-    setMemberList(allMemberList);
+    setClassroomList(allClassrooms);
     return;
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,9 +80,10 @@ const SearchClassroom = () => {
     search(e.target.value);
   };
 
+  //いずれかの教室を選択した場合
   const onChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptions = event.target.value;
-    console.log(selectedOptions);
+    setSelectClassroom(selectedOptions);
     //選択した値の情報取得
     // このクラスを親として、子供のcomponentに値を渡す流れか？
   };
@@ -96,15 +117,22 @@ const SearchClassroom = () => {
               onChange={onChangeHandler}
               className="select"
             >
-              {memberList.map((member, index) => {
+              {classroomList.map((classroom, index) => {
                 return (
-                  <option value={member.name}>
-                    {member.name} / {member.country} / {member.food}
+                  <option value={classroom.id}>
+                    {classroom.prefecture} / {classroom.name}
+                    {"教室"}
                   </option>
                 );
               })}
             </select>
           </Col>
+        </Row>
+        <Row>
+          <DetailClassroom
+            classroomList={classroomList}
+            selectClassroom={selectClassroom}
+          />
         </Row>
       </Container>
       <Outlet />
