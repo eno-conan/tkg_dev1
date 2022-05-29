@@ -37,7 +37,7 @@ public class TkgController1 {
 //			return "error/500";
 //		}
 		/* 講師：指導科目設定 */
-		tkgService1.decideLecturerTeachSubjects();
+//		tkgService1.decideLecturerTeachSubjects();
 		/* 社員：承認（承認対象は後で・・・） */
 		/* 講師：授業実績登録 */
 		/* 講師：授業実績漏れ移動 */
