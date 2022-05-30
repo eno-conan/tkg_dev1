@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.eno.entity.Member;
 import com.eno.form.MemberForm;
 import com.eno.service.DummyService;
 
@@ -21,6 +20,15 @@ public class TestController {
 
 	@Autowired
 	private DummyService dummyService;
+
+	@GetMapping("/validator")
+	public String tryUseValidatorInterface() {
+		//fulfill values
+		dummyService.tryValidatorPatternNew();
+		//not fulfill values
+		dummyService.tryValidatorPatternEdit();
+		return "dummy";
+	}
 
 	@GetMapping("/")
 	public String memberFormView(Model model) {

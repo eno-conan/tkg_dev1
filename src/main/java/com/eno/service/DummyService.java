@@ -3,11 +3,15 @@ package com.eno.service;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eno.entity.Member;
-import com.eno.repository.MemberRepository;
+import com.eno.form.UseInterfaceForm;
+import com.eno.tkg.entity.Member;
+import com.eno.tkg.repository.MemberRepository;
 
 @Service
 public class DummyService {
@@ -15,39 +19,43 @@ public class DummyService {
 	@Autowired
 	private MemberRepository memberRepository;
 
+
 //	@Autowired
 //	private RestTemplate restTemplate;
 
+	@Autowired
+	Validator validator;
+	
+	//implement 22/05/30
+	public void tryValidatorPatternNew() {
+		UseInterfaceForm uiForm = new UseInterfaceForm();
+		uiForm.setName("abc");
+		uiForm.setAge("12");
+		for (ConstraintViolation<UseInterfaceForm> err : 
+			validator.validate(uiForm,
+				new Class[] { UseInterfaceForm.New.class })) {
+			System.out.println("New part:");
+			System.out.println(err.getMessage());
+		}
+	}
+	
+	public void tryValidatorPatternEdit() {
+		UseInterfaceForm uiForm = new UseInterfaceForm();
+		uiForm.setName("abc");
+		uiForm.setAge("12");
+		for (ConstraintViolation<UseInterfaceForm> err : 
+			validator.validate(uiForm,
+				new Class[] { UseInterfaceForm.Edit.class })) {
+			System.out.println("=====Edit part=====");
+			System.out.println(err.getPropertyPath().toString());
+			System.out.println(err.getMessage());
+		}
+	}
+	
+	
+
 	public String hello() {
 		return "hello";
-	}
-
-	/**
-	 * @return テーブル全件
-	 *
-	 */
-	public List<Member> findAllMember() {
-		return memberRepository.findAll();
-	}
-
-	/**
-	 * @return テーブル全件
-	 *
-	 */
-	public List<Member> findMembersDeleteFlgFalse() {
-		List<Member> targetMembers = memberRepository.findByDeleteFlgFalse();
-		targetMembers.forEach(member -> {
-			System.out.println(member.getName());
-		});
-		return targetMembers;
-	}
-
-	public Member findById(final Integer id) {
-		Member targetMembers = memberRepository.findByIdAndDeleteFlgFalse(id);
-		targetMembers.getArticles().forEach(article -> {
-			System.out.println(article.getTitle());
-		});
-		return targetMembers;
 	}
 
 	public void cloudFront() throws URISyntaxException {

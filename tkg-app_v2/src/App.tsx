@@ -10,9 +10,12 @@ import {
 } from "react-router-dom";
 import ActiveSearch from "./components/sample/ActiveSearch";
 import SearchClassroom from "./components/SearchClassroom";
-import DetailClassroom from "./components/DetailClassroom";
 // import { createBrowserHistory } from "history";
 import ClassroomParent from "./components/ClassroomParent";
+import Sample1 from "./components/react-form/Sample1";
+import Sample2 from "./components/react-form/Sample2";
+import Sample3 from "./components/react-form/Sample3";
+import Sample4 from "./components/react-form/Sample4";
 
 export interface ITask {
   id: number;
@@ -28,6 +31,11 @@ const App: React.FC = () => {
           <Router>
             <Routes>
               <Route path="/" element={<ActiveSearch />} />
+              <Route path="/sample" element={<Sample1 />}>
+                <Route path="2" element={<Sample2 />} />
+                <Route path="3" element={<Sample3 />} />
+              </Route>
+              <Route path="/sample4" element={<Sample4 />} />
               <Route path="/task" element={<TaskListComponent />} />
               <Route path="/props" element={<ClassroomParent />} />
               <Route path="/classroom" element={<SearchClassroom />}>

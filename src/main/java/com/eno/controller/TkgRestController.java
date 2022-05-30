@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eno.entity.master.Area;
-import com.eno.entity.master.Prefecture;
-import com.eno.service.TkgService1;
+import com.eno.tkg.entity.master.Area;
+import com.eno.tkg.entity.master.Prefecture;
+import com.eno.tkg.service.TkgService1;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
