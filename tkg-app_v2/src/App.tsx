@@ -11,11 +11,12 @@ import {
 import ActiveSearch from "./components/sample/ActiveSearch";
 import SearchClassroom from "./components/SearchClassroom";
 // import { createBrowserHistory } from "history";
-import ClassroomParent from "./components/ClassroomParent";
-import Sample1 from "./components/react-form/Sample1";
-import Sample2 from "./components/react-form/Sample2";
-import Sample3 from "./components/react-form/Sample3";
-import Sample4 from "./components/react-form/Sample4";
+import ClassroomParent from "./components/props/ClassroomParent";
+import Sample4 from "./components/react-form_220530/Sample4";
+import Top from "./components/breadcrumbs_220531/Top";
+import FirstLayer from "./components/breadcrumbs_220531/FirstLayer";
+import SecondLayer from "./components/breadcrumbs_220531/SecondLayer";
+import TableBase from "./components/table/TableBase";
 
 export interface ITask {
   id: number;
@@ -31,21 +32,27 @@ const App: React.FC = () => {
           <Router>
             <Routes>
               <Route path="/" element={<ActiveSearch />} />
-              <Route path="/sample" element={<Sample1 />}>
-                <Route path="2" element={<Sample2 />} />
-                <Route path="3" element={<Sample3 />} />
+              {/* create table base 220531 */}
+              <Route path="/table" element={<TableBase />} />
+              {/* create breadcrumb 220531 */}
+              <Route path="/router-breadcrumbs" element={<Top />}>
+                <Route path="1st">
+                  <Route path="" element={<FirstLayer />} />
+                  <Route path="2nd">
+                    <Route path="" element={<SecondLayer />} />
+                  </Route>
+                </Route>
               </Route>
+              {/* form data post task to database 220530 */}
               <Route path="/sample4" element={<Sample4 />} />
-              <Route path="/task" element={<TaskListComponent />} />
-              <Route path="/props" element={<ClassroomParent />} />
+              {/* pass data and change actively */}
               <Route path="/classroom" element={<SearchClassroom />}>
                 {/* <Route path="id" element={<DetailClassroom />} /> */}
               </Route>
-              {/* <Route path="nested" element={<div>Nested!</div>} /> */}
-              {/*          <Route path="/courses" element={<Courses />}>
-            <Route path="search" element={<Search />} />
-            <Route path="list" element={<List/>}/>
-          </Route> */}
+              {/* pass data parent to child... */}
+              <Route path="/props" element={<ClassroomParent />} />
+              {/* sample */}
+              <Route path="/task" element={<TaskListComponent />} />
             </Routes>
           </Router>
         </Container>
