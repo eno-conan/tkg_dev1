@@ -17,6 +17,12 @@ import Top from "./components/breadcrumbs_220531/Top";
 import FirstLayer from "./components/breadcrumbs_220531/FirstLayer";
 import SecondLayer from "./components/breadcrumbs_220531/SecondLayer";
 import TableBase from "./components/table/TableBase";
+import { ReceivedPathParam } from "./components/pathParam/ReceivedPathParam";
+
+//related tkgApp
+import { TkgTop } from "./components/tkg/TkgTop";
+import { PASS_ROUTING } from "./config";
+import { ClassSchedule } from "./components/tkg/ClassSchedule";
 
 export interface ITask {
   id: number;
@@ -25,6 +31,7 @@ export interface ITask {
 }
 
 const App: React.FC = () => {
+  const routing = PASS_ROUTING;
   return (
     <div className="App">
       <main>
@@ -32,6 +39,13 @@ const App: React.FC = () => {
           <Router>
             <Routes>
               <Route path="/" element={<ActiveSearch />} />
+              <Route path={routing.Top} element={<TkgTop />} />
+              <Route path={routing.ClassSchedule} element={<ClassSchedule />} />
+              {/* receievePathParam 220607 */}
+              <Route
+                path="/receive-param/:id"
+                element={<ReceivedPathParam />}
+              />
               {/* create table base 220531 */}
               <Route path="/table" element={<TableBase />} />
               {/* create breadcrumb 220531 */}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import {
   // Navigate,
-  Link,
+  // Link,
   // BrowserRouter,
   // Route,
   // Routes,
@@ -13,11 +13,11 @@ import DetailClassroom from "./DetailClassroom";
 import "./style.css";
 
 // https://codesandbox.io/s/pedantic-fire-c07kb?file=/src/App.tsx:1127-1581
-export type classroom = {
+export interface classroom {
   id: string;
   prefecture: string;
   name: string;
-};
+}
 
 export type classroomList = Array<classroom>;
 
@@ -55,10 +55,11 @@ const allClassrooms = [
 ];
 
 const SearchClassroom = () => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(""); //for textbox filtering classroom
   const [classroomList, setClassroomList] =
     useState<classroomList>(allClassrooms);
   const [selectClassroom, setSelectClassroom] = useState<string>("");
+  const [selectRoomId, setSelectRoomId] = useState<string>("");
 
   const search = (value: string) => {
     if (value !== "") {
@@ -132,6 +133,7 @@ const SearchClassroom = () => {
           <DetailClassroom
             classroomList={classroomList}
             selectClassroom={selectClassroom}
+            selectRoomId={selectRoomId}
           />
         </Row>
       </Container>

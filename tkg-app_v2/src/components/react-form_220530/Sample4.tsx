@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Row, Col, Container } from "react-bootstrap";
 import { API_BASE_URL } from "../../config";
+import { useLocation } from "react-router-dom";
 import Header from "./Header";
 
 type ValuesType = {
@@ -11,6 +12,11 @@ type ValuesType = {
 };
 
 const Sample4 = () => {
+  const location = useLocation();
+  //DetailClassroomからの値を受け取る
+  const [selectId, setSelectId] = useState<{ id: string }>(
+    location.state as { id: string }
+  );
   const { register, handleSubmit, resetField } = useForm<ValuesType>({
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -47,6 +53,7 @@ const Sample4 = () => {
         <Row className={"add-task-item mt-5 mb-5"}>
           <Col md={6}>
             <h3>教室登録</h3>
+            <h5>{selectId.id}</h5>
             <form onSubmit={handleSubmit(handleOnSubmit)}>
               <input
                 className={"w-100 mb-2"}
