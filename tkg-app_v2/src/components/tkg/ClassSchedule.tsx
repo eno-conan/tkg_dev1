@@ -106,6 +106,12 @@ interface ITask {
 }
 export type taskList = Array<ITask>;
 
+type alterClass = {
+  targetClassId: string;
+  dateInfo: string;
+  frameInfo: string;
+};
+
 const customStyles = {
   content: {
     top: "50%",
@@ -130,6 +136,8 @@ export const ClassSchedule = () => {
   //モーダルで指定した振替情報を管理
   const [alterClassDate, setAlterClassDate] = useState<string>("");
   const [alterClassFrame, setAlterClassFrame] = useState<string>("");
+  //振替情報を管理
+  const [alterClass, setAlterClass] = useState<alterClass>();
 
   //モーダル開閉管理==========================================
   let subtitle: HTMLHeadingElement | null;
@@ -140,10 +148,11 @@ export const ClassSchedule = () => {
   // =========================================================
 
   //get Data From Database
+  // 初期表示：当日の授業全件パラメータ：targetDate
   // useEffect(() => {
   //   const options = { method: "GET" };
 
-  //   fetch(`${API_BASE_URL}/tasks`, options)
+  //   fetch(`${API_BASE_URL}/tasks?targetDate=`, options)
   //     .then((response) => response.json())
   //     .then((fetchedTasks) => setTasks(fetchedTasks))
   //     .catch((error) => {
@@ -153,13 +162,13 @@ export const ClassSchedule = () => {
   // }, []);
 
   //alter Date======================================
-  function openModalAlterDate() {
+  function openModalAlterClass() {
     setAlterDateModalIsOpen(true);
   }
-  function afterOpenModalAlterDate() {
+  function afterOpenModalAlterClass() {
     if (subtitle) subtitle.style.color = "#f00";
   }
-  function closeModalAlterDate() {
+  function closeModalAlterClass() {
     setAlterDateModalIsOpen(false);
   }
   //===================================================
@@ -226,10 +235,42 @@ export const ClassSchedule = () => {
     const changeTargetClassId = targetClass;
     //振替情報
     const dateInfo = alterClassDate;
+    if (!dateInfo) {
+      alert("振替日付を選択してください");
+      return;
+    }
     const frameInfo = alterClassFrame;
-    console.log(dateInfo);
-    console.log(frameInfo);
-    navigate(`/receive-param/${changeTargetClassId}`);
+    if (!frameInfo) {
+      alert("コマを選択してください");
+      return;
+    }
+    //データベース更新処理
+    const baseObj = { targetClassId: "", dateInfo: "", frameInfo: "" };
+    baseObj.targetClassId = changeTargetClassId;
+    baseObj.dateInfo = dateInfo;
+    baseObj.frameInfo = frameInfo;
+    setAlterClass(baseObj);
+    updateClass();
+  };
+
+  //更新処理実施
+  const updateClass = () => {
+    const options = {
+      method: "POST",
+      body: targetClass + "," + alterClassDate + "," + alterClassFrame,
+    };
+    fetch(`${API_BASE_URL}/tasks`, options)
+      .then((response) => response.json())
+      .then((updateClass) => {
+        console.log(updateClass);
+        //setTask((updateClass) => [...prevState, updateClass]))
+        alert("更新完了");
+        closeModalAlterClass();
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't add task");
+      });
   };
 
   return (
@@ -284,6 +325,7 @@ export const ClassSchedule = () => {
                   defaultSortFieldId="content"
                   sortIcon={<SortIcon />}
                   selectableRows
+                  selectableRowsSingle
                   onSelectedRowsChange={selectChangeTarget}
                 />
               </Card>
@@ -293,7 +335,7 @@ export const ClassSchedule = () => {
             <div className={"my-4"}>
               <span>
                 <Button
-                  onClick={openModalAlterDate}
+                  onClick={openModalAlterClass}
                   className={"btn btn-secondary ml-4"}
                 >
                   振替設定
@@ -302,10 +344,10 @@ export const ClassSchedule = () => {
                   contentLabel="Alter Setting"
                   isOpen={alterDateModalIsOpen}
                   style={customStyles}
-                  onAfterOpen={afterOpenModalAlterDate}
-                  onRequestClose={closeModalAlterDate}
+                  onAfterOpen={afterOpenModalAlterClass}
+                  onRequestClose={closeModalAlterClass}
                 >
-                  <CloseButton onClick={closeModalAlterDate} />
+                  <CloseButton onClick={closeModalAlterClass} />
                   {/* <h3 ref={(_subtitle) => (subtitle = _subtitle)}>振替設定</h3> */}
                   <form>
                     <Row>
