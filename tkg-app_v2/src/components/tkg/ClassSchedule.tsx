@@ -24,52 +24,18 @@ import "../tkgStyle.css";
 // =======================-
 const taskData = [
   {
-    id: 1,
-    frame: 6,
+    id: "1",
+    period: "6",
     grade: "h1",
     subject: "数学IA",
     studentName: "山本由伸",
     lecturerName: "講師A",
-    date: "2022-06-01",
   },
-  {
-    id: 2,
-    frame: 6,
-    grade: "h2",
-    subject: "数学2B",
-    studentName: "古田敦也",
-    lecturerName: "講師B",
-    date: "2022-06-01",
-  },
-  {
-    id: 3,
-    frame: 6,
-    grade: "h2",
-    subject: "科学",
-    studentName: "柳田悠岐",
-    lecturerName: "講師B",
-    date: "2022-06-01",
-  },
-  {
-    id: 4,
-    frame: 7,
-    grade: "j3",
-    subject: "英語",
-    studentName: "山田哲人",
-    lecturerName: "講師B",
-    date: "2022-06-02",
-  },
-  // {
-  //   id: 1,
-  //   frame_id: 6,
-  //   content: "Beetlejuice",
-  //   done: false,
-  // },
 ];
 const columns = [
   {
     name: "コマ",
-    selector: (row: { frame: number }) => row.frame,
+    selector: (row: { period: string }) => row.period,
     sortable: false,
   },
   {
@@ -93,24 +59,17 @@ const columns = [
     sortable: false,
   },
 ];
-// ========================-
 
-interface ITask {
-  id: number;
-  frame: number;
+interface ClassInfo {
+  id: string;
+  period: string;
   grade: string;
   subject: string;
-  studentName: string;
   lecturerName: string;
-  date: string;
+  studentName: string;
 }
-export type taskList = Array<ITask>;
 
-type alterClass = {
-  targetClassId: string;
-  dateInfo: string;
-  frameInfo: string;
-};
+export type classScheduleList = Array<ClassInfo>;
 
 const customStyles = {
   content: {
@@ -125,19 +84,26 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
+//授業振替・講師変更、それぞれのモーダルウインドウ関連を別Componentにする感じかな
 export const ClassSchedule = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  //manage frames（授業一覧を管理）
-  const [tasks, setTasks] = useState<taskList>(taskData);
-  //set select frame at view (プルダウンで選択したコマの情報を管理)
+  //画面表示用
+  const [classScheduleOrigin, setClassScheduleOrigin] =
+    useState<classScheduleList>(taskData);
+  const [classSchedule, setClassSchedule] =
+    useState<classScheduleList>(taskData);
+  //カレンダーで選択した日付を管理
+  const [calender, setCalender] = useState<string>(
+    new Date().toLocaleString().split(" ")[0].replace("/", "-")
+  );
+  //プルダウンで選択したコマの情報を管理
   const [frame, setFrame] = useState<string>("");
+  //チェックを入れた授業のIDを管理
   const [targetClass, setTargetClass] = useState<string>("");
   //モーダルで指定した振替情報を管理
   const [alterClassDate, setAlterClassDate] = useState<string>("");
   const [alterClassFrame, setAlterClassFrame] = useState<string>("");
-  //振替情報を管理
-  const [alterClass, setAlterClass] = useState<alterClass>();
 
   //モーダル開閉管理==========================================
   let subtitle: HTMLHeadingElement | null;
@@ -149,17 +115,19 @@ export const ClassSchedule = () => {
 
   //get Data From Database
   // 初期表示：当日の授業全件パラメータ：targetDate
-  // useEffect(() => {
-  //   const options = { method: "GET" };
+  useEffect(() => {
+    const today = formatDate(new Date());
+    getTargetDateClassSchedule(today);
+    setCalender(today);
+  }, []);
 
-  //   fetch(`${API_BASE_URL}/tasks?targetDate=`, options)
-  //     .then((response) => response.json())
-  //     .then((fetchedTasks) => setTasks(fetchedTasks))
-  //     .catch((error) => {
-  //       console.log(error);
-  //       alert("couldn't fetch tasks");
-  //     });
-  // }, []);
+  //カレンダーに今日を初期表示（yyyy-mm-dd以外受付けしないみたい）
+  const formatDate = (date: Date) => {
+    const y = date.getFullYear();
+    const m = ("00" + (date.getMonth() + 1)).slice(-2);
+    const d = ("00" + date.getDate()).slice(-2);
+    return y + "-" + m + "-" + d;
+  };
 
   //alter Date======================================
   function openModalAlterClass() {
@@ -185,20 +153,44 @@ export const ClassSchedule = () => {
   }
   //===================================================
 
-  //プルダウンで表示したい日付を選択（画面上部）
+  // 指定した日付の全授業を取得
+  const getTargetDateClassSchedule = (targetDate: string) => {
+    setFrame(""); //コマのプルダウンを初期値に戻す
+    const options = { method: "GET" };
+    fetch(`${API_BASE_URL}/tkg/classSchedule?targetDate=${targetDate}`, options)
+      .then((response) => response.json())
+      .then((fetchClassSchedule) => {
+        setClassScheduleOrigin(fetchClassSchedule);
+        setClassSchedule(fetchClassSchedule);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't fetch tasks");
+      });
+  };
+
+  //プルダウンで表示したい日付を選択（画面上部）；これから実装
+  const selectDateAtCalender = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCalender(event.target.value);
+    getTargetDateClassSchedule(event.target.value);
+  };
 
   //プルダウンで表示したいコマを選択（画面上部）
   const selectFrameAtPulldown = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const receivedFrameNumber = event.target.value;
-    if (receivedFrameNumber != null) {
-      const filteredList = tasks.filter(
-        (iTask: ITask) =>
-          iTask.frame.toString() === receivedFrameNumber.toString()
+    if (receivedFrameNumber !== "") {
+      const filteredList = classScheduleOrigin.filter(
+        (iTask: ClassInfo) =>
+          iTask.period.toString() === receivedFrameNumber.toString()
       );
       setFrame(event.target.value); //選択したコマ情報
-      setTasks(filteredList); //選択したコマに該当する授業一覧
+      setClassSchedule(filteredList); //選択したコマに該当する授業一覧
+      return;
+    } else {
+      setClassSchedule(classScheduleOrigin);
+      return;
     }
   };
 
@@ -206,7 +198,6 @@ export const ClassSchedule = () => {
   const alterClassDateAtModal = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log("alterClass Date:", event.target.value);
     setAlterClassDate(event.target.value);
   };
 
@@ -214,14 +205,12 @@ export const ClassSchedule = () => {
   const alterClassFrameAtModal = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    console.log("alterClass Frame:", event.target.value);
     setAlterClassFrame(event.target.value);
   };
 
-  //更新したい授業を選択
+  //更新したい授業を選択（チェックを入れる）
   const selectChangeTarget = (state: any) => {
     if (state.selectedCount > 0) {
-      console.log(state.selectedRows[0].id);
       setTargetClass(state.selectedRows[0].id);
     }
   };
@@ -231,8 +220,6 @@ export const ClassSchedule = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    //更新対象授業（チェックを入れた授業）の情報
-    const changeTargetClassId = targetClass;
     //振替情報
     const dateInfo = alterClassDate;
     if (!dateInfo) {
@@ -245,25 +232,20 @@ export const ClassSchedule = () => {
       return;
     }
     //データベース更新処理
-    const baseObj = { targetClassId: "", dateInfo: "", frameInfo: "" };
-    baseObj.targetClassId = changeTargetClassId;
-    baseObj.dateInfo = dateInfo;
-    baseObj.frameInfo = frameInfo;
-    setAlterClass(baseObj);
-    updateClass();
+    updateTargetClass();
   };
 
   //更新処理実施
-  const updateClass = () => {
+  const updateTargetClass = () => {
     const options = {
-      method: "POST",
+      //  method: "POST",
+      method: "PUT",
       body: targetClass + "," + alterClassDate + "," + alterClassFrame,
     };
-    fetch(`${API_BASE_URL}/tasks`, options)
+    fetch(`${API_BASE_URL}/tkg/updateClassSchedule`, options)
       .then((response) => response.json())
-      .then((updateClass) => {
-        console.log(updateClass);
-        //setTask((updateClass) => [...prevState, updateClass]))
+      .then((updateTargetClass) => {
+        //setTask((updateTargetClass) => [...prevState, updateTargetClass]))
         alert("更新完了");
         closeModalAlterClass();
       })
@@ -292,7 +274,12 @@ export const ClassSchedule = () => {
                 <b>日付</b>
               </span>{" "}
               <span>
-                <input type="date"></input>
+                <input
+                  type="date"
+                  value={calender}
+                  defaultValue={calender}
+                  onChange={selectDateAtCalender}
+                ></input>
               </span>
             </Col>
             <Col md={4} className={"pl-4"}>
@@ -320,7 +307,7 @@ export const ClassSchedule = () => {
                 <DataTable
                   //content="Movies"
                   columns={columns}
-                  data={tasks}
+                  data={classSchedule}
                   pagination
                   defaultSortFieldId="content"
                   sortIcon={<SortIcon />}
@@ -377,7 +364,10 @@ export const ClassSchedule = () => {
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
-                            <option value="11">11</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
                           </select>
                         </div>
                       </Col>

@@ -96,8 +96,21 @@ CREATE TABLE `mst_student` (
   FOREIGN KEY (grade_key) REFERENCES mst_grade(grade_key)
 );
 
+CREATE TABLE `time_table_normal` (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  day_of_week CHAR(8) NOT null,
+  period CHAR(8) NOT null
+);
+
+CREATE TABLE `time_table_special` (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  day_count CHAR(8) NOT null,
+  period CHAR(8) NOT null
+);
+
 CREATE TABLE `student_schedule_normal` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  time_table_normal_id INTEGER NOT null,
   student_id INTEGER NOT null,
   subject_key CHAR(32) NOT null,
   lecturer_id INTEGER NOT null,
@@ -108,10 +121,12 @@ CREATE TABLE `student_schedule_normal` (
   status INTEGER default 0,
   created_at timestamp,
   updated_at timestamp,
+  FOREIGN KEY (time_table_normal_id) REFERENCES time_table_normal(id),
   FOREIGN KEY (student_id) REFERENCES mst_student(id),
   FOREIGN KEY (subject_key) REFERENCES mst_subject(subject_key),
   FOREIGN KEY (lecturer_id) REFERENCES mst_lecturer(id)
 );
+
 
 CREATE TABLE `lecturer_teach_subject` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -128,17 +143,6 @@ CREATE TABLE `lecturer_teach_subject` (
   FOREIGN KEY (subject_key) REFERENCES mst_subject(subject_key)
 );
 
-CREATE TABLE `time_table_normal` (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  day_of_week CHAR(8) NOT null,
-  period CHAR(8) NOT null
-);
-
-CREATE TABLE `time_table_special` (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  day_count CHAR(8) NOT null,
-  period CHAR(8) NOT null
-);
 
 CREATE TABLE `student_subject` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,

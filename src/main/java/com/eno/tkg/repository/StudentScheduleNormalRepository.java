@@ -1,5 +1,6 @@
 package com.eno.tkg.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,7 @@ import com.eno.tkg.entity.master.Grade;
 
 @Repository
 public interface StudentScheduleNormalRepository extends CrudRepository<StudentScheduleNormal, Integer> {
+
+	public List<StudentScheduleNormal> findAllByClassDate(Date date);
 
 }
