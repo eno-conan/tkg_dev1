@@ -13,8 +13,8 @@ import com.eno.tkg.entity.master.Area;
 import com.eno.tkg.entity.master.Grade;
 
 @Repository
-public interface StudentScheduleNormalRepository extends CrudRepository<StudentScheduleNormal, Integer> {
+public interface StudentScheduleNormalRepository extends JpaRepository<StudentScheduleNormal, Integer> {
 
-	public List<StudentScheduleNormal> findAllByClassDate(Date date);
+	public List<StudentScheduleNormal> findAllByClassDateOrderByPeriod(Date date);
 
 }

@@ -40,9 +40,6 @@ public class TimeTableNormal {
 	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LecturerWorkableTime> lecturerWorkableTime;
 	
-	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<StudentScheduleNormal> studentScheduleNormal;
-
 	public TimeTableNormal(Integer id) {
 		this.id = id;
 	}

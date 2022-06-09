@@ -30,6 +30,8 @@ const taskData = [
     subject: "数学IA",
     studentName: "山本由伸",
     lecturerName: "講師A",
+    rescheduleDateStart: "2022-06-08",
+    rescheduleDateEnd: "2022-06-22",
   },
 ];
 const columns = [
@@ -67,6 +69,8 @@ interface ClassInfo {
   subject: string;
   lecturerName: string;
   studentName: string;
+  rescheduleDateStart: string;
+  rescheduleDateEnd: string;
 }
 
 export type classScheduleList = Array<ClassInfo>;
@@ -101,6 +105,9 @@ export const ClassSchedule = () => {
   const [frame, setFrame] = useState<string>("");
   //チェックを入れた授業のIDを管理
   const [targetClass, setTargetClass] = useState<string>("");
+
+  //振替期限を管理
+  const [alterClassSpan, setAlterClassSpan] = useState<string>("");
   //モーダルで指定した振替情報を管理
   const [alterClassDate, setAlterClassDate] = useState<string>("");
   const [alterClassFrame, setAlterClassFrame] = useState<string>("");
@@ -131,6 +138,16 @@ export const ClassSchedule = () => {
 
   //alter Date======================================
   function openModalAlterClass() {
+    //振替のモーダルに振替期限を表示
+    const selectClassInfo = classScheduleOrigin.filter(
+      (info: ClassInfo) => info.id.toString() === targetClass.toString()
+    );
+    setAlterClassSpan(
+      "※振替期限：" +
+        selectClassInfo[0].rescheduleDateStart +
+        " ~ " +
+        selectClassInfo[0].rescheduleDateEnd
+    );
     setAlterDateModalIsOpen(true);
   }
   function afterOpenModalAlterClass() {
@@ -245,9 +262,15 @@ export const ClassSchedule = () => {
     fetch(`${API_BASE_URL}/tkg/updateClassSchedule`, options)
       .then((response) => response.json())
       .then((updateTargetClass) => {
-        //setTask((updateTargetClass) => [...prevState, updateTargetClass]))
-        alert("更新完了");
-        closeModalAlterClass();
+        console.log(updateTargetClass);
+        if (updateTargetClass.receiveErrorMessage) {
+          alert(updateTargetClass.receiveErrorMessage.toString());
+        } else {
+          const today = formatDate(new Date());
+          getTargetDateClassSchedule(today);
+          alert("更新完了");
+          closeModalAlterClass();
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -321,9 +344,15 @@ export const ClassSchedule = () => {
           <Row className={"pt-2"}>
             <div className={"my-4"}>
               <span>
+                <Link
+                  to="/router-breadcrumbs/1st/2nd"
+                  className={"btn btn-secondary mr-4"}
+                >
+                  授業予定
+                </Link>
                 <Button
                   onClick={openModalAlterClass}
-                  className={"btn btn-secondary ml-4"}
+                  className={"btn btn-secondary mx-4"}
                 >
                   振替設定
                 </Button>
@@ -339,13 +368,15 @@ export const ClassSchedule = () => {
                   <form>
                     <Row>
                       <h4>振替設定</h4>
+                      <p>{alterClassSpan}</p>
                       <span>
                         <b>日付</b>
                       </span>{" "}
                       <span>
                         <input
                           type="date"
-                          // value={inputValue}
+                          // value={calender}
+                          // defaultValue={calender}
                           onChange={alterClassDateAtModal}
                         ></input>
                       </span>
@@ -392,7 +423,7 @@ export const ClassSchedule = () => {
               <span>
                 <Button
                   onClick={openModalChangeLecturer}
-                  className={"btn btn-secondary mx-4"}
+                  className={"btn btn-secondary ml-4"}
                 >
                   講師変更
                 </Button>
@@ -444,7 +475,7 @@ export const ClassSchedule = () => {
               </span>
               <Link
                 to="/router-breadcrumbs/1st/2nd"
-                className={"btn btn-warning ml-4"}
+                className={"btn btn-warning mx-4"}
               >
                 振替不可
               </Link>

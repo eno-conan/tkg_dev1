@@ -22,6 +22,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.eno.tkg.entity.master.Lecturer;
 import com.eno.tkg.entity.master.Prefecture;
@@ -31,20 +32,21 @@ import com.eno.tkg.entity.master.TimeTableNormal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "student_schedule_normal")
+@NoArgsConstructor
 @Data
 public class StudentScheduleNormal {
-	
+
+	public StudentScheduleNormal(String message) {
+		this.receiveErrorMessage = message;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@ManyToOne
-	@JoinColumn(name = "time_table_normal_id", nullable = false)
-	@JsonIgnore
-	private TimeTableNormal timeTableNormal;
 
 	@ManyToOne
 	@JoinColumn(name = "student_id", nullable = false)
@@ -61,19 +63,22 @@ public class StudentScheduleNormal {
 	@JsonIgnore
 	private Lecturer lecturer;
 
+	@Column(name = "period", nullable = false)
+	private String period;
+
 	@Column(name = "class_date")
 	@Temporal(TemporalType.DATE)
 	private Date classDate;
-	
+
 	@Column(name = "reschedule_date_start")
 	private Date rescheduleDateStart;
-	
+
 	@Column(name = "reschedule_date_last")
 	private Date rescheduleDateLast;
-	
+
 	@Column(name = "reschedule_flg")
 	private boolean rescheduleFlg;
-	
+
 	@Column(name = "status")
 	private int status;
 
@@ -82,5 +87,8 @@ public class StudentScheduleNormal {
 
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
+
+	@Transient
+	private String receiveErrorMessage;
 
 }
