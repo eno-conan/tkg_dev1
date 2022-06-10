@@ -28,6 +28,7 @@ const taskData = [
     period: "6",
     grade: "h1",
     subject: "数学IA",
+    studentId: "1",
     studentName: "山本由伸",
     lecturerName: "講師A",
     rescheduleDateStart: "2022-06-08",
@@ -68,12 +69,25 @@ interface ClassInfo {
   grade: string;
   subject: string;
   lecturerName: string;
+  studentId: string;
   studentName: string;
   rescheduleDateStart: string;
   rescheduleDateEnd: string;
 }
-
 export type classScheduleList = Array<ClassInfo>;
+
+interface StudentSchedule {
+  id: string;
+  period: string;
+  grade: string;
+  subject: string;
+  lecturerName: string;
+  studentId: string;
+  studentName: string;
+  classDate: string;
+}
+
+export type studentScheduleList = Array<StudentSchedule>;
 
 const customStyles = {
   content: {
@@ -97,6 +111,7 @@ export const ClassSchedule = () => {
     useState<classScheduleList>(taskData);
   const [classSchedule, setClassSchedule] =
     useState<classScheduleList>(taskData);
+  const [studentSchedule, setStudentSchedule] = useState<studentScheduleList>();
   //カレンダーで選択した日付を管理
   const [calender, setCalender] = useState<string>(
     new Date().toLocaleString().split(" ")[0].replace("/", "-")
@@ -114,6 +129,8 @@ export const ClassSchedule = () => {
 
   //モーダル開閉管理==========================================
   let subtitle: HTMLHeadingElement | null;
+  const [studentScheduleModalIsOpen, setStudentScheduleModalIsOpen] =
+    useState<boolean>(false);
   const [alterDateModalIsOpen, setAlterDateModalIsOpen] =
     useState<boolean>(false);
   const [changeLecturerModalIsOpen, setChangeLecturerModalIsOpen] =
@@ -136,12 +153,37 @@ export const ClassSchedule = () => {
     return y + "-" + m + "-" + d;
   };
 
-  //alter Date======================================
-  function openModalAlterClass() {
-    //振替のモーダルに振替期限を表示
+  //生徒予定========================================
+  function openModalStudentSchedule() {
+    if (!targetClass) {
+      alert("操作する授業にチェックを入れてください");
+      return;
+    }
+    //チェックを入れた授業の情報取得
     const selectClassInfo = classScheduleOrigin.filter(
       (info: ClassInfo) => info.id.toString() === targetClass.toString()
     );
+    getSlectClassStudentSchedule(selectClassInfo[0].studentId);
+    setStudentScheduleModalIsOpen(true);
+  }
+  function afterOpenModalStudentSchedule() {
+    if (subtitle) subtitle.style.color = "#f00";
+  }
+  function closeModalStudentSchedule() {
+    setStudentScheduleModalIsOpen(false);
+  }
+
+  //alter Date======================================
+  function openModalAlterClass() {
+    if (!targetClass) {
+      alert("操作する授業にチェックを入れてください");
+      return;
+    }
+    //チェックを入れた授業の情報取得
+    const selectClassInfo = classScheduleOrigin.filter(
+      (info: ClassInfo) => info.id.toString() === targetClass.toString()
+    );
+    //振替のモーダルに振替期限を表示
     setAlterClassSpan(
       "※振替期限：" +
         selectClassInfo[0].rescheduleDateStart +
@@ -169,6 +211,25 @@ export const ClassSchedule = () => {
     setChangeLecturerModalIsOpen(false);
   }
   //===================================================
+
+  //選択授業の生徒の予定取得
+  const getSlectClassStudentSchedule = (studentId: string) => {
+    const options = { method: "GET" };
+    fetch(
+      `${API_BASE_URL}/tkg/classSchedule/studentSchedule/${studentId}`,
+      options
+    )
+      .then((response) => response.json())
+      .then((schedule) => {
+        console.log(schedule);
+        //授業予定に設定
+        setStudentSchedule(schedule);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't fetch tasks");
+      });
+  };
 
   // 指定した日付の全授業を取得
   const getTargetDateClassSchedule = (targetDate: string) => {
@@ -259,7 +320,7 @@ export const ClassSchedule = () => {
       method: "PUT",
       body: targetClass + "," + alterClassDate + "," + alterClassFrame,
     };
-    fetch(`${API_BASE_URL}/tkg/updateClassSchedule`, options)
+    fetch(`${API_BASE_URL}/tkg/classSchedule/update`, options)
       .then((response) => response.json())
       .then((updateTargetClass) => {
         console.log(updateTargetClass);
@@ -288,7 +349,7 @@ export const ClassSchedule = () => {
           <Row className={"tkgTopHeader"}>
             <Col md={5}></Col>
             <Col md={6}>
-              <h2>授業予定</h2>
+              <h2>授業一覧</h2>
             </Col>
           </Row>
           <Row className={"pt-4"}>
@@ -344,12 +405,60 @@ export const ClassSchedule = () => {
           <Row className={"pt-2"}>
             <div className={"my-4"}>
               <span>
-                <Link
-                  to="/router-breadcrumbs/1st/2nd"
-                  className={"btn btn-secondary mr-4"}
+                <Button
+                  onClick={openModalStudentSchedule}
+                  className={"btn btn-secondary ml-4"}
                 >
-                  授業予定
-                </Link>
+                  生徒予定
+                </Button>
+                <Modal
+                  contentLabel="Alter Setting"
+                  isOpen={studentScheduleModalIsOpen}
+                  style={customStyles}
+                  onAfterOpen={afterOpenModalStudentSchedule}
+                  onRequestClose={closeModalStudentSchedule}
+                >
+                  <CloseButton onClick={closeModalStudentSchedule} />
+                  <form>
+                    <Row>
+                      <h4>生徒予定</h4>
+                      <span>
+                        <b>日付</b>
+                      </span>{" "}
+                    </Row>
+                    <Row className={"pt-4"}>
+                      <Col md={4}>
+                        <div>
+                          {studentSchedule?.map((schedule, index) => {
+                            return (
+                              <div>
+                                <div>{schedule.classDate}</div>
+                                <div>{schedule.lecturerName}</div>
+                                <div>=========================</div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row className={"pt-4"}>
+                      <Col md={9}></Col>
+                      <Col md={3}>
+                        {/* <button
+                          className="btn btn-success float-right"
+                          name="abc"
+                          id="selectClass"
+                          // value={classroom?.id}
+                          onClick={confirmAlterClassInfo}
+                        >
+                          確定
+                        </button> */}
+                      </Col>
+                    </Row>
+                  </form>
+                </Modal>
+              </span>
+              <span>
                 <Button
                   onClick={openModalAlterClass}
                   className={"btn btn-secondary mx-4"}

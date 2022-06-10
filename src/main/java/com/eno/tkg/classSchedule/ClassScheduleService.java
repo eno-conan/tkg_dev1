@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eno.tkg.entity.StudentScheduleNormal;
+import com.eno.tkg.entity.master.Lecturer;
+import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.repository.StudentScheduleNormalRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,28 +27,41 @@ class ClassScheduleService {
 	@Autowired
 	private StudentScheduleNormalRepository studentScheduleNormalRepository;
 
+	private final int MAX_ASSIGN_STUDENTS_TO_LECTURER = 2;
+
 	/**
 	 * // 本日の授業に関する情報を返す
 	 * 
 	 * @param date 情報を取得したい日付
 	 * @return json 授業情報
+	 * @throws JsonProcessingException
 	 *
 	 */
-	String getTargetDateClassSchedule(final Date date) {
+	String getTargetDateClassSchedule(final Date date) throws JsonProcessingException {
 		// 本日の授業に関する情報取得
 		List<StudentScheduleNormal> classes = studentScheduleNormalRepository.findAllByClassDateOrderByPeriod(date);
 
 		// 整形
 		List<Map<String, Object>> returnJsonLiteral = prepareClassInfo(classes);
 		// 文字列変換
-		ObjectMapper mapper = new ObjectMapper();
-		String strJson = "";
-		try {
-			strJson = mapper.writeValueAsString(returnJsonLiteral);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+		String strJson = getDataToJsonFormat(returnJsonLiteral);
+		return strJson;
+	}
 
+	/**
+	 * // チェックをいれた授業の生徒の授業予定を取得
+	 * 
+	 * @param content 予定取得に必要な情報
+	 * @return json 授業予定
+	 * @throws JsonProcessingException
+	 *
+	 */
+	String getSelectStudentClassSchedule(final String studentId) throws JsonProcessingException {
+		Integer idToInt = Integer.parseInt(studentId);
+		List<StudentScheduleNormal> studentSchedule = studentScheduleNormalRepository
+				.findByStudentAndClassDateAfterOrderByClassDateAsc(new Student(idToInt), new Date());
+		List<Map<String, Object>> returnJsonLiteral = prepareStudentScheduleInfo(studentSchedule);
+		String strJson = getDataToJsonFormat(returnJsonLiteral);
 		return strJson;
 	}
 
@@ -60,12 +75,12 @@ class ClassScheduleService {
 	StudentScheduleNormal updateTargetClassSchedule(final String content) throws Exception {
 
 		// 4,2022-06-09,8
-		//csvの情報を分離
+		// csvの情報を分離
 		String studentScheduleId = content.split(",")[0];
 		String alterClassDate = content.split(",")[1];
 		String alterPeriod = content.split(",")[2];
 
-		//DBから現在の情報を取得
+		// DBから現在の情報を取得
 		Optional<StudentScheduleNormal> updateTarget = studentScheduleNormalRepository
 				.findById(Integer.parseInt(studentScheduleId));
 		Date date = validateBeforeUpdateClass(alterClassDate, alterPeriod, updateTarget);
@@ -79,6 +94,7 @@ class ClassScheduleService {
 		return studentScheduleNormalRepository.saveAndFlush(updateContent);
 	}
 
+	// 文字列型の日付をDate型に変更
 	Date convertStrDateToDateType(final String dateStr) {
 		String strDate = dateStr.replace("-", "/");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -91,6 +107,7 @@ class ClassScheduleService {
 		return date;
 	}
 
+	// 授業一覧画面表示用に整形
 	private List<Map<String, Object>> prepareClassInfo(List<StudentScheduleNormal> classes) {
 		List<Map<String, Object>> returnJsonLiteral = new ArrayList<>();
 		for (StudentScheduleNormal eachClass : classes) {
@@ -101,12 +118,12 @@ class ClassScheduleService {
 			eachRowInfoMap.put("period", eachClass.getPeriod());
 			eachRowInfoMap.put("grade", eachClass.getStudent().getGrade().getDisplayName());
 			eachRowInfoMap.put("subject", eachClass.getSubject().getDisplayName());
+			eachRowInfoMap.put("studentId", String.valueOf(eachClass.getStudent().getId()));
 			eachRowInfoMap.put("studentName", eachClass.getStudent().getStudentName());
 			eachRowInfoMap.put("lecturerName", eachClass.getLecturer().getLecturerName());
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			String rescheduleDateStart = dateFormat.format(eachClass.getRescheduleDateStart());
-			String rescheduleDateEnd = dateFormat.format(eachClass.getRescheduleDateLast());
+			String rescheduleDateStart = dateToDateStr(eachClass.getRescheduleDateStart());
+			String rescheduleDateEnd = dateToDateStr(eachClass.getRescheduleDateLast());
 			eachRowInfoMap.put("rescheduleDateStart", rescheduleDateStart.replace("-", "/"));
 			eachRowInfoMap.put("rescheduleDateEnd", rescheduleDateEnd.replace("-", "/"));
 
@@ -114,7 +131,39 @@ class ClassScheduleService {
 		}
 		return Collections.unmodifiableList(returnJsonLiteral);
 	}
+	
+	// 生徒予定表示用に整形
+		private List<Map<String, Object>> prepareStudentScheduleInfo(List<StudentScheduleNormal> studentSchedule) {
+			List<Map<String, Object>> returnJsonLiteral = new ArrayList<>();
+			for (StudentScheduleNormal eachClass : studentSchedule) {
+				Map<String, Object> eachRowInfoMap = new LinkedHashMap<>();
+				// TODO:振替授業である場合に、その情報を画面に表示しておいた方がいいかと・・
+				// 理想は、いつからの振替かだが、振替期限から分かるか
+				eachRowInfoMap.put("id", String.valueOf(eachClass.getId()));
+				eachRowInfoMap.put("period", eachClass.getPeriod());
+				eachRowInfoMap.put("grade", eachClass.getStudent().getGrade().getDisplayName());
+				eachRowInfoMap.put("subject", eachClass.getSubject().getDisplayName());
+				eachRowInfoMap.put("studentId", String.valueOf(eachClass.getStudent().getId()));
+				eachRowInfoMap.put("studentName", eachClass.getStudent().getStudentName());
+				eachRowInfoMap.put("lecturerName", eachClass.getLecturer().getLecturerName());
+				
+				String classDate = dateToDateStr(eachClass.getClassDate());
+				eachRowInfoMap.put("classDate", classDate.replace("-", "/"));
+//				String rescheduleDateStart = dateToDateStr(eachClass.getRescheduleDateStart());
+//				String rescheduleDateEnd = dateToDateStr(eachClass.getRescheduleDateLast());
+//				eachRowInfoMap.put("rescheduleDateStart", rescheduleDateStart.replace("-", "/"));
+//				eachRowInfoMap.put("rescheduleDateEnd", rescheduleDateEnd.replace("-", "/"));
+				returnJsonLiteral.add(eachRowInfoMap);
+			}
+			return Collections.unmodifiableList(returnJsonLiteral);
+		}
 
+	private String dateToDateStr(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(date);
+	}
+
+	// 授業更新時のバリデーションチェック
 	private Date validateBeforeUpdateClass(String alterClassDate, String alterPeriod,
 			Optional<StudentScheduleNormal> updateTarget) throws Exception {
 		// IDがない→まずありえないケースではある
@@ -132,7 +181,30 @@ class ClassScheduleService {
 		if (updateTarget.get().getClassDate().equals(date) && updateTarget.get().getPeriod().equals(alterPeriod)) {
 			throw new Exception("振替後日程が振替前日程と同じです");
 		}
+
+		// 振替先の日付・コマで担当する講師が既に1対2になっているケース
+		List<StudentScheduleNormal> lecturerAlterClassScheduleList = studentScheduleNormalRepository
+				.findAllByLecturerAndClassDateAndPeriod(new Lecturer(updateTarget.get().getLecturer().getId()), date,
+						alterPeriod);
+		if (lecturerAlterClassScheduleList.size() >= MAX_ASSIGN_STUDENTS_TO_LECTURER) {
+			throw new Exception("振替後日程にて、担当講師が既に2人の生徒を担当予定です");
+		}
+
+		// 振替先日程に、既に生徒の授業が組まれている場合
+		Optional<StudentScheduleNormal> studentAlterClassSchedule = studentScheduleNormalRepository
+				.findByStudentAndClassDateAndPeriod(new Student(updateTarget.get().getStudent().getId()), date,
+						alterPeriod);
+		if (studentAlterClassSchedule.isPresent()) {
+			throw new Exception("振替後日程にて、その生徒には既に別の授業が予定されています");
+		}
 		return date;
 	}
 
+	// 取得データをJson形式にする
+	private String getDataToJsonFormat(Object returnJsonLiteral) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		String strJson = "";
+		strJson = mapper.writeValueAsString(returnJsonLiteral);
+		return strJson;
+	}
 }

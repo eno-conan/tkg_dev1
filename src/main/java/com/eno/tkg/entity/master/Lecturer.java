@@ -31,8 +31,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "m_lecturer")
-@Data
 @NoArgsConstructor
+@Data
 public class Lecturer {
 
 	@Id

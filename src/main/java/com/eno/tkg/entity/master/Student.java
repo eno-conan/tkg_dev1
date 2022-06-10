@@ -21,9 +21,11 @@ import com.eno.tkg.entity.StudentSubject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "m_student")
+@NoArgsConstructor
 @Data
 public class Student {
 
@@ -61,5 +63,9 @@ public class Student {
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<StudentScheduleNormal> studentScheduleNormal;
+	
+	public Student(Integer id) {
+		this.id = id;
+	}
 
 }
