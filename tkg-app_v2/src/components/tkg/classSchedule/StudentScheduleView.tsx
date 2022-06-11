@@ -1,8 +1,6 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
-import { API_BASE_URL } from "../../../config";
-import { ITask } from "../../../App";
-import { Button, Col, Row } from "react-bootstrap";
-import { StudentSchedule } from "../ClassSchedule";
+import React from "react";
+import { StudentSchedule } from "./StudentScheduleModal";
+// import { Button, Col, Row } from "react-bootstrap";
 
 interface IProps {
   schedule: StudentSchedule;
