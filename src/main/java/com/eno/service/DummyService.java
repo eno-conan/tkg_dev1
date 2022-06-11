@@ -1,7 +1,6 @@
 package com.eno.service;
 
 import java.net.URISyntaxException;
-import java.util.List;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eno.form.UseInterfaceForm;
-import com.eno.tkg.entity.Member;
 import com.eno.tkg.repository.MemberRepository;
 
 @Service

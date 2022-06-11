@@ -113,8 +113,9 @@ CREATE TABLE `student_schedule_normal` (
   student_id INTEGER NOT null,
   subject_key CHAR(32) NOT null,
   lecturer_id INTEGER NOT null,
+  time_table_normal_id INTEGER NOT null,
   class_date DATE not null,
-  period CHAR(32) NOT null,
+  class_date_origin DATE,
   reschedule_date_start DATE not null,
   reschedule_date_last DATE not null,
   reschedule_flg INTEGER default 0,
@@ -123,7 +124,8 @@ CREATE TABLE `student_schedule_normal` (
   updated_at timestamp,
   FOREIGN KEY (student_id) REFERENCES mst_student(id),
   FOREIGN KEY (subject_key) REFERENCES mst_subject(subject_key),
-  FOREIGN KEY (lecturer_id) REFERENCES mst_lecturer(id)
+  FOREIGN KEY (lecturer_id) REFERENCES mst_lecturer(id),
+  FOREIGN KEY (time_table_normal_id) REFERENCES time_table_normal(id)
 );
 
 

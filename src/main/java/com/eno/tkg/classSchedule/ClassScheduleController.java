@@ -21,33 +21,39 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 public class ClassScheduleController {
 
 	@Autowired
-	private ClassScheduleService classScheduleService;
+	private GetTargetDateClassesService getTargetDateClassesService;
 
-	@GetMapping("/classSchedule")
+	@Autowired
+	private GetSelectStudentClassesService getSelectStudentClassesService;
+
+	@Autowired
+	private UpdateSelectClassScheduleService updateSelectClassScheduleService;
+
+	@GetMapping("/class-schedule")
 	public String getTargetDateClassSchedule(@RequestParam(name = "targetDate") final String dateStr) {
-		Date date = classScheduleService.convertStrDateToDateType(dateStr);
+		Date date = ClassScheduleUtil.convertStrDateToDateType(dateStr);
 		try {
-			return classScheduleService.getTargetDateClassSchedule(date);
+			return getTargetDateClassesService.getTargetDateClassSchedule(date);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			return "";
 		}
 	}
 
-	@GetMapping("/classSchedule/studentSchedule/{studentId}")
+	@GetMapping("/class-schedule/student-schedule/{studentId}")
 	public String getStudentClassSchedule(@PathVariable(name = "studentId") final String studentId) {
 		try {
-			return classScheduleService.getSelectStudentClassSchedule(studentId);
+			return getSelectStudentClassesService.getSelectStudentClassSchedule(studentId);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			return "";
 		}
 	}
 
-	@PutMapping("/classSchedule/update")
+	@PutMapping("/class-schedule/update")
 	public StudentScheduleNormal updateTargetClassSchedule(@RequestBody final String content) {
 		try {
-			return classScheduleService.updateTargetClassSchedule(content);
+			return updateSelectClassScheduleService.updateTargetClassSchedule(content);
 		} catch (Exception e) {
 			return new StudentScheduleNormal(e.getMessage());
 		}

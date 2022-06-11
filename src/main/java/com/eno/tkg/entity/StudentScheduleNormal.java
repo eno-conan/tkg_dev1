@@ -38,11 +38,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "student_schedule_normal")
 @NoArgsConstructor
 @Data
-public class StudentScheduleNormal {
-
-	public StudentScheduleNormal(String message) {
-		this.receiveErrorMessage = message;
-	}
+public class StudentScheduleNormal implements Cloneable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,12 +59,19 @@ public class StudentScheduleNormal {
 	@JsonIgnore
 	private Lecturer lecturer;
 
-	@Column(name = "period", nullable = false)
-	private String period;
+	@ManyToOne(cascade = { CascadeType.PERSIST })
+	@JoinColumn(name = "time_table_normal_id", nullable = true)
+	@JsonIgnore
+	private TimeTableNormal timeTableNormal;
+	
 
 	@Column(name = "class_date")
 	@Temporal(TemporalType.DATE)
 	private Date classDate;
+	
+	@Column(name = "class_date_origin")
+	@Temporal(TemporalType.DATE)
+	private Date classDateOrigin;
 
 	@Column(name = "reschedule_date_start")
 	private Date rescheduleDateStart;
@@ -91,4 +94,26 @@ public class StudentScheduleNormal {
 	@Transient
 	private String receiveErrorMessage;
 
+	@Override
+	public StudentScheduleNormal clone() {
+		StudentScheduleNormal ssn = new StudentScheduleNormal();
+		ssn.id = id;
+		ssn.student = student;
+		ssn.subject = subject;
+		ssn.lecturer = lecturer;
+		ssn.timeTableNormal = timeTableNormal;
+		ssn.classDate = classDate;
+		ssn.rescheduleDateStart = rescheduleDateStart;
+		ssn.rescheduleDateLast = rescheduleDateLast;
+		ssn.rescheduleFlg = rescheduleFlg;
+		ssn.status = status;
+		ssn.createdAt = createdAt;
+		ssn.updatedAt = updatedAt;
+		ssn.receiveErrorMessage = receiveErrorMessage;
+		return ssn;
+	}
+	
+	public StudentScheduleNormal(String message) {
+		this.receiveErrorMessage = message;
+	}
 }
