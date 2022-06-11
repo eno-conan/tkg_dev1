@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useNavigate, Link } from "react-router-dom";
@@ -14,15 +15,17 @@ import {
   Col,
   Row,
   CloseButton,
+  Table,
   // DropdownButton,
   // Dropdown,
 } from "react-bootstrap";
 
 import "../tkgStyle.css";
+import StudentScheduleView from "./classSchedule/StudentScheduleView";
 
-//taskData Setting
+//classScheduleSampleData Setting
 // =======================-
-const taskData = [
+const classScheduleSampleData = [
   {
     id: "1",
     period: "6",
@@ -35,7 +38,8 @@ const taskData = [
     rescheduleDateEnd: "2022-06-22",
   },
 ];
-const columns = [
+
+const classScheduleTableColumns = [
   {
     name: "コマ",
     selector: (row: { period: string }) => row.period,
@@ -76,7 +80,19 @@ interface ClassInfo {
 }
 export type classScheduleList = Array<ClassInfo>;
 
-interface StudentSchedule {
+const studentScheduleSampleData = [
+  {
+    id: "1",
+    period: "8",
+    grade: "高校1年",
+    subject: "数学IA",
+    lecturerName: "講師1",
+    studentId: "1",
+    studentName: "Aさん",
+    classDate: "2022/6/12",
+  },
+];
+export interface StudentSchedule {
   id: string;
   period: string;
   grade: string;
@@ -97,6 +113,8 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    width: "60%",
+    height: "50%",
   },
 };
 
@@ -108,10 +126,13 @@ export const ClassSchedule = () => {
 
   //画面表示用
   const [classScheduleOrigin, setClassScheduleOrigin] =
-    useState<classScheduleList>(taskData);
-  const [classSchedule, setClassSchedule] =
-    useState<classScheduleList>(taskData);
-  const [studentSchedule, setStudentSchedule] = useState<studentScheduleList>();
+    useState<classScheduleList>(classScheduleSampleData);
+  const [classSchedule, setClassSchedule] = useState<classScheduleList>(
+    classScheduleSampleData
+  );
+  const [studentSchedule, setStudentSchedule] = useState<studentScheduleList>(
+    studentScheduleSampleData
+  );
   //カレンダーで選択した日付を管理
   const [calender, setCalender] = useState<string>(
     new Date().toLocaleString().split(" ")[0].replace("/", "-")
@@ -163,7 +184,7 @@ export const ClassSchedule = () => {
     const selectClassInfo = classScheduleOrigin.filter(
       (info: ClassInfo) => info.id.toString() === targetClass.toString()
     );
-    getSlectClassStudentSchedule(selectClassInfo[0].studentId);
+    getSelectClassStudentSchedule(selectClassInfo[0].studentId);
     setStudentScheduleModalIsOpen(true);
   }
   function afterOpenModalStudentSchedule() {
@@ -213,15 +234,14 @@ export const ClassSchedule = () => {
   //===================================================
 
   //選択授業の生徒の予定取得
-  const getSlectClassStudentSchedule = (studentId: string) => {
+  const getSelectClassStudentSchedule = (studentId: string) => {
     const options = { method: "GET" };
     fetch(
-      `${API_BASE_URL}/tkg/classSchedule/studentSchedule/${studentId}`,
+      `${API_BASE_URL}/tkg/class-schedule/student-schedule/${studentId}`,
       options
     )
       .then((response) => response.json())
       .then((schedule) => {
-        console.log(schedule);
         //授業予定に設定
         setStudentSchedule(schedule);
       })
@@ -235,7 +255,10 @@ export const ClassSchedule = () => {
   const getTargetDateClassSchedule = (targetDate: string) => {
     setFrame(""); //コマのプルダウンを初期値に戻す
     const options = { method: "GET" };
-    fetch(`${API_BASE_URL}/tkg/classSchedule?targetDate=${targetDate}`, options)
+    fetch(
+      `${API_BASE_URL}/tkg/class-schedule?targetDate=${targetDate}`,
+      options
+    )
       .then((response) => response.json())
       .then((fetchClassSchedule) => {
         setClassScheduleOrigin(fetchClassSchedule);
@@ -290,6 +313,8 @@ export const ClassSchedule = () => {
   const selectChangeTarget = (state: any) => {
     if (state.selectedCount > 0) {
       setTargetClass(state.selectedRows[0].id);
+      //チェック入れる度にDBアクセスは・・・
+      // getSelectClassStudentSchedule(state.selectedRows[0].studentId);
     }
   };
 
@@ -320,10 +345,9 @@ export const ClassSchedule = () => {
       method: "PUT",
       body: targetClass + "," + alterClassDate + "," + alterClassFrame,
     };
-    fetch(`${API_BASE_URL}/tkg/classSchedule/update`, options)
+    fetch(`${API_BASE_URL}/tkg/class-schedule/update`, options)
       .then((response) => response.json())
       .then((updateTargetClass) => {
-        console.log(updateTargetClass);
         if (updateTargetClass.receiveErrorMessage) {
           alert(updateTargetClass.receiveErrorMessage.toString());
         } else {
@@ -390,7 +414,7 @@ export const ClassSchedule = () => {
               <Card>
                 <DataTable
                   //content="Movies"
-                  columns={columns}
+                  columns={classScheduleTableColumns}
                   data={classSchedule}
                   pagination
                   defaultSortFieldId="content"
@@ -412,7 +436,7 @@ export const ClassSchedule = () => {
                   生徒予定
                 </Button>
                 <Modal
-                  contentLabel="Alter Setting"
+                  contentLabel="Student-Schedule"
                   isOpen={studentScheduleModalIsOpen}
                   style={customStyles}
                   onAfterOpen={afterOpenModalStudentSchedule}
@@ -422,27 +446,29 @@ export const ClassSchedule = () => {
                   <form>
                     <Row>
                       <h4>生徒予定</h4>
-                      <span>
-                        <b>日付</b>
-                      </span>{" "}
                     </Row>
                     <Row className={"pt-4"}>
-                      <Col md={4}>
-                        <div>
-                          {studentSchedule?.map((schedule, index) => {
-                            return (
-                              <div>
-                                <div>{schedule.classDate}</div>
-                                <div>{schedule.lecturerName}</div>
-                                <div>=========================</div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                      <Col md={12}>
+                        <Table striped bordered hover>
+                          <thead>
+                            <tr>
+                              <th className="text-center">日付</th>
+                              <th className="text-center">コマ</th>
+                              <th className="text-center">科目</th>
+                              <th className="text-center">担当講師</th>
+                              <th className="text-center">備考</th>
+                            </tr>
+                          </thead>
+                          {studentSchedule.map((schedule, index) => (
+                            <StudentScheduleView
+                              schedule={schedule}
+                              key={index}
+                            />
+                          ))}
+                        </Table>
                       </Col>
                     </Row>
                     <Row className={"pt-4"}>
-                      <Col md={9}></Col>
                       <Col md={3}>
                         {/* <button
                           className="btn btn-success float-right"
