@@ -37,7 +37,7 @@ public class SpecialSeason {
 	@Column(name="year",length = 16, nullable = false)
 	private String studentName;
 	
-	@Column(name="season_mame",length = 16, nullable = false)
+	@Column(name="season_name",length = 16, nullable = false)
 	private String seasonName;
 	
 	@OneToMany(mappedBy = "specialSeason", cascade = CascadeType.ALL, orphanRemoval = true)

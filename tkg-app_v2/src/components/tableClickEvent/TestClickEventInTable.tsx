@@ -41,58 +41,17 @@ const eachClassData = [
   {
     id: "1",
     studentId: "1",
-    lecturerName: "A",
+    lecturerName: "",
     classDate: "2022/07/29",
-    subject: "math",
-  },
-  {
-    id: "1",
-    studentId: "1",
-    lecturerName: "A",
-    classDate: "2022/07/29",
-    subject: "math",
+    subject: "",
   },
 ];
 
-const receiveFromBackend = [
-  {
-    id: 1,
-    classInfoByPeriod: [
-      {
-        id: "1",
-        studentId: "1",
-        lecturerName: "A",
-        classDate: "2022/07/29",
-        subject: "math",
-      },
-      {
-        id: "1",
-        studentId: "1",
-        lecturerName: "A",
-        classDate: "2022/07/29",
-        subject: "math",
-      },
-    ],
-  },
-  {
-    id: 2,
-    classInfoByPeriod: [
-      {
-        id: "1",
-        studentId: "1",
-        lecturerName: "A",
-        classDate: "2022/07/29",
-        subject: "math",
-      },
-      {
-        id: "1",
-        studentId: "1",
-        lecturerName: "A",
-        classDate: "2022/07/29",
-        subject: "math",
-      },
-    ],
-  },
+const dateListSummer: string[] = [
+  "2022/07/19",
+  "2022/07/20",
+  "2022/07/21",
+  "2022/07/22",
 ];
 
 type classesPeriodArray = Array<ClassInfo>;
@@ -107,39 +66,83 @@ const TestClickEventInTable = () => {
   //3-8も作成することになりそう
   const [classesPeriod2, setClassesPeriod2] =
     useState<classesPeriodArray>(eachClassData);
+  const [judgeClassPeriod2, setJudgeClassPeriod2] =
+    useState<classesPeriodArray>(eachClassData);
+
   const [classesPeriod4, setClassesPeriod4] =
     useState<classesPeriodArray>(eachClassData);
 
   // テスト取得
   useEffect(() => {
     getTargetDateClassSchedule("1");
+
+    // 指定した生徒の講習機関スケジュールを取得
+    function getTargetDateClassSchedule(targetDate: string) {
+      const options = { method: "GET" };
+      fetch(`${API_BASE_URL}/tkg/student/special-schedule/1`, options)
+        .then((response) => response.json())
+        .then((fetchClassSchedule) => {
+          setClassesPeriod2(fetchClassSchedule["2"]);
+          setClassesPeriod4(fetchClassSchedule["4"]);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("couldn't fetch tasks");
+        });
+    }
   }, []);
 
-  // 指定した生徒の講習機関スケジュールを取得
-  const getTargetDateClassSchedule = (targetDate: string) => {
-    // setFrame(""); //コマのプルダウンを初期値に戻す
-    const options = { method: "GET" };
-    fetch(`${API_BASE_URL}/tkg/student/current-special-schedule/1`, options)
-      .then((response) => response.json())
-      .then((fetchClassSchedule) => {
-        setClassesPeriod2(fetchClassSchedule["2"]);
-        setClassesPeriod4(fetchClassSchedule["4"]);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("couldn't fetch tasks");
-      });
-  };
+  function judgeExistClassOrNot() {
+    const result: classesPeriodArray = [];
+    classesPeriod2.forEach((each) => console.log(each.classDate));
+    for (let date of dateListSummer) {
+      let filteredList: classesPeriodArray = classesPeriod2.filter(
+        (info: ClassInfo) => info.classDate === date
+      );
+      if (filteredList.length > 0) {
+        console.log("exist:", date);
+        result.push(filteredList[0]);
+      } else {
+        console.log("not exist:", date);
+        result.push({
+          id: "",
+          studentId: "",
+          lecturerName: "",
+          classDate: date,
+          subject: "",
+        });
+      }
+    }
+    setJudgeClassPeriod2(result);
+    console.log(result);
+  }
 
-  const confirmData = () => {
-    console.log("===period2===");
-    classesPeriod2.map((each) => console.log(each.id));
-    console.log("===period4===");
-    classesPeriod4.map((each) => console.log(each.id));
-  };
+  // const confirmData = () => {
+  //   console.log("===period2===");
+  //   classesPeriod2.map((each) => console.log(each.id));
+  //   console.log("===period4===");
+  //   classesPeriod4.map((each) => console.log(each.id));
+  // };
 
   return (
     <Container className={"tkgTop mt-4"}>
+      <br />
+      <Row>
+        <Col md={6}></Col>
+        <Col md={6}>{checkCount}</Col>
+      </Row>
+      <br />
+      <Row>
+        <Col md={6}>
+          <Button
+            onClick={judgeExistClassOrNot}
+            className={"btn btn-secondary ml-4"}
+          >
+            取得
+          </Button>
+        </Col>
+      </Row>
+      <br />
       <Row>
         <Col>
           <div>
@@ -193,35 +196,29 @@ const TestClickEventInTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {dataArray.map((data, index) => (
-                  <tr>
-                    <td>{index + 2}</td>
-                    {data.detail?.map((each) => (
-                      <>
-                        <td className={"align-middle"}>
-                          {each.checked ? (
-                            <AlreadyClassExist />
-                          ) : (
-                            <NoClassFrame
-                              checkCount={checkCount}
-                              setCheckCount={setCheckCount}
-                            />
-                          )}
-                        </td>
-                      </>
-                    ))}
-                  </tr>
-                ))}
+                <tr>
+                  <td className={"align-middle"}>2</td>
+                  {judgeClassPeriod2.map((eachData) => (
+                    <>
+                      <td className={"align-middle"}>
+                        {eachData.id ? (
+                          <AlreadyClassExist
+                            subject={eachData.subject}
+                            lecturerName={eachData.lecturerName}
+                          />
+                        ) : (
+                          <NoClassFrame
+                            checkCount={checkCount}
+                            setCheckCount={setCheckCount}
+                          />
+                        )}
+                      </td>
+                    </>
+                  ))}
+                </tr>
               </tbody>
             </Table>
           </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={6}>
-          <Button onClick={confirmData} className={"btn btn-secondary ml-4"}>
-            コンソールでチェック
-          </Button>
         </Col>
       </Row>
     </Container>
@@ -229,6 +226,3 @@ const TestClickEventInTable = () => {
 };
 
 export default TestClickEventInTable;
-function data(data: any): any {
-  throw new Error("Function not implemented.");
-}

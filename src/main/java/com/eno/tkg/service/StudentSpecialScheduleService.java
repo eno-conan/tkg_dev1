@@ -9,9 +9,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eno.tkg.entity.StudentClassSpecialSummary;
 import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.entity.StudentScheduleSpecial;
+import com.eno.tkg.entity.master.SpecialSeason;
 import com.eno.tkg.entity.master.Student;
+import com.eno.tkg.repository.StudentClassSpecialSummaryRepository;
 import com.eno.tkg.repository.StudentScheduleSpecialRepository;
 import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +25,32 @@ public class StudentSpecialScheduleService {
 	@Autowired
 	private StudentScheduleSpecialRepository studentScheduleSpecialRepository;
 
+	@Autowired
+	private StudentClassSpecialSummaryRepository studentClassSpecialSummaryRepository;
+
+	/**
+	 * // 生徒の講習期間の科目とコマ数の概要取得
+	 * 
+	 * @param studentId 生徒ID
+	 * @return json 科目とコマ数
+	 * @throws JsonProcessingException
+	 *
+	 */
+	public String getTargetStudentSpecialSummary(final String studentId,final String specialSeasonId) {
+		List<StudentClassSpecialSummary> studentSpecialSummary = studentClassSpecialSummaryRepository
+				.findBySpecialSeasonAndStudent(new SpecialSeason(Integer.parseInt(specialSeasonId)),
+						new Student(Integer.parseInt(studentId)));
+		return "";
+	}
+
+	/**
+	 * // 生徒の講習期間の科目とコマ数の概要取得
+	 * 
+	 * @param studentId 生徒ID
+	 * @return json コマごとに整形した授業予定一覧
+	 * @throws JsonProcessingException
+	 *
+	 */
 	// 戻り値はMapを使用
 	public String getTargetStudentSpecialSchedule(final String studentId) throws JsonProcessingException {
 		List<StudentScheduleSpecial> studentSchedule = studentScheduleSpecialRepository

@@ -10,12 +10,22 @@ import {
   // Dropdown,
 } from "react-bootstrap";
 
-const AlreadyClassExist = () => {
+interface PlanClassInfo {
+  subject: string;
+  lecturerName: string;
+}
+
+const AlreadyClassExist: React.FC<PlanClassInfo> = ({
+  subject,
+  lecturerName,
+}) => {
   return (
     <Container className={"tkgTop mt-4"}>
       <Row>
         <Col>
-          <div>数学</div>
+          <div>{subject}</div>
+          {subject ? <div>{"=========="}</div> : <div></div>}
+          <div>{lecturerName}</div>
         </Col>
       </Row>
     </Container>

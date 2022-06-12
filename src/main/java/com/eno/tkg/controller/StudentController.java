@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eno.tkg.entity.StudentScheduleSpecial;
@@ -21,13 +22,20 @@ public class StudentController {
 	@Autowired
 	private StudentSpecialScheduleService studentSpecialScheduleService;
 
-	@GetMapping("/student/current-special-schedule/{studentId}")
+	@GetMapping("/student/special-schedule/{studentId}")
 	public String getTargetStudentSpecialSchedule(@PathVariable(name = "studentId") final String studentId) {
 		try {
 			return studentSpecialScheduleService.getTargetStudentSpecialSchedule(studentId);
 		} catch (JsonProcessingException e) {
 			return "";
 		}
+	}
+
+	@GetMapping("/student/special-summary/{studentId}")
+	public String getTargetStudentSpecialSummary(@PathVariable(name = "studentId") final String studentId,
+			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
+		return studentSpecialScheduleService.getTargetStudentSpecialSummary(studentId, specialSeasonId);
+
 	}
 
 }

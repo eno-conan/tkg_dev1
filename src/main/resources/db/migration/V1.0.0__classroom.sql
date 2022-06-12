@@ -237,6 +237,7 @@ CREATE TABLE `student_class_special_summary` (
   special_season_id INTEGER NOT null,--summer:1,winter:2,spring:3
   student_id INTEGER NOT null,
   subject_key CHAR(32) NOT null,
+  class_count INTEGER not null,
   created_at timestamp,
   updated_at timestamp,
   UNIQUE(special_season_id,student_id,subject_key),

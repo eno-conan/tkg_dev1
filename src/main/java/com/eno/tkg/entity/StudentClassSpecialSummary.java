@@ -59,6 +59,9 @@ public class StudentClassSpecialSummary implements Cloneable {
 	@JoinColumn(name = "subject_key")
 	@JsonIgnore
 	private Subject subject;
+	
+	@Column(name="class_count",length = 8, nullable = false)
+	private int classCount;
 
 	@Column(name = "created_at")
 	private Timestamp createdAt;
