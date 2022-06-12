@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 type Params = {
   id?: string;

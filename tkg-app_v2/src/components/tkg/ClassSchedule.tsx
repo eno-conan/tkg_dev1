@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
-import { useNavigate, Link } from "react-router-dom";
+// import { useParams } from "react-router";
+import { Link } from "react-router-dom"; //useNavigate
 import DataTable from "react-data-table-component";
 import Card from "@material-ui/core/Card";
 import SortIcon from "@material-ui/icons/ArrowDownward";

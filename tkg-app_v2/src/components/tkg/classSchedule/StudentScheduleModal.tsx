@@ -1,10 +1,9 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
+import React, { useState } from "react";
 import { API_BASE_URL } from "../../../config";
 import { ClassInfo, classScheduleList, customStyles } from "../ClassSchedule";
 import StudentScheduleView from "./StudentScheduleView";
 import Modal from "react-modal";
 import {
-  Container,
   Button,
   Col,
   Row,

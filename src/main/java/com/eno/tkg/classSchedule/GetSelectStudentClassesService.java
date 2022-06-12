@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.repository.StudentScheduleNormalRepository;
+import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,7 +38,7 @@ class GetSelectStudentClassesService {
 		List<StudentScheduleNormal> studentSchedule = studentScheduleNormalRepository
 				.findByStudentAndClassDateAfterOrderByClassDateAsc(new Student(idToInt), new Date());
 		List<Map<String, Object>> returnJsonLiteral = prepareStudentScheduleInfo(studentSchedule);
-		String strJson = getDataToJsonFormat(returnJsonLiteral);
+		String strJson = UseOverFunction.getDataToJsonFormat(returnJsonLiteral);
 		return strJson;
 	}
 
@@ -75,7 +76,7 @@ class GetSelectStudentClassesService {
 			eachRowInfoMap.put("studentName", eachClass.getStudent().getStudentName());
 			eachRowInfoMap.put("lecturerName", eachClass.getLecturer().getLecturerName());
 
-			String classDate = dateToDateStr(eachClass.getClassDate());
+			String classDate = UseOverFunction.dateToDateStr(eachClass.getClassDate());
 			eachRowInfoMap.put("classDate", classDate.replace("-", "/"));
 //				String rescheduleDateStart = dateToDateStr(eachClass.getRescheduleDateStart());
 //				String rescheduleDateEnd = dateToDateStr(eachClass.getRescheduleDateLast());
@@ -84,19 +85,5 @@ class GetSelectStudentClassesService {
 			returnJsonLiteral.add(eachRowInfoMap);
 		}
 		return returnJsonLiteral;
-	}
-
-	//日付を文字列型の日付に
-	private String dateToDateStr(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		return dateFormat.format(date);
-	}
-
-	// 取得データをJson形式にする
-	private String getDataToJsonFormat(Object returnJsonLiteral) throws JsonProcessingException {
-		ObjectMapper mapper = new ObjectMapper();
-		String strJson = "";
-		strJson = mapper.writeValueAsString(returnJsonLiteral);
-		return strJson;
 	}
 }

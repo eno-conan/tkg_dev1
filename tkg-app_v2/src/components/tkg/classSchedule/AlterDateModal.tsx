@@ -1,20 +1,12 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
+import React, { useState } from "react";
 import { API_BASE_URL } from "../../../config";
-import {
-  ClassInfo,
-  classScheduleList,
-  classScheduleSampleData,
-  customStyles,
-} from "../ClassSchedule";
-import StudentScheduleView from "./StudentScheduleView";
+import { ClassInfo, classScheduleList, customStyles } from "../ClassSchedule";
 import Modal from "react-modal";
 import {
-  Container,
   Button,
   Col,
   Row,
   CloseButton,
-  Table,
   // DropdownButton,
   // Dropdown,
 } from "react-bootstrap";

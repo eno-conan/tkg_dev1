@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Container } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { classroom, classroomList } from "./SearchClassroom";
 // import { Navigate, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const DetailClassroom: React.FC<IfirstChildProps> = ({
 }) => {
   const [classroomId, setClassroomId] = useState<string>(selectClassroom);
   const [classroom, setClassroom] = useState<classroom>();
-  const [clickedButton, setClickedButton] = useState(selectRoomId);
+  // const [clickedButton, setClickedButton] = useState(selectRoomId);
   const navigate = useNavigate();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
