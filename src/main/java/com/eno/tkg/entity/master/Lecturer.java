@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import com.eno.tkg.entity.LecturerTeachSubject;
 import com.eno.tkg.entity.LecturerWorkableTime;
 import com.eno.tkg.entity.StudentScheduleNormal;
+import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.entity.StudentSubject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -71,6 +72,10 @@ public class Lecturer {
 	
 	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LecturerWorkableTime> lecturerWorkableTime;
+	
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<StudentScheduleSpecial> studentScheduleSpecial;
+
 
 	public Lecturer(Integer id) {
 		this.id = id;

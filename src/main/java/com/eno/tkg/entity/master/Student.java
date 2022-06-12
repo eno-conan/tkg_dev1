@@ -16,7 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.eno.tkg.entity.StudentClassSpecialSummary;
 import com.eno.tkg.entity.StudentScheduleNormal;
+import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.entity.StudentSubject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -63,6 +65,12 @@ public class Student {
 	
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<StudentScheduleNormal> studentScheduleNormal;
+	
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<StudentScheduleSpecial> studentScheduleSpecial;
+	
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
 	
 	public Student(Integer id) {
 		this.id = id;

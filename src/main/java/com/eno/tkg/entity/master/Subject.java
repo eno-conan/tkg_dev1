@@ -15,7 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.eno.tkg.entity.LecturerTeachSubject;
+import com.eno.tkg.entity.StudentClassSpecialSummary;
 import com.eno.tkg.entity.StudentScheduleNormal;
+import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.entity.StudentSubject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -55,9 +57,17 @@ public class Subject {
 	@JsonIgnore
 	private List<StudentScheduleNormal> studentScheduleNormal;
 
-	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<LecturerTeachSubject> lecturerTeachSubject;
+	
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private List<StudentScheduleSpecial> studentScheduleSpecial;
+	
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
 
 	public Subject(String subjectKey) {
 		this.subjectKey = subjectKey;
