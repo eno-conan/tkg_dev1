@@ -24,7 +24,7 @@ const AlreadyClassExist: React.FC<PlanClassInfo> = ({
       <Row>
         <Col>
           <div>{subject}</div>
-          {subject ? <div>{"=========="}</div> : <div></div>}
+          {subject ? <div>{"====="}</div> : <div></div>}
           <div>{lecturerName}</div>
         </Col>
       </Row>

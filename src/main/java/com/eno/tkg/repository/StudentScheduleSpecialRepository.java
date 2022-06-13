@@ -1,6 +1,7 @@
 package com.eno.tkg.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,6 @@ public interface StudentScheduleSpecialRepository extends JpaRepository<StudentS
 	
 	public List<StudentScheduleSpecial> findAll();
 	
-	public List<StudentScheduleSpecial> findByStudentOrderByClassDate(Student student);
+	public List<Optional<StudentScheduleSpecial>> findByStudentOrderByClassDate(Student student);
 
 }

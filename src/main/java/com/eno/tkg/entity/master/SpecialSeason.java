@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.eno.tkg.entity.StudentClassSpecialSummary;
 import com.eno.tkg.entity.StudentScheduleNormal;
+import com.eno.tkg.entity.SpecialSeasonDateList;
 import com.eno.tkg.entity.StudentSubject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -42,6 +43,9 @@ public class SpecialSeason {
 	
 	@OneToMany(mappedBy = "specialSeason", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
+	
+	@OneToMany(mappedBy = "specialSeason", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<SpecialSeasonDateList> studentSeasonDateList;
 	
 	public SpecialSeason(Integer id) {
 		this.id = id;

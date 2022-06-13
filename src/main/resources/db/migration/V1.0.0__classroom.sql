@@ -231,6 +231,15 @@ CREATE TABLE `special_season` (
   UNIQUE(year,season_name)
 );
 
+-- 講習期間日付リスト
+CREATE TABLE `special_season_date_list` (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  special_season_id INTEGER NOT null,
+  class_date DATE not null,
+  UNIQUE(special_season_id,class_date),
+  FOREIGN KEY (special_season_id) REFERENCES special_season(id)
+);
+
 -- 夏期講習概要
 CREATE TABLE `student_class_special_summary` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.service.StudentSpecialScheduleService;
+import com.eno.tkg.student.GetStudentSpecialScheduleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
@@ -21,11 +22,24 @@ public class StudentController {
 
 	@Autowired
 	private StudentSpecialScheduleService studentSpecialScheduleService;
+	
+	@Autowired
+	private GetStudentSpecialScheduleService getStudentSpecialScheduleService;
+
+	@GetMapping("/student/special-date-list/{specialSeasonId}")
+	public String etSpecialDateList(@PathVariable(name = "specialSeasonId") final String specialSeasonId) {
+		try {
+			return studentSpecialScheduleService.getSpecialDateList(specialSeasonId);
+		} catch (JsonProcessingException e) {
+			return "";
+		}
+	}
 
 	@GetMapping("/student/special-schedule/{studentId}")
-	public String getTargetStudentSpecialSchedule(@PathVariable(name = "studentId") final String studentId) {
+	public String getTargetStudentSpecialSchedule(@PathVariable(name = "studentId") final String studentId,
+			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
 		try {
-			return studentSpecialScheduleService.getTargetStudentSpecialSchedule(studentId);
+			return getStudentSpecialScheduleService.getTargetStudentSpecialSchedule(studentId, specialSeasonId);
 		} catch (JsonProcessingException e) {
 			return "";
 		}
@@ -34,7 +48,12 @@ public class StudentController {
 	@GetMapping("/student/special-summary/{studentId}")
 	public String getTargetStudentSpecialSummary(@PathVariable(name = "studentId") final String studentId,
 			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
-		return studentSpecialScheduleService.getTargetStudentSpecialSummary(studentId, specialSeasonId);
+		try {
+			return studentSpecialScheduleService.getTargetStudentSpecialSummary(studentId, specialSeasonId);
+		} catch (JsonProcessingException e) {
+			return "";
+			
+		}
 
 	}
 
