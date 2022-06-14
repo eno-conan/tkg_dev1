@@ -104,7 +104,7 @@ const AlterDateModal: React.FC<ReceiveClassSchedule> = ({
       method: "PUT",
       body: targetClass + "," + alterClassDate + "," + alterClassFrame,
     };
-    fetch(`${API_BASE_URL}/tkg/class-schedule/update`, options)
+    fetch(`${API_BASE_URL}/class-schedule/update`, options)
       .then((response) => response.json())
       .then((updateTargetClass) => {
         if (updateTargetClass.receiveErrorMessage) {

@@ -41,10 +41,7 @@ export const TkgTop = () => {
         <br />
         <Row className={"pt-4"}>
           <Col md={6} className={"pb-6 pl-4"}>
-            <Link
-              to="/router-breadcrumbs/1st/2nd"
-              className={"btn btn-success btn-lg"}
-            >
+            <Link to="/click-button-table" className={"btn btn-success btn-lg"}>
               生徒情報
             </Link>
             <ul>

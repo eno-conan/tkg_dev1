@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE_URL } from "../../config";
+import { API_BASE_URL } from "../../../config";
+import { PASS_ROUTING } from "../../../config";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Container,
   Col,
@@ -41,19 +43,23 @@ const eachSummaryData = [
 ];
 type specialSummaryArray = Array<SummaryInfo>;
 
-const TestClickEventInTable = () => {
+const RegistSpecialSchedule = () => {
+  const navigate = useNavigate();
   // 日付一覧を管理
   const [dateList, setDateList] = useState<string[]>(["1", "2"]);
   // 講習の授業概要を管理
   const [specialSummary, setSpecialSummary] =
     useState<specialSummaryArray>(eachSummaryData);
+
   //チェックした科目のコマ数を管理
   const [checkSubjectCount, setCheckSubjectCount] = useState<number>(0);
   // チェックした科目の行に付与したIDを管理;
   const [checkedSubjectId, setCheckedSubjectId] = useState<string>("0");
-  // 科目変更を管理;
-  // const [judgeChangeSubject, setJudgeCheckedSubject] =
-  //   useState<boolean>(false);
+
+  //選択したコマの日付情報を管理（2コマ用）
+  const [selectClassFramePeriod2, setSelectClassFramePeriod2] = useState<
+    string[]
+  >([""]);
 
   //コマごとの授業を管理
   const [classesPeriod2, setClassesPeriod2] =
@@ -79,7 +85,7 @@ const TestClickEventInTable = () => {
     function getSpecialSummary(studentId: string, specialSeasonId: string) {
       const options = { method: "GET" };
       fetch(
-        `${API_BASE_URL}/tkg/student/special-summary/${studentId}?specialSeasonId=${specialSeasonId}`,
+        `${API_BASE_URL}/student/special-summary/${studentId}?specialSeasonId=${specialSeasonId}`,
         options
       )
         .then((response) => response.json())
@@ -97,7 +103,7 @@ const TestClickEventInTable = () => {
       const options = { method: "GET" };
       specialSeasonId = "1";
       fetch(
-        `${API_BASE_URL}/tkg/student/special-date-list/${specialSeasonId}`,
+        `${API_BASE_URL}/student/special-date-list/${specialSeasonId}`,
         options
       )
         .then((response) => response.json())
@@ -116,7 +122,7 @@ const TestClickEventInTable = () => {
     ) {
       const options = { method: "GET" };
       fetch(
-        `${API_BASE_URL}/tkg/student/special-schedule/${studentId}?specialSeasonId=${specialSeasonId}`,
+        `${API_BASE_URL}/student/special-schedule/${studentId}?specialSeasonId=${specialSeasonId}`,
         options
       )
         .then((response) => response.json())
@@ -157,13 +163,49 @@ const TestClickEventInTable = () => {
     }
   };
 
+  const registSelectFrameInfo = () => {
+    const studentId = "1";
+    const specialSeasonId = "1";
+    const subjectId = checkedSubjectId; //本当は科目ごとに保持できるといい
+    let sendContent: string[] = [];
+
+    sendContent.push(studentId);
+    sendContent.push(specialSeasonId);
+    sendContent.push(subjectId);
+
+    for (let date of selectClassFramePeriod2) {
+      if (date === "") {
+        sendContent.push("period2");
+      } else {
+        sendContent.push(date);
+      }
+    }
+
+    const options = {
+      method: "PUT",
+      body: sendContent.toString(),
+    };
+    fetch(`${API_BASE_URL}/student/update-special-schedule`, options)
+      .then((response) => response.json())
+      .then((updateTargetClass) => {
+        console.log(updateTargetClass);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't add task");
+      });
+    navigate(`${PASS_ROUTING.Top}`);
+  };
+
   return (
-    <Container className={"tkgTop mt-4"}>
+    <Container>
       <br />
-      <Row>
-        <Col md={6}></Col>
-        <Col md={6}>{checkSubjectCount}</Col>
+      <Row className={"align-center"}>
+        <Col md={6}>
+          <h3>講習会授業予定作成</h3>
+        </Col>
       </Row>
+      <br />
       <Row>
         <Col md={12}>
           <Table striped bordered hover responsive>
@@ -200,10 +242,11 @@ const TestClickEventInTable = () => {
             </tbody>
           </Table>
         </Col>
+        <Col md={10}></Col>
+        <Col md={2}>{checkSubjectCount}</Col>
       </Row>
-      <br />
-      <br />
-      <Row>
+
+      <Row className={"tkgTop mt-4"}>
         <Col>
           <div>
             <Table striped bordered hover responsive>
@@ -231,6 +274,10 @@ const TestClickEventInTable = () => {
                           />
                         ) : (
                           <NoClassFrame
+                            selectClassFramePeriod2={selectClassFramePeriod2}
+                            setSelectClassFramePeriod2={
+                              setSelectClassFramePeriod2
+                            }
                             checkedSubjectId={checkedSubjectId}
                             dateInfo={eachData.classDate}
                             checkSubjectCount={checkSubjectCount}
@@ -246,8 +293,25 @@ const TestClickEventInTable = () => {
           </div>
         </Col>
       </Row>
+      <br />
+      <Row>
+        <Col md={10}></Col>
+        <Col>
+          <Button
+            onClick={registSelectFrameInfo}
+            className={"btn btn-summary ml-4"}
+          >
+            登録
+          </Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={5}></Col>
+        <Col md={4}>footerをつくりたい</Col>
+        <Col md={2}></Col>
+      </Row>
     </Container>
   );
 };
 
-export default TestClickEventInTable;
+export default RegistSpecialSchedule;

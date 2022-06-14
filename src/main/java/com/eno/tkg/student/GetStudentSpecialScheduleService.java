@@ -47,7 +47,7 @@ public class GetStudentSpecialScheduleService {
 	public String getTargetStudentSpecialSchedule(final String studentId, final String specialSeasonId)
 			throws JsonProcessingException {
 
-		// 講習日程取得（"1"：後で引数から受け取る形に）
+		// 講習日程取得
 		List<Optional<SpecialSeasonDateList>> specialSeasonDateList = getDateList(specialSeasonId);
 
 		// 生徒スケジュール取得
@@ -102,9 +102,10 @@ public class GetStudentSpecialScheduleService {
 						eachClass.get().getId() == null ? "" : eachClass.get().getSubject().getDisplayName());
 				eachRowInfoMap.put("lecturerName",
 						eachClass.get().getId() == null ? "" : eachClass.get().getLecturer().getLecturerName());
-//				eachRowInfoMap.put("period", eachClass.getTimeTableSpecial().getPeriod());
+//
 				String classDate = UseOverFunction.dateToDateStr(eachClass.get().getClassDate());
 				eachRowInfoMap.put("classDate", classDate.replace("-", "/"));
+
 				returnJsonLiteral.add(eachRowInfoMap);
 			}
 

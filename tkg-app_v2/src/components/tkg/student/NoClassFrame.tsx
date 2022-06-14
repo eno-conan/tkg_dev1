@@ -11,6 +11,8 @@ import {
 } from "react-bootstrap";
 
 interface CheckedCountInfo {
+  selectClassFramePeriod2: string[];
+  setSelectClassFramePeriod2: React.Dispatch<React.SetStateAction<string[]>>;
   checkedSubjectId: string;
   dateInfo: string;
   checkSubjectCount: number;
@@ -18,22 +20,24 @@ interface CheckedCountInfo {
 }
 
 const NoClassFrame: React.FC<CheckedCountInfo> = ({
+  selectClassFramePeriod2,
+  setSelectClassFramePeriod2,
   checkedSubjectId,
   dateInfo,
   checkSubjectCount,
   setCheckSubjectCount,
 }) => {
   // const [date, setDate] = useState<string>("");
-  const [keepSelectSubject, setkeepSelectSubject] = useState<string>("0");
+  const [selectSubject, setSelectSubject] = useState<string>("0");
 
   useEffect(() => {
-    if (keepSelectSubject === "0") {
-      setkeepSelectSubject(checkedSubjectId);
+    if (selectSubject === "0") {
+      setSelectSubject(checkedSubjectId);
     } else {
-      setkeepSelectSubject("0");
-      setkeepSelectSubject(checkedSubjectId);
+      setSelectSubject("0");
+      setSelectSubject(checkedSubjectId);
     }
-  }, [checkedSubjectId, keepSelectSubject]);
+  }, [checkedSubjectId, selectSubject]);
 
   //スケジュール部分のチェックボックスに関する処理
   const checkOneCell = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,17 +45,27 @@ const NoClassFrame: React.FC<CheckedCountInfo> = ({
       event.target.checked = false;
       alert("科目を選択してください");
     } else {
-      console.log("チェック科目ID:", keepSelectSubject);
+      // console.log("チェック科目ID:", keepSelectSubject);
       let cntWork: number = checkSubjectCount;
+      //チェックを付けた場合
       if (event.target.checked) {
-        // console.log("true");
-        console.log(event.target.name);
+        const tmpDateList: string[] = selectClassFramePeriod2;
+        tmpDateList.push(event.target.name);
         setCheckSubjectCount(cntWork - 1);
+        setSelectClassFramePeriod2(tmpDateList);
       } else {
-        // console.log("false");
+        //外した場合
+        const filterDate = selectClassFramePeriod2.filter(
+          (date: string) => date !== event.target.value
+        );
+        setSelectClassFramePeriod2(filterDate);
         setCheckSubjectCount(cntWork + 1);
       }
     }
+  };
+
+  const watchCheckedFrame = () => {
+    console.log(selectClassFramePeriod2);
   };
 
   return (
@@ -65,6 +79,12 @@ const NoClassFrame: React.FC<CheckedCountInfo> = ({
         defaultChecked={false}
         // checked={checkedSubjectId !== "0"}
       />
+      <br />
+      <br />
+      <br />
+      <Button onClick={watchCheckedFrame} className={"btn btn-secondary ml-4"}>
+        コマ数
+      </Button>
     </>
   );
 };

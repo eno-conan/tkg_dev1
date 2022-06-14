@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +31,7 @@ import com.eno.tkg.entity.master.SpecialSeason;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.entity.master.Subject;
 import com.eno.tkg.entity.master.TimeTableNormal;
+import com.eno.tkg.entity.master.TimeTableSpecial;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -53,5 +55,8 @@ public class SpecialSeasonDateList implements Cloneable {
 	@Column(name = "class_date")
 	@Temporal(TemporalType.DATE)
 	private Date classDate;
+	
+	@OneToMany(mappedBy = "specialSeasonDateList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval=true)
+	private List<TimeTableSpecial> timeTableSpecial;
 	
 }

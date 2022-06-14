@@ -142,10 +142,7 @@ export const ClassSchedule = () => {
   const getTargetDateClassSchedule = (targetDate: string) => {
     setFrame(""); //コマのプルダウンを初期値に戻す
     const options = { method: "GET" };
-    fetch(
-      `${API_BASE_URL}/tkg/class-schedule?targetDate=${targetDate}`,
-      options
-    )
+    fetch(`${API_BASE_URL}/class-schedule?targetDate=${targetDate}`, options)
       .then((response) => response.json())
       .then((fetchClassSchedule) => {
         setClassScheduleOrigin(fetchClassSchedule);

@@ -58,7 +58,7 @@ const StudentScheduleModal: React.FC<ReceiveClassSchedule> = ({
   const getSelectClassStudentSchedule = (studentId: string) => {
     const options = { method: "GET" };
     fetch(
-      `${API_BASE_URL}/tkg/class-schedule/student-schedule/${studentId}`,
+      `${API_BASE_URL}/class-schedule/student-schedule/${studentId}`,
       options
     )
       .then((response) => response.json())

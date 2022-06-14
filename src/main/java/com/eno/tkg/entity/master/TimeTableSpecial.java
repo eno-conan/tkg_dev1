@@ -9,13 +9,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.eno.tkg.entity.LecturerWorkableTime;
+import com.eno.tkg.entity.SpecialSeasonDateList;
 import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.entity.StudentSubject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,9 +33,11 @@ public class TimeTableSpecial {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@Column(name = "day_count", length = 128, nullable = false)
-	private String dayCount;
+	
+	@ManyToOne
+	@JoinColumn(name = "special_season_date_id", nullable = false)
+	@JsonIgnore
+	private SpecialSeasonDateList specialSeasonDateList;
 
 	@Column(name = "period", length = 128, nullable = false)
 	private String period;
