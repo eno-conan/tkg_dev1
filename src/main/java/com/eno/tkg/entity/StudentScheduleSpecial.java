@@ -116,4 +116,10 @@ public class StudentScheduleSpecial implements Cloneable {
 	public StudentScheduleSpecial(String message) {
 		this.receiveErrorMessage = message;
 	}
+
+	public StudentScheduleSpecial(Date classDate) {
+		this.classDate = classDate;
+	}
+	
+	
 }

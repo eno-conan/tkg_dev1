@@ -44,11 +44,12 @@ public class GetStudentSpecialScheduleService {
 	 *
 	 */
 	// 戻り値はMapを使用
-	public String getTargetStudentSpecialSchedule(final String studentId,final String specialSeasonId) throws JsonProcessingException {
+	public String getTargetStudentSpecialSchedule(final String studentId, final String specialSeasonId)
+			throws JsonProcessingException {
 
-		//講習日程取得（"1"：後で引数から受け取る形に）
+		// 講習日程取得（"1"：後で引数から受け取る形に）
 		List<Optional<SpecialSeasonDateList>> specialSeasonDateList = getDateList(specialSeasonId);
-		
+
 		// 生徒スケジュール取得
 		List<Optional<StudentScheduleSpecial>> studentSchedule = studentScheduleSpecialRepository
 				.findByStudentOrderByClassDate(new Student(Integer.parseInt(studentId)));
@@ -79,7 +80,8 @@ public class GetStudentSpecialScheduleService {
 				}).collect(Collectors.toList());
 
 				if (eachDateClass.size() == 0) {
-					divideExistClassOrNotList.add(Optional.ofNullable(new StudentScheduleSpecial()));
+					divideExistClassOrNotList
+							.add(Optional.ofNullable(new StudentScheduleSpecial(certainDate.get().getClassDate())));
 				} else {
 					divideExistClassOrNotList.add(eachDateClass.get(0));
 				}
@@ -101,10 +103,7 @@ public class GetStudentSpecialScheduleService {
 				eachRowInfoMap.put("lecturerName",
 						eachClass.get().getId() == null ? "" : eachClass.get().getLecturer().getLecturerName());
 //				eachRowInfoMap.put("period", eachClass.getTimeTableSpecial().getPeriod());
-				String classDate = "";
-				if (eachClass.get().getId() != null) {
-					classDate = UseOverFunction.dateToDateStr(eachClass.get().getClassDate());
-				}
+				String classDate = UseOverFunction.dateToDateStr(eachClass.get().getClassDate());
 				eachRowInfoMap.put("classDate", classDate.replace("-", "/"));
 				returnJsonLiteral.add(eachRowInfoMap);
 			}

@@ -42,12 +42,19 @@ const eachSummaryData = [
 type specialSummaryArray = Array<SummaryInfo>;
 
 const TestClickEventInTable = () => {
-  const [checkCount, setCheckCount] = useState<number>(0);
   // 日付一覧を管理
   const [dateList, setDateList] = useState<string[]>(["1", "2"]);
   // 講習の授業概要を管理
   const [specialSummary, setSpecialSummary] =
     useState<specialSummaryArray>(eachSummaryData);
+  //チェックした科目のコマ数を管理
+  const [checkSubjectCount, setCheckSubjectCount] = useState<number>(0);
+  // チェックした科目の行に付与したIDを管理;
+  const [checkedSubjectId, setCheckedSubjectId] = useState<string>("0");
+  // 科目変更を管理;
+  // const [judgeChangeSubject, setJudgeCheckedSubject] =
+  //   useState<boolean>(false);
+
   //コマごとの授業を管理
   const [classesPeriod2, setClassesPeriod2] =
     useState<classesPeriodArray>(eachClassData);
@@ -124,18 +131,45 @@ const TestClickEventInTable = () => {
     }
   }, []);
 
+  // 科目選択
+  const checkedSubject = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // 科目ID(チェックを外した時も取得)
+    const summaryNumber: string = event.target.value;
+
+    //初期のチェック処理
+    if (checkedSubjectId === "0" && event.target.checked) {
+      console.log("初回選択、チェック");
+      setCheckedSubjectId(summaryNumber);
+      specialSummary.forEach((summary: SummaryInfo) => {
+        if (summary.id === summaryNumber) {
+        }
+      });
+      const filterSummary = specialSummary.filter(
+        (summary: SummaryInfo) => summary.id === summaryNumber
+      );
+      setCheckSubjectCount(Number(filterSummary[0].classCount));
+    }
+
+    //既にいずれかの科目を選択済かつチェックを外したとき
+    if (checkedSubjectId !== "0" && !event.target.checked) {
+      console.log("既に選択済、チェック解除");
+      setCheckedSubjectId("0");
+    }
+  };
+
   return (
     <Container className={"tkgTop mt-4"}>
       <br />
       <Row>
         <Col md={6}></Col>
-        <Col md={6}>{checkCount}</Col>
+        <Col md={6}>{checkSubjectCount}</Col>
       </Row>
       <Row>
         <Col md={12}>
           <Table striped bordered hover responsive>
             <thead>
               <tr>
+                <th className="text-center text-nowrap">選択</th>
                 <th className="text-center text-nowrap">科目</th>
                 <th className="text-center text-nowrap">コマ数</th>
               </tr>
@@ -144,8 +178,22 @@ const TestClickEventInTable = () => {
               {specialSummary.map((eachSummary) => (
                 <>
                   <tr>
+                    <td className={"align-middle"}>
+                      <input
+                        type="checkbox"
+                        value={eachSummary.id}
+                        onChange={checkedSubject}
+                        checked={eachSummary.id === checkedSubjectId}
+                      />
+                    </td>
                     <td className={"align-middle"}>{eachSummary.subject}</td>
-                    <td className={"align-middle"}>{eachSummary.classCount}</td>
+                    {eachSummary.id === checkedSubjectId ? (
+                      <td className={"align-middle"}>{checkSubjectCount}</td>
+                    ) : (
+                      <td className={"align-middle"}>
+                        {eachSummary.classCount}
+                      </td>
+                    )}
                   </tr>
                 </>
               ))}
@@ -154,16 +202,6 @@ const TestClickEventInTable = () => {
         </Col>
       </Row>
       <br />
-      {/* <Row>
-        <Col md={6}>
-          <Button
-            // onClick={judgeExistClassOrNot}
-            className={"btn btn-secondary ml-4"}
-          >
-            取得
-          </Button>
-        </Col>
-      </Row> */}
       <br />
       <Row>
         <Col>
@@ -172,6 +210,7 @@ const TestClickEventInTable = () => {
               <thead>
                 {/* ヘッダー（日付） */}
                 <tr>
+                  <th></th>
                   {dateList.map((eachDate) => (
                     <>
                       <th className="text-center text-nowrap">{eachDate}</th>
@@ -192,8 +231,10 @@ const TestClickEventInTable = () => {
                           />
                         ) : (
                           <NoClassFrame
-                            checkCount={checkCount}
-                            setCheckCount={setCheckCount}
+                            checkedSubjectId={checkedSubjectId}
+                            dateInfo={eachData.classDate}
+                            checkSubjectCount={checkSubjectCount}
+                            setCheckSubjectCount={setCheckSubjectCount}
                           />
                         )}
                       </td>

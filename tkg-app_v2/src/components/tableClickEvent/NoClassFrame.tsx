@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import {
   Container,
   Button,
@@ -11,24 +11,46 @@ import {
 } from "react-bootstrap";
 
 interface CheckedCountInfo {
-  checkCount: number;
-  setCheckCount: React.Dispatch<React.SetStateAction<number>>;
+  checkedSubjectId: string;
+  dateInfo: string;
+  checkSubjectCount: number;
+  setCheckSubjectCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const NoClassFrame: React.FC<CheckedCountInfo> = ({
-  checkCount,
-  setCheckCount,
+  checkedSubjectId,
+  dateInfo,
+  checkSubjectCount,
+  setCheckSubjectCount,
 }) => {
-  const [check1, setCheck1] = useState<boolean>(false);
+  // const [date, setDate] = useState<string>("");
+  const [keepSelectSubject, setkeepSelectSubject] = useState<string>("0");
 
-  const checkOneCell = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let cntWork: number = checkCount;
-    if (event.target.checked) {
-      console.log("true");
-      setCheckCount(cntWork + 1);
+  useEffect(() => {
+    if (keepSelectSubject === "0") {
+      setkeepSelectSubject(checkedSubjectId);
     } else {
-      console.log("false");
-      setCheckCount(cntWork - 1);
+      setkeepSelectSubject("0");
+      setkeepSelectSubject(checkedSubjectId);
+    }
+  }, [checkedSubjectId, keepSelectSubject]);
+
+  //スケジュール部分のチェックボックスに関する処理
+  const checkOneCell = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (checkedSubjectId === "0") {
+      event.target.checked = false;
+      alert("科目を選択してください");
+    } else {
+      console.log("チェック科目ID:", keepSelectSubject);
+      let cntWork: number = checkSubjectCount;
+      if (event.target.checked) {
+        // console.log("true");
+        console.log(event.target.name);
+        setCheckSubjectCount(cntWork - 1);
+      } else {
+        // console.log("false");
+        setCheckSubjectCount(cntWork + 1);
+      }
     }
   };
 
@@ -37,9 +59,11 @@ const NoClassFrame: React.FC<CheckedCountInfo> = ({
       <input
         className={"checkBox"}
         type="checkbox"
-        name={"abc"}
+        name={dateInfo}
+        value={dateInfo}
         onChange={checkOneCell}
         defaultChecked={false}
+        // checked={checkedSubjectId !== "0"}
       />
     </>
   );
