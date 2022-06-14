@@ -14,6 +14,7 @@ import com.eno.tkg.entity.master.Lecturer;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.entity.master.TimeTableNormal;
 import com.eno.tkg.repository.StudentScheduleNormalRepository;
+import com.eno.tkg.util.UseOverFunction;
 
 @Service
 class UpdateSelectClassScheduleService {
@@ -71,7 +72,7 @@ class UpdateSelectClassScheduleService {
 			throw new Exception("IDが存在しません");
 		}
 
-		Date date = ClassScheduleUtil.convertStrDateToDateType(alterClassDate);
+		Date date = UseOverFunction.convertStrDateToDateType(alterClassDate);
 		int dayOfWeekNumber = checkDayOfWeekNumber(date);
 		if (dayOfWeekNumber == DAY_OF_WEEK_NUMBER_SUNDAY) {
 			throw new Exception("日曜日に授業振替は行えません");

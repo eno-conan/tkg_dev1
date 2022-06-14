@@ -58,5 +58,9 @@ public class SpecialSeasonDateList implements Cloneable {
 	
 	@OneToMany(mappedBy = "specialSeasonDateList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval=true)
 	private List<TimeTableSpecial> timeTableSpecial;
+
+	public SpecialSeasonDateList(Integer id) {
+		this.id = id;
+	}
 	
 }

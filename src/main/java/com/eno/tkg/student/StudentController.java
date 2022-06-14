@@ -30,6 +30,9 @@ public class StudentController {
 	@Autowired
 	private UpdateSpecialScheduleService updateSpecialScheduleService;
 
+	/**
+	 * 講習期間の日付取得
+	 */
 	@GetMapping("/student/special-date-list/{specialSeasonId}")
 	public String etSpecialDateList(@PathVariable(name = "specialSeasonId") final String specialSeasonId) {
 		try {
@@ -39,6 +42,10 @@ public class StudentController {
 		}
 	}
 
+	/**
+	 * 講習期間の{studentId}のスケジュール取得
+	 * 
+	 */
 	@GetMapping("/student/special-schedule/{studentId}")
 	public String getTargetStudentSpecialSchedule(@PathVariable(name = "studentId") final String studentId,
 			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
@@ -49,6 +56,10 @@ public class StudentController {
 		}
 	}
 
+	/**
+	 * 講習期間の{studentId}の受講科目とコマ数情報取得
+	 * 
+	 */
 	@GetMapping("/student/special-summary/{studentId}")
 	public String getTargetStudentSpecialSummary(@PathVariable(name = "studentId") final String studentId,
 			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
@@ -61,6 +72,10 @@ public class StudentController {
 
 	}
 
+	/**
+	 * スケジュール更新（追加のみ、削除はまだ）
+	 * 
+	 */
 	@PutMapping("/student/update-special-schedule")
 	public String updateTargetStudentSpecialSchedule(@RequestBody final String content) {
 		try {

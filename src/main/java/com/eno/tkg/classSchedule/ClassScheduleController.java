@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eno.tkg.entity.StudentScheduleNormal;
+import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
@@ -31,7 +32,7 @@ public class ClassScheduleController {
 
 	@GetMapping("/class-schedule")
 	public String getTargetDateClassSchedule(@RequestParam(name = "targetDate") final String dateStr) {
-		Date date = ClassScheduleUtil.convertStrDateToDateType(dateStr);
+		Date date = UseOverFunction.convertStrDateToDateType(dateStr);
 		try {
 			return getTargetDateClassesService.getTargetDateClassSchedule(date);
 		} catch (JsonProcessingException e) {

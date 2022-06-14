@@ -35,14 +35,14 @@ public class TimeTableSpecial {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "special_season_date_id", nullable = false)
+	@JoinColumn(name = "special_season_date_list_id", nullable = false)
 	@JsonIgnore
 	private SpecialSeasonDateList specialSeasonDateList;
 
 	@Column(name = "period", length = 128, nullable = false)
 	private String period;
 	
-	@OneToMany(mappedBy = "timeTableSpecial", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval=true)
+	@OneToMany(mappedBy = "timeTableSpecial", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval=true)
 	private List<StudentScheduleSpecial> studentScheduleSpecial;
 	
 //	@OneToMany(mappedBy = "TimeTableSpecial", cascade = CascadeType.ALL, orphanRemoval = true)

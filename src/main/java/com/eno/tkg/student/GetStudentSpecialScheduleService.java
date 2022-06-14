@@ -17,8 +17,10 @@ import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.entity.master.SpecialSeason;
 import com.eno.tkg.entity.master.Student;
+import com.eno.tkg.entity.master.TimeTableSpecial;
 import com.eno.tkg.repository.StudentClassSpecialSummaryRepository;
 import com.eno.tkg.repository.StudentScheduleSpecialRepository;
+import com.eno.tkg.repository.TimeTableSpecialRepository;
 import com.eno.tkg.repository.SpecialSeasonDateListRepository;
 import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,6 +36,9 @@ public class GetStudentSpecialScheduleService {
 
 	@Autowired
 	private SpecialSeasonDateListRepository specialSeasonDateListRepository;
+
+	@Autowired
+	private TimeTableSpecialRepository timeTableSpecialRepository;
 
 	/**
 	 * // 生徒の講習期間の科目とコマ数の概要取得
@@ -70,7 +75,12 @@ public class GetStudentSpecialScheduleService {
 			//
 			List<Optional<StudentScheduleSpecial>> divideExistClassOrNotList = new ArrayList<>();
 
+			List<Optional<TimeTableSpecial>> timetableSpecialInfo = timeTableSpecialRepository
+					.findByPeriod(currentPeriod);
+
+			int dateListIdx = 0;
 			for (Optional<SpecialSeasonDateList> certainDate : specialSeasonDateList) {
+				// 日付ごとに
 				List<Optional<StudentScheduleSpecial>> eachDateClass = filteringClassesByPeriod.stream().filter(s -> {
 					int result = s.get().getClassDate().compareTo(certainDate.get().getClassDate());
 					if (result == 0) {
@@ -79,12 +89,16 @@ public class GetStudentSpecialScheduleService {
 					return false;
 				}).collect(Collectors.toList());
 
+				// loopのコマ数の値と日付情報を利用して、time_table_specialのIDを取得
+
 				if (eachDateClass.size() == 0) {
 					divideExistClassOrNotList
-							.add(Optional.ofNullable(new StudentScheduleSpecial(certainDate.get().getClassDate())));
+							.add(Optional.ofNullable(new StudentScheduleSpecial(certainDate.get().getClassDate(),
+									new TimeTableSpecial(timetableSpecialInfo.get(dateListIdx).get().getId()))));
 				} else {
 					divideExistClassOrNotList.add(eachDateClass.get(0));
 				}
+				dateListIdx++;
 			}
 
 			// 整形した情報を格納するためのList
@@ -92,8 +106,6 @@ public class GetStudentSpecialScheduleService {
 			for (Optional<StudentScheduleSpecial> eachClass : divideExistClassOrNotList) {
 				Map<String, Object> eachRowInfoMap = new LinkedHashMap<>();
 
-				// TODO:振替授業である場合に、その情報を画面に表示しておいた方がいいかと・・
-				// 理想は、いつからの振替かだが、振替期限から分かるか
 				eachRowInfoMap.put("id",
 						eachClass.get().getId() == null ? "" : String.valueOf(eachClass.get().getId()));
 				eachRowInfoMap.put("studentId",
@@ -103,13 +115,13 @@ public class GetStudentSpecialScheduleService {
 				eachRowInfoMap.put("lecturerName",
 						eachClass.get().getId() == null ? "" : eachClass.get().getLecturer().getLecturerName());
 //
+				eachRowInfoMap.put("timeTableSpecialId", String.valueOf(eachClass.get().getTimeTableSpecial().getId()));
 				String classDate = UseOverFunction.dateToDateStr(eachClass.get().getClassDate());
 				eachRowInfoMap.put("classDate", classDate.replace("-", "/"));
 
 				returnJsonLiteral.add(eachRowInfoMap);
 			}
 
-//			System.out.println("Period:" + period + ", Planclasses:" + filteringClassesByPeriod.size());
 			classesGropingPeriodMap.put(currentPeriod, returnJsonLiteral);
 		}
 		String strJson = UseOverFunction.getDataToJsonFormat(classesGropingPeriodMap);

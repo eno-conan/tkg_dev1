@@ -60,7 +60,7 @@ public class StudentScheduleSpecial implements Cloneable {
 	@JsonIgnore
 	private Lecturer lecturer;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "time_table_special_id", nullable = true)
 	@JsonIgnore
 	private TimeTableSpecial timeTableSpecial;
@@ -68,7 +68,7 @@ public class StudentScheduleSpecial implements Cloneable {
 	@Column(name = "class_date")
 	@Temporal(TemporalType.DATE)
 	private Date classDate;
-	
+
 	@Column(name = "class_date_origin")
 	@Temporal(TemporalType.DATE)
 	private Date classDateOrigin;
@@ -112,14 +112,14 @@ public class StudentScheduleSpecial implements Cloneable {
 		ssn.receiveErrorMessage = receiveErrorMessage;
 		return ssn;
 	}
-	
+
 	public StudentScheduleSpecial(String message) {
 		this.receiveErrorMessage = message;
 	}
 
-	public StudentScheduleSpecial(Date classDate) {
+	public StudentScheduleSpecial(Date classDate, TimeTableSpecial timeTableSpecial) {
 		this.classDate = classDate;
+		this.timeTableSpecial = timeTableSpecial;
 	}
-	
-	
+
 }
