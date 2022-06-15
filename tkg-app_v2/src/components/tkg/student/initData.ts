@@ -5,10 +5,17 @@ export interface SummaryInfo {
   id: string;
   studentId: string;
   subjectName: string;
-  classCount: string;
+  totalClassCount: string;
+  unplaceClassCount: string;
 }
 export const eachSummaryData = [
-  { id: "1", studentId: "1", subjectName: "数学IA", classCount: "14" },
+  {
+    id: "1",
+    studentId: "1",
+    subjectName: "数学IA",
+    totalClassCount: "14",
+    unplaceClassCount: "4",
+  },
 ];
 
 //各コマ表示

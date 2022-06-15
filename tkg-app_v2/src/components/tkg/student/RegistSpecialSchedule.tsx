@@ -6,18 +6,17 @@ import {
   SummaryInfo,
   eachSummaryData,
 } from "./initData";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Table, Button } from "react-bootstrap";
 import AlreadyClassExist from "./AlreadyClassExist";
 import NoClassFrame from "./NoClassFrame";
 import SpecialScheduleSummary from "./SpecialScheduleSummary";
+import UpdateDbSpecialSchedule from "./UpdateDbSpecialSchedule";
 
-type classesPeriodArray = Array<ClassInfo>;
+export type classesPeriodArray = Array<ClassInfo>;
 export type specialSummaryArray = Array<SummaryInfo>;
 
 const RegistSpecialSchedule = () => {
-  const navigate = useNavigate();
-
   // 講習日付一覧
   const [dateList, setDateList] = useState<string[]>(["1", "2"]);
   // 講習の授業概要
@@ -25,7 +24,10 @@ const RegistSpecialSchedule = () => {
     useState<specialSummaryArray>(eachSummaryData);
 
   /*チェック科目関連*/
-  // コマ数
+  // 受講コマ数（トータルコマ数）
+  const [checkSubjectTotalCount, setCheckSubjectTotalCount] =
+    useState<number>(0);
+  // 残りコマ数
   const [checkSubjectCount, setCheckSubjectCount] = useState<number>(0);
   //科目名
   const [checkedSubjectName, setCheckedSubjectName] = useState<string>("0");
@@ -118,55 +120,6 @@ const RegistSpecialSchedule = () => {
     }
   }, []);
 
-  //この処理は別Componentでやろう:DB更新
-  const updateSchedule = () => {
-    const studentId = "1";
-    const subjectId = checkedSubjectId; //本当は科目ごとに保持できるといい=>大がかり
-    let sendContent: string[] = [];
-
-    sendContent.push(studentId);
-    sendContent.push(subjectId);
-
-    //追加分
-    for (let date of selectClassFramePeriod2) {
-      const filterClassInfo = classesPeriod2.filter(
-        (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
-      );
-      if (date === "") {
-        sendContent.push("period2-save");
-      } else {
-        sendContent.push(filterClassInfo[0].timeTableSpecialId);
-      }
-    }
-
-    //削除分
-    for (let date of deleteClassFramePeriod2) {
-      const filterClassInfo = classesPeriod2.filter(
-        (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
-      );
-      if (date === "") {
-        sendContent.push("period2-delete");
-      } else {
-        sendContent.push(filterClassInfo[0].timeTableSpecialId);
-      }
-    }
-
-    const options = {
-      method: "PUT",
-      body: sendContent.toString(),
-    };
-    fetch(`${API_BASE_URL}/student/update-special-schedule`, options)
-      .then((response) => response.json())
-      .then((updateTargetClass) => {
-        console.log(updateTargetClass);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("couldn't add task");
-      });
-    navigate(`${PASS_ROUTING.Top}`);
-  };
-
   return (
     <Container>
       <br />
@@ -178,25 +131,15 @@ const RegistSpecialSchedule = () => {
       <br />
       <Row>
         <Col md={12}>
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th className="text-center text-nowrap">選択</th>
-                <th className="text-center text-nowrap">科目</th>
-                <th className="text-center text-nowrap">コマ数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <SpecialScheduleSummary
-                specialSummary={specialSummary}
-                checkedSubjectId={checkedSubjectId}
-                checkSubjectCount={checkSubjectCount}
-                setCheckedSubjectId={setCheckedSubjectId}
-                setCheckedSubjectName={setCheckedSubjectName}
-                setCheckSubjectCount={setCheckSubjectCount}
-              />
-            </tbody>
-          </Table>
+          <SpecialScheduleSummary
+            specialSummary={specialSummary}
+            checkedSubjectId={checkedSubjectId}
+            setCheckSubjectTotalCount={setCheckSubjectTotalCount}
+            checkSubjectCount={checkSubjectCount}
+            setCheckedSubjectId={setCheckedSubjectId}
+            setCheckedSubjectName={setCheckedSubjectName}
+            setCheckSubjectCount={setCheckSubjectCount}
+          />
         </Col>
         <Col md={10}></Col>
         <Col md={2}>{checkSubjectCount}</Col>
@@ -262,14 +205,12 @@ const RegistSpecialSchedule = () => {
         </Col>
       </Row>
       <br />
-      <Row>
-        <Col md={10}></Col>
-        <Col>
-          <Button onClick={updateSchedule} className={"btn btn-summary ml-4"}>
-            登録
-          </Button>
-        </Col>
-      </Row>
+      <UpdateDbSpecialSchedule
+        checkedSubjectId={checkedSubjectId}
+        classesPeriod2={classesPeriod2}
+        selectClassFramePeriod2={selectClassFramePeriod2}
+        deleteClassFramePeriod2={deleteClassFramePeriod2}
+      />
       <Row>
         <Col md={5}></Col>
         <Col md={4}>footerをつくりたい</Col>

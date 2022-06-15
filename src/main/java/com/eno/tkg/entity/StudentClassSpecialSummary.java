@@ -60,8 +60,11 @@ public class StudentClassSpecialSummary implements Cloneable {
 	@JsonIgnore
 	private Subject subject;
 	
-	@Column(name="class_count",length = 8, nullable = false)
-	private int classCount;
+	@Column(name="total_class_count",length = 8, nullable = false)
+	private int totalClassCount;
+	
+	@Column(name="unplace_class_count",length = 8, nullable = false)
+	private int unplaceClassCount;
 
 	@Column(name = "created_at")
 	private Timestamp createdAt;

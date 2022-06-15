@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import // Container,
-// Button,
-// Col,
-// Row,
-// CloseButton,
-// Table,
-"react-bootstrap";
+import {
+  // Container, Col, Row, Button
+  Table,
+} from "react-bootstrap";
 import { SummaryInfo } from "./initData";
 import { specialSummaryArray } from "./RegistSpecialSchedule";
 
 interface CheckedCountInfo {
   specialSummary: specialSummaryArray;
   checkedSubjectId: string;
+  setCheckSubjectTotalCount: React.Dispatch<React.SetStateAction<number>>;
   checkSubjectCount: number;
   setCheckedSubjectId: React.Dispatch<React.SetStateAction<string>>;
   setCheckedSubjectName: React.Dispatch<React.SetStateAction<string>>;
@@ -22,6 +20,7 @@ interface CheckedCountInfo {
 const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
   specialSummary,
   checkedSubjectId,
+  setCheckSubjectTotalCount,
   checkSubjectCount,
   setCheckedSubjectId,
   setCheckedSubjectName,
@@ -46,7 +45,8 @@ const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
       );
       //画面：コマ数表示を動的にできるように修正
       setCheckedSubjectName(filterSummary[0].subjectName);
-      setCheckSubjectCount(Number(filterSummary[0].classCount));
+      setCheckSubjectTotalCount(Number(filterSummary[0].totalClassCount));
+      setCheckSubjectCount(Number(filterSummary[0].unplaceClassCount));
     }
 
     //ある科目をチェック状態で、別科目を選択しようとした場合（させない方針で）
@@ -72,7 +72,7 @@ const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
       //画面表示時のコマ数とチェックに応じて変動するカウントの一致を判定
       // 一致：特に警告なくチェックを外す
       //不一致：チェックを入れた箇所があるので、更新されないことを警告
-      if (filterSummary[0].classCount === checkSubjectCount.toString()) {
+      if (filterSummary[0].totalClassCount === checkSubjectCount.toString()) {
         setCheckedSubjectId("0");
       } else {
         alert("現在チェックした日時の情報は更新されません");
@@ -84,28 +84,45 @@ const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
 
   return (
     <>
-      {specialSummary.map((eachSummary) => (
-        <>
+      <Table striped bordered hover responsive>
+        <thead>
           <tr>
-            <td className={"align-middle"}>
-              <input
-                type="checkbox"
-                value={eachSummary.id}
-                onChange={checkedSubject}
-                checked={eachSummary.id === checkedSubjectId}
-              />
-            </td>
-            <td className={"align-middle"}>{eachSummary.subjectName}</td>
-            {eachSummary.id === checkedSubjectId ? (
-              //チェックが入っている科目は、チェック時に連動させる
-              <td className={"align-middle"}>{checkSubjectCount}</td>
-            ) : (
-              //チェックが入っていない科目は固定表示
-              <td className={"align-middle"}>{eachSummary.classCount}</td>
-            )}
+            <th className="text-center text-nowrap">選択</th>
+            <th className="text-center text-nowrap">科目</th>
+            <th className="text-center text-nowrap">トータルコマ数</th>
+            <th className="text-center text-nowrap">残りコマ数</th>
           </tr>
-        </>
-      ))}
+        </thead>
+        <tbody>
+          {specialSummary.map((eachSummary) => (
+            <>
+              <tr>
+                <td className={"align-middle"}>
+                  <input
+                    type="checkbox"
+                    value={eachSummary.id}
+                    onChange={checkedSubject}
+                    checked={eachSummary.id === checkedSubjectId}
+                  />
+                </td>
+                <td className={"align-middle"}>{eachSummary.subjectName}</td>
+                <td className={"align-middle"}>
+                  {eachSummary.totalClassCount}
+                </td>
+                {eachSummary.id === checkedSubjectId ? (
+                  //チェックが入っている科目は、チェック時に連動させる
+                  <td className={"align-middle"}>{checkSubjectCount}</td>
+                ) : (
+                  //チェックが入っていない科目は固定表示
+                  <td className={"align-middle"}>
+                    {eachSummary.unplaceClassCount}
+                  </td>
+                )}
+              </tr>
+            </>
+          ))}
+        </tbody>
+      </Table>
     </>
   );
 };

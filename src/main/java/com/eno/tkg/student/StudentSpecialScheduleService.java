@@ -1,4 +1,4 @@
-package com.eno.tkg.service;
+package com.eno.tkg.student;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -75,7 +75,8 @@ public class StudentSpecialScheduleService {
 			eachRowInfoMap.put("id", String.valueOf(eachSummary.get().getId()));
 			eachRowInfoMap.put("studentId", String.valueOf(eachSummary.get().getStudent().getId()));
 			eachRowInfoMap.put("subjectName", eachSummary.get().getSubject().getDisplayName());
-			eachRowInfoMap.put("classCount", String.valueOf(eachSummary.get().getClassCount()));
+			eachRowInfoMap.put("totalClassCount", String.valueOf(eachSummary.get().getTotalClassCount()));
+			eachRowInfoMap.put("unplaceClassCount", String.valueOf(eachSummary.get().getUnplaceClassCount()));
 			returnJsonLiteral.add(eachRowInfoMap);
 		}
 		String strJson = UseOverFunction.getDataToJsonFormat(returnJsonLiteral);

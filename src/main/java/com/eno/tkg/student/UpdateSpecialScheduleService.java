@@ -53,7 +53,8 @@ public class UpdateSpecialScheduleService {
 	// 戻り値はMapを使用
 	@Transactional
 	public String updateTargetStudentSpecialSchedule(final String content) throws Exception {
-		// 1,2,period2-save,8,288,302:studentId,specialSummaryId
+		// 1,1,period2-save,253,260,period2-delete,1,8
+		//studentId,specialSummaryId,period2-save,...period2-delete,...
 		System.out.println(content);
 //		String[] requestBoby = content.split(",");
 //		List<String> requestBobyListWhole = Arrays.asList(requestBoby);

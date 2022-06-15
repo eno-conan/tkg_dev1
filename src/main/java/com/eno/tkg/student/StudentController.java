@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eno.tkg.entity.StudentScheduleSpecial;
-import com.eno.tkg.service.StudentSpecialScheduleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
