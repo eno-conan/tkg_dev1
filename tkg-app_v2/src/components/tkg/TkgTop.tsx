@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container, Button, Col, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import { PASS_ROUTING } from "../../config";

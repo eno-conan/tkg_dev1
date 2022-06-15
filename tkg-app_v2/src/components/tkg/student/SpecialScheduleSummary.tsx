@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useReducer } from "react";
-import {
-  Container,
-  Button,
-  Col,
-  Row,
-  CloseButton,
-  Table,
-  // DropdownButton,
-  // Dropdown,
-} from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import // Container,
+// Button,
+// Col,
+// Row,
+// CloseButton,
+// Table,
+"react-bootstrap";
 import { SummaryInfo } from "./initData";
 import { specialSummaryArray } from "./RegistSpecialSchedule";
 
@@ -17,6 +14,7 @@ interface CheckedCountInfo {
   checkedSubjectId: string;
   checkSubjectCount: number;
   setCheckedSubjectId: React.Dispatch<React.SetStateAction<string>>;
+  setCheckedSubjectName: React.Dispatch<React.SetStateAction<string>>;
   setCheckSubjectCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -27,6 +25,7 @@ const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
   checkedSubjectId,
   checkSubjectCount,
   setCheckedSubjectId,
+  setCheckedSubjectName,
   setCheckSubjectCount,
 }) => {
   useEffect(() => {}, []);
@@ -47,6 +46,7 @@ const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
         (summary: SummaryInfo) => summary.id === summaryNumber
       );
       //画面：コマ数表示を動的にできるように修正
+      setCheckedSubjectName(filterSummary[0].subjectName);
       setCheckSubjectCount(Number(filterSummary[0].classCount));
     }
 

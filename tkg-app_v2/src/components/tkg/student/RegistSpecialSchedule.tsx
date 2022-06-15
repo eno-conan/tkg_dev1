@@ -6,7 +6,7 @@ import {
   SummaryInfo,
   eachSummaryData,
 } from "./initData";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Table, Button } from "react-bootstrap";
 import AlreadyClassExist from "./AlreadyClassExist";
 import NoClassFrame from "./NoClassFrame";
@@ -17,23 +17,32 @@ export type specialSummaryArray = Array<SummaryInfo>;
 
 const RegistSpecialSchedule = () => {
   const navigate = useNavigate();
-  // 日付一覧を管理
+
+  // 講習日付一覧
   const [dateList, setDateList] = useState<string[]>(["1", "2"]);
-  // 講習の授業概要を管理
+  // 講習の授業概要
   const [specialSummary, setSpecialSummary] =
     useState<specialSummaryArray>(eachSummaryData);
 
-  //チェックした科目のコマ数を管理
+  /*チェック科目関連*/
+  // コマ数
   const [checkSubjectCount, setCheckSubjectCount] = useState<number>(0);
-  // チェックした科目の行に付与したIDを管理;
+  //科目名
+  const [checkedSubjectName, setCheckedSubjectName] = useState<string>("0");
+  // テーブルID
   const [checkedSubjectId, setCheckedSubjectId] = useState<string>("0");
 
-  //選択したコマの日付情報を管理（2コマ用）
+  /* DB更新*/
+  //追加したコマの日付情報を管理（2コマ用）
   const [selectClassFramePeriod2, setSelectClassFramePeriod2] = useState<
     string[]
   >([""]);
+  //削除したコマの日付情報を管理（2コマ用）
+  const [deleteClassFramePeriod2, setDeleteClassFramePeriod2] = useState<
+    string[]
+  >([""]);
 
-  //コマごとの授業を管理
+  //コマごとの授業予定を管理
   const [classesPeriod2, setClassesPeriod2] =
     useState<classesPeriodArray>(eachClassData);
   const [classesPeriod3, setClassesPeriod3] =
@@ -109,7 +118,8 @@ const RegistSpecialSchedule = () => {
     }
   }, []);
 
-  const registSelectFrameInfo = () => {
+  //この処理は別Componentでやろう:DB更新
+  const updateSchedule = () => {
     const studentId = "1";
     const subjectId = checkedSubjectId; //本当は科目ごとに保持できるといい
     let sendContent: string[] = [];
@@ -117,6 +127,7 @@ const RegistSpecialSchedule = () => {
     sendContent.push(studentId);
     sendContent.push(subjectId);
 
+    //追加分
     for (let date of selectClassFramePeriod2) {
       const filterClassInfo = classesPeriod2.filter(
         (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
@@ -128,19 +139,24 @@ const RegistSpecialSchedule = () => {
       }
     }
 
-    const options = {
-      method: "PUT",
-      body: sendContent.toString(),
-    };
-    fetch(`${API_BASE_URL}/student/update-special-schedule`, options)
-      .then((response) => response.json())
-      .then((updateTargetClass) => {
-        console.log(updateTargetClass);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("couldn't add task");
-      });
+    //削除分
+    for (let date of deleteClassFramePeriod2) {
+      console.log(date);
+    }
+
+    // const options = {
+    //   method: "PUT",
+    //   body: sendContent.toString(),
+    // };
+    // fetch(`${API_BASE_URL}/student/update-special-schedule`, options)
+    //   .then((response) => response.json())
+    //   .then((updateTargetClass) => {
+    //     console.log(updateTargetClass);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     alert("couldn't add task");
+    //   });
     navigate(`${PASS_ROUTING.Top}`);
   };
 
@@ -169,6 +185,7 @@ const RegistSpecialSchedule = () => {
                 checkedSubjectId={checkedSubjectId}
                 checkSubjectCount={checkSubjectCount}
                 setCheckedSubjectId={setCheckedSubjectId}
+                setCheckedSubjectName={setCheckedSubjectName}
                 setCheckSubjectCount={setCheckSubjectCount}
               />
             </tbody>
@@ -203,17 +220,28 @@ const RegistSpecialSchedule = () => {
                           <AlreadyClassExist
                             subject={eachData.subject}
                             lecturerName={eachData.lecturerName}
+                            dateInfo={eachData.classDate}
+                            checkedSubjectId={checkedSubjectId}
+                            checkSubjectCount={checkSubjectCount}
+                            setCheckSubjectCount={setCheckSubjectCount}
+                            deleteClassFramePeriod2={deleteClassFramePeriod2}
+                            setDeleteClassFramePeriod2={
+                              setDeleteClassFramePeriod2
+                            }
                           />
                         ) : (
                           <NoClassFrame
+                            subject={eachData.subject}
+                            lecturerName={eachData.lecturerName}
+                            dateInfo={eachData.classDate}
+                            checkedSubjectId={checkedSubjectId}
+                            checkedSubjectName={checkedSubjectName}
+                            checkSubjectCount={checkSubjectCount}
+                            setCheckSubjectCount={setCheckSubjectCount}
                             selectClassFramePeriod2={selectClassFramePeriod2}
                             setSelectClassFramePeriod2={
                               setSelectClassFramePeriod2
                             }
-                            checkedSubjectId={checkedSubjectId}
-                            dateInfo={eachData.classDate}
-                            checkSubjectCount={checkSubjectCount}
-                            setCheckSubjectCount={setCheckSubjectCount}
                           />
                         )}
                       </td>
@@ -229,10 +257,7 @@ const RegistSpecialSchedule = () => {
       <Row>
         <Col md={10}></Col>
         <Col>
-          <Button
-            onClick={registSelectFrameInfo}
-            className={"btn btn-summary ml-4"}
-          >
+          <Button onClick={updateSchedule} className={"btn btn-summary ml-4"}>
             登録
           </Button>
         </Col>

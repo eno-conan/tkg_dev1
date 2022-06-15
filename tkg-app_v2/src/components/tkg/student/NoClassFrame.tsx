@@ -1,34 +1,37 @@
 import React, { useState, useEffect, useReducer } from "react";
 import {
   Container,
-  Button,
   Col,
   Row,
-  CloseButton,
-  Table,
-  // DropdownButton,
-  // Dropdown,
+  //Button,
 } from "react-bootstrap";
 
 interface CheckedCountInfo {
-  selectClassFramePeriod2: string[];
-  setSelectClassFramePeriod2: React.Dispatch<React.SetStateAction<string[]>>;
-  checkedSubjectId: string;
+  subject: string;
+  lecturerName: string;
   dateInfo: string;
+  checkedSubjectId: string;
+  checkedSubjectName: string;
   checkSubjectCount: number;
   setCheckSubjectCount: React.Dispatch<React.SetStateAction<number>>;
+  selectClassFramePeriod2: string[];
+  setSelectClassFramePeriod2: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const NoClassFrame: React.FC<CheckedCountInfo> = ({
-  selectClassFramePeriod2,
-  setSelectClassFramePeriod2,
-  checkedSubjectId,
+  subject,
+  lecturerName,
   dateInfo,
+  checkedSubjectId,
+  checkedSubjectName,
   checkSubjectCount,
   setCheckSubjectCount,
+  selectClassFramePeriod2,
+  setSelectClassFramePeriod2,
 }) => {
-  // const [date, setDate] = useState<string>("");
   const [selectSubject, setSelectSubject] = useState<string>("0");
+  const [registFlg, setRegistFlg] = useState<boolean>(false);
+  let cntWork: number = checkSubjectCount;
 
   useEffect(() => {
     if (selectSubject === "0") {
@@ -45,46 +48,73 @@ const NoClassFrame: React.FC<CheckedCountInfo> = ({
       event.target.checked = false;
       alert("科目を選択してください");
     } else {
-      // console.log("チェック科目ID:", keepSelectSubject);
-      let cntWork: number = checkSubjectCount;
-      //チェックを付けた場合
       if (event.target.checked) {
+        setRegistFlg(true); //登録フラグを立てる
         const tmpDateList: string[] = selectClassFramePeriod2;
         tmpDateList.push(event.target.name);
         setCheckSubjectCount(cntWork - 1);
         setSelectClassFramePeriod2(tmpDateList);
-      } else {
-        //外した場合
-        const filterDate = selectClassFramePeriod2.filter(
-          (date: string) => date !== event.target.value
-        );
-        setSelectClassFramePeriod2(filterDate);
-        setCheckSubjectCount(cntWork + 1);
       }
+      // else {
+      //   // //外した場合
+      //   // const filterDate = selectClassFramePeriod2.filter(
+      //   //   (date: string) => date !== event.target.value
+      //   // );
+      //   // setSelectClassFramePeriod2(filterDate);
+      //   // setCheckSubjectCount(cntWork + 1);
+      // }
     }
   };
 
-  const watchCheckedFrame = () => {
-    console.log(selectClassFramePeriod2);
+  const deleteClass = (event: any) => {
+    console.log("Delete:", event.target.value);
+    const filterDate = selectClassFramePeriod2.filter(
+      (date: string) => date !== event.target.value
+    );
+    setSelectClassFramePeriod2(filterDate);
+    setCheckSubjectCount(cntWork + 1);
+    setRegistFlg(false);
   };
 
   return (
     <>
-      <input
-        className={"checkBox"}
-        type="checkbox"
-        name={dateInfo}
-        value={dateInfo}
-        onChange={checkOneCell}
-        defaultChecked={false}
-        // checked={checkedSubjectId !== "0"}
-      />
-      <br />
-      <br />
-      <br />
-      <Button onClick={watchCheckedFrame} className={"btn btn-secondary ml-4"}>
-        コマ数
-      </Button>
+      <Container className={"tkgTop mt-4"}>
+        <div>
+          {registFlg ? (
+            <>
+              <div className={"text-right"}>
+                <button
+                  type={"button"}
+                  value={dateInfo}
+                  className={"btn btn-outline-dark btn-sm"}
+                  onClick={deleteClass}
+                >
+                  X
+                </button>
+              </div>
+              <div>{checkedSubjectName}</div>
+              <div>{"====="}</div>
+              <div>{"lecturerName"}</div>
+            </>
+          ) : (
+            <>
+              <Row>
+                <Col>
+                  <input
+                    className={"checkBox"}
+                    type="checkbox"
+                    name={dateInfo}
+                    value={dateInfo}
+                    onChange={checkOneCell}
+                    defaultChecked={false}
+                    // checked={checkedSubjectId !== "0"}
+                  />
+                </Col>
+              </Row>
+            </>
+          )}
+        </div>
+      </Container>
     </>
   );
 };
