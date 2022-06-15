@@ -46,7 +46,7 @@ public class SpecialSeasonDateList implements Cloneable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "special_season_id", nullable = false)
 	@JsonIgnore
@@ -55,12 +55,13 @@ public class SpecialSeasonDateList implements Cloneable {
 	@Column(name = "class_date")
 	@Temporal(TemporalType.DATE)
 	private Date classDate;
-	
-	@OneToMany(mappedBy = "specialSeasonDateList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval=true)
+
+	@OneToMany(mappedBy = "specialSeasonDateList", cascade = { CascadeType.PERSIST,
+			CascadeType.MERGE }, fetch = FetchType.LAZY, orphanRemoval = false)
 	private List<TimeTableSpecial> timeTableSpecial;
 
 	public SpecialSeasonDateList(Integer id) {
 		this.id = id;
 	}
-	
+
 }

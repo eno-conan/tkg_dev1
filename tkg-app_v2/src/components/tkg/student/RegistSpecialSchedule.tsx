@@ -1,47 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE_URL } from "../../../config";
-import { PASS_ROUTING } from "../../../config";
-import { useNavigate, Link } from "react-router-dom";
+import { API_BASE_URL, PASS_ROUTING } from "../../../config";
 import {
-  Container,
-  Col,
-  Row,
-  Table,
-  Button,
-  // DropdownButton,
-  // Dropdown,
-} from "react-bootstrap";
+  ClassInfo,
+  eachClassData,
+  SummaryInfo,
+  eachSummaryData,
+} from "./initData";
+import { useNavigate, Link } from "react-router-dom";
+import { Container, Col, Row, Table, Button } from "react-bootstrap";
 import AlreadyClassExist from "./AlreadyClassExist";
 import NoClassFrame from "./NoClassFrame";
+import SpecialScheduleSummary from "./SpecialScheduleSummary";
 
-export interface ClassInfo {
-  id: string;
-  studentId: string;
-  lecturerName: string;
-  classDate: string;
-  subject: string;
-}
-const eachClassData = [
-  {
-    id: "1",
-    studentId: "1",
-    lecturerName: "",
-    classDate: "2022/07/29",
-    subject: "",
-  },
-];
 type classesPeriodArray = Array<ClassInfo>;
-
-export interface SummaryInfo {
-  id: string;
-  studentId: string;
-  subject: string;
-  classCount: string;
-}
-const eachSummaryData = [
-  { id: "1", studentId: "1", subject: "数学IA", classCount: "14" },
-];
-type specialSummaryArray = Array<SummaryInfo>;
+export type specialSummaryArray = Array<SummaryInfo>;
 
 const RegistSpecialSchedule = () => {
   const navigate = useNavigate();
@@ -137,47 +109,22 @@ const RegistSpecialSchedule = () => {
     }
   }, []);
 
-  // 科目選択
-  const checkedSubject = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // 科目ID(チェックを外した時も取得)
-    const summaryNumber: string = event.target.value;
-
-    //初期のチェック処理
-    if (checkedSubjectId === "0" && event.target.checked) {
-      console.log("初回選択、チェック");
-      setCheckedSubjectId(summaryNumber);
-      specialSummary.forEach((summary: SummaryInfo) => {
-        if (summary.id === summaryNumber) {
-        }
-      });
-      const filterSummary = specialSummary.filter(
-        (summary: SummaryInfo) => summary.id === summaryNumber
-      );
-      setCheckSubjectCount(Number(filterSummary[0].classCount));
-    }
-
-    //既にいずれかの科目を選択済かつチェックを外したとき
-    if (checkedSubjectId !== "0" && !event.target.checked) {
-      console.log("既に選択済、チェック解除");
-      setCheckedSubjectId("0");
-    }
-  };
-
   const registSelectFrameInfo = () => {
     const studentId = "1";
-    const specialSeasonId = "1";
     const subjectId = checkedSubjectId; //本当は科目ごとに保持できるといい
     let sendContent: string[] = [];
 
     sendContent.push(studentId);
-    sendContent.push(specialSeasonId);
     sendContent.push(subjectId);
 
     for (let date of selectClassFramePeriod2) {
+      const filterClassInfo = classesPeriod2.filter(
+        (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
+      );
       if (date === "") {
         sendContent.push("period2");
       } else {
-        sendContent.push(date);
+        sendContent.push(filterClassInfo[0].timeTableSpecialId);
       }
     }
 
@@ -217,28 +164,13 @@ const RegistSpecialSchedule = () => {
               </tr>
             </thead>
             <tbody>
-              {specialSummary.map((eachSummary) => (
-                <>
-                  <tr>
-                    <td className={"align-middle"}>
-                      <input
-                        type="checkbox"
-                        value={eachSummary.id}
-                        onChange={checkedSubject}
-                        checked={eachSummary.id === checkedSubjectId}
-                      />
-                    </td>
-                    <td className={"align-middle"}>{eachSummary.subject}</td>
-                    {eachSummary.id === checkedSubjectId ? (
-                      <td className={"align-middle"}>{checkSubjectCount}</td>
-                    ) : (
-                      <td className={"align-middle"}>
-                        {eachSummary.classCount}
-                      </td>
-                    )}
-                  </tr>
-                </>
-              ))}
+              <SpecialScheduleSummary
+                specialSummary={specialSummary}
+                checkedSubjectId={checkedSubjectId}
+                checkSubjectCount={checkSubjectCount}
+                setCheckedSubjectId={setCheckedSubjectId}
+                setCheckSubjectCount={setCheckSubjectCount}
+              />
             </tbody>
           </Table>
         </Col>

@@ -61,27 +61,25 @@ public class Lecturer {
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
-	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentSubject> studentSubjects;
 
-	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentScheduleNormal> studentScheduleNormal;
-	
-	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<LecturerTeachSubject> lecturerTeachSubject;
-	
-	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<LecturerWorkableTime> lecturerWorkableTime;
-	
-	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<StudentScheduleSpecial> studentScheduleSpecial;
 
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	private List<LecturerTeachSubject> lecturerTeachSubject;
+
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	private List<LecturerWorkableTime> lecturerWorkableTime;
+
+	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	private List<StudentScheduleSpecial> studentScheduleSpecial;
 
 	public Lecturer(Integer id) {
 		this.id = id;
 	}
-	
-	
+
 	public Lecturer(Classroom classroom, String lecturerName, Date birthday, boolean deleteFlg, Timestamp createdAt,
 			Timestamp updatedAt) {
 		this.classroom = classroom;

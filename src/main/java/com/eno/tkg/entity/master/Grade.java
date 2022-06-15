@@ -33,7 +33,7 @@ public class Grade {
 	@Column(name = "display_name", length = 32, nullable = false)
 	private String displayName;
 	
-	@OneToMany(mappedBy = "grade", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "grade", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Student> students;
 
 }

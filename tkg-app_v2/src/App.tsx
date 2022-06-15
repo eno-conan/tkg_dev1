@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 
 // import { createBrowserHistory } from "history";
-import Sample4 from "./components/react-form_220530/Sample4";
 import Top from "./components/breadcrumbs_220531/Top";
 import FirstLayer from "./components/breadcrumbs_220531/FirstLayer";
 import SecondLayer from "./components/breadcrumbs_220531/SecondLayer";
@@ -55,8 +54,6 @@ const App: React.FC = () => {
                   </Route>
                 </Route>
               </Route>
-              {/* form data post task to database 220530 */}
-              <Route path="/sample4" element={<Sample4 />} />
             </Routes>
           </Router>
         </Container>

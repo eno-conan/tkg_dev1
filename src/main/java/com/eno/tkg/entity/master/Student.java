@@ -60,16 +60,16 @@ public class Student {
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
 	
-	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentSubject> studentSubjects;
 	
-	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentScheduleNormal> studentScheduleNormal;
 	
-	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentScheduleSpecial> studentScheduleSpecial;
 	
-	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
 	
 	public Student(Integer id) {

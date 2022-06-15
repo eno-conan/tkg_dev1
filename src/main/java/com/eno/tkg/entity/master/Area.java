@@ -33,7 +33,7 @@ public class Area {
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
-	@OneToMany(mappedBy = "mArea", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "mArea", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Prefecture> prefectures = new ArrayList<>();
 
 }

@@ -45,7 +45,7 @@ public class Prefecture {
 	@Column(name="updated_at")
 	private Timestamp updatedAt;
 	
-	@OneToMany(mappedBy = "mPrefecture", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "mPrefecture", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Classroom> classrooms;
 
 }

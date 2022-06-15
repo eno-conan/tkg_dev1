@@ -57,19 +57,19 @@ public class Classroom {
 	private ClassroomDirector classroomDirector;
 
 	// 大きな教室の場合、複数人になるため
-	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<Lecturer> employee;
 
-	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<Lecturer> lecturers;
 
-	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<Student> students;
 
-	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<LecturerTeachSubject> lecturerTeachSubject;
 
-	@OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "classroom", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<LecturerWorkableTime> lecturerWorkableTime;
 
 	public Classroom(Integer id) {

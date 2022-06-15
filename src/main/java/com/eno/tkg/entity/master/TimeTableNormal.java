@@ -35,13 +35,13 @@ public class TimeTableNormal {
 	@Column(name = "period", length = 128, nullable = false)
 	private String period;
 
-	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentSubject> studentSubjects;
 
-	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<LecturerWorkableTime> lecturerWorkableTime;
 
-	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval=true)
+	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = false)
 	private List<StudentScheduleNormal> studentScheduleNormal;
 
 	public TimeTableNormal(Integer id) {

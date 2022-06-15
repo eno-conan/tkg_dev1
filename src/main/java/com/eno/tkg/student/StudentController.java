@@ -1,5 +1,6 @@
 package com.eno.tkg.student;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +76,18 @@ public class StudentController {
 	/**
 	 * スケジュール更新（追加のみ、削除はまだ）
 	 * 
+	 * @throws Exception
+	 * 
 	 */
 	@PutMapping("/student/update-special-schedule")
-	public String updateTargetStudentSpecialSchedule(@RequestBody final String content) {
+	public String updateTargetStudentSpecialSchedule(@RequestBody final String content) throws Exception {
 		try {
-			return updateSpecialScheduleService.updateTargetStudentSpecialSchedule(content);
+			try {
+				return updateSpecialScheduleService.updateTargetStudentSpecialSchedule(content);
+			} catch (SQLIntegrityConstraintViolationException e) {
+//				e.printStackTrace();
+				throw new Exception("生徒スケジュール更新：SQL更新でエラーが発生しました");
+			}
 		} catch (JsonProcessingException e) {
 			return "";
 		}

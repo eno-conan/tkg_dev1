@@ -1,7 +1,12 @@
 package com.eno.tkg.student;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,39 +47,71 @@ public class UpdateSpecialScheduleService {
 	 * 
 	 * @param studentId 生徒ID
 	 * @return json コマごとに整形した授業予定一覧
-	 * @throws JsonProcessingException
+	 * @throws Exception
 	 *
 	 */
 	// 戻り値はMapを使用
-	public String updateTargetStudentSpecialSchedule(final String content) throws JsonProcessingException {
-		System.out.println(content);
-		String studentId = content.split(",")[0];
-//		String specialSeasonId = content.split(",")[1];
-//		String subjectId = content.split(",")[2];// このID値から、科目名取得をすること
+	@Transactional
+	public String updateTargetStudentSpecialSchedule(final String content) throws Exception {
+		// 1,1,2,period2,8,288,302:studentId,specialSeasonId,specialSummaryId
+		String[] requestBoby = content.split(",");
+		List<String> requestBobyListWhole = Arrays.asList(requestBoby);
+		if (requestBobyListWhole.isEmpty()) {
+			return "";
+//			Exception throwする
+		}
 
-		// 生徒IDとtime_table_special_IDから授業のあり・なしを判定
-		Optional<StudentScheduleSpecial> classInfo = studentScheduleSpecialRepository
-				.findByStudentAndTimeTableSpecial(new Student(Integer.parseInt(studentId)), new TimeTableSpecial(12));
+		int studentId = Integer.parseInt(requestBobyListWhole.get(0));
+		int specialSummaryId = Integer.parseInt(requestBobyListWhole.get(1));// このID値から、科目名取得をすること
 
-		if (classInfo.isPresent()) {
-			System.out.println("授業あり->更新");
-		} else {
-			System.out.println("授業なし->追加");
-			StudentScheduleSpecial newClass = new StudentScheduleSpecial();
-			newClass.setStudent(new Student(Integer.parseInt(studentId)));
-			newClass.setSubject(new Subject("m3"));
-			newClass.setLecturer(new Lecturer(1));
-			newClass.setTimeTableSpecial(new TimeTableSpecial(8));
+		// 科目キー取得
+		Optional<StudentClassSpecialSummary> summaryInfo = studentClassSpecialSummaryRepository
+				.findById(specialSummaryId);
+		if (summaryInfo.isEmpty()) {
+			throw new Exception("summaryが存在しません");
+		}
 
-			Optional<TimeTableSpecial> getDate = timeTableSpecialRepository.findById(8);
-			newClass.setClassDate(getDate.get().getSpecialSeasonDateList().getClassDate());
-			newClass.setRescheduleDateStart(UseOverFunction.convertStrDateToDateType("2022/09/14"));
-			newClass.setRescheduleDateLast(UseOverFunction.convertStrDateToDateType("2022/09/14"));
-			newClass.setRescheduleFlg(false);
-			newClass.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-			newClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-			studentScheduleSpecialRepository.save(newClass);
+		int idStartrelatedShceduleInfo = 2;
+		// tableId一覧取得
+		List<String> relateTimeTableInfoList = requestBobyListWhole.subList(idStartrelatedShceduleInfo,
+				requestBobyListWhole.size());
 
+		for (int i = 0; i < relateTimeTableInfoList.size(); i++) {
+			System.out.println(relateTimeTableInfoList.get(i));
+
+			if (relateTimeTableInfoList.get(i).matches("^period.*$")) {
+				continue;
+			}
+
+			// 生徒IDとtime_table_special_IDから授業のあり・なしを判定
+			int eachTimeTableSpecialId = Integer.parseInt(relateTimeTableInfoList.get(i));
+			Optional<StudentScheduleSpecial> classInfo = studentScheduleSpecialRepository
+					.findByStudentAndTimeTableSpecial(new Student(studentId),
+							new TimeTableSpecial(eachTimeTableSpecialId));
+
+			if (classInfo.isPresent()) {
+				System.out.println("授業あり->更新");
+				StudentScheduleSpecial updateClass = classInfo.get().clone();
+				updateClass.setSubject(new Subject(summaryInfo.get().getSubject().getSubjectKey()));
+				updateClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				studentScheduleSpecialRepository.save(updateClass);
+			} else {
+				System.out.println("授業なし->追加");
+				StudentScheduleSpecial newClass = new StudentScheduleSpecial();
+				newClass.setStudent(new Student(studentId));
+				newClass.setSubject(new Subject(summaryInfo.get().getSubject().getSubjectKey()));
+				newClass.setLecturer(new Lecturer(1));
+				newClass.setTimeTableSpecial(new TimeTableSpecial(eachTimeTableSpecialId));
+
+				Optional<TimeTableSpecial> getDate = timeTableSpecialRepository.findById(eachTimeTableSpecialId);
+				newClass.setClassDate(getDate.get().getSpecialSeasonDateList().getClassDate());
+				newClass.setRescheduleDateStart(UseOverFunction.convertStrDateToDateType("2022/09/14"));
+				newClass.setRescheduleDateLast(UseOverFunction.convertStrDateToDateType("2022/09/14"));
+				newClass.setRescheduleFlg(false);
+				newClass.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+				newClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+				studentScheduleSpecialRepository.save(newClass);
+			}
 		}
 		// なし：新しく追加する処理
 		// あれば、新しくインスタンスを生成して、更新処理

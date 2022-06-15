@@ -49,23 +49,23 @@ public class Subject {
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
-	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	@JsonIgnore
 	private List<StudentSubject> studentSubjects;
 
-	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	@JsonIgnore
 	private List<StudentScheduleNormal> studentScheduleNormal;
 
-	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	@JsonIgnore
 	private List<LecturerTeachSubject> lecturerTeachSubject;
-	
-	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.MERGE, orphanRemoval = false)
 	@JsonIgnore
 	private List<StudentScheduleSpecial> studentScheduleSpecial;
-	
-	@OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	@JsonIgnore
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
 

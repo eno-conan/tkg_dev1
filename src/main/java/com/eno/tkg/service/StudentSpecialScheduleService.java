@@ -74,7 +74,7 @@ public class StudentSpecialScheduleService {
 			Map<String, Object> eachRowInfoMap = new LinkedHashMap<>();
 			eachRowInfoMap.put("id", String.valueOf(eachSummary.get().getId()));
 			eachRowInfoMap.put("studentId", String.valueOf(eachSummary.get().getStudent().getId()));
-			eachRowInfoMap.put("subject", eachSummary.get().getSubject().getDisplayName());
+			eachRowInfoMap.put("subjectName", eachSummary.get().getSubject().getDisplayName());
 			eachRowInfoMap.put("classCount", String.valueOf(eachSummary.get().getClassCount()));
 			returnJsonLiteral.add(eachRowInfoMap);
 		}

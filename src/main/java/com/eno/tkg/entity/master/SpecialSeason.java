@@ -34,19 +34,19 @@ public class SpecialSeason {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(name="year",length = 16, nullable = false)
+
+	@Column(name = "year", length = 16, nullable = false)
 	private String studentName;
-	
-	@Column(name="season_name",length = 16, nullable = false)
+
+	@Column(name = "season_name", length = 16, nullable = false)
 	private String seasonName;
-	
-	@OneToMany(mappedBy = "specialSeason", cascade = CascadeType.ALL, orphanRemoval = true)
+
+	@OneToMany(mappedBy = "specialSeason", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
-	
-	@OneToMany(mappedBy = "specialSeason", cascade = CascadeType.ALL, orphanRemoval = true)
+
+	@OneToMany(mappedBy = "specialSeason", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<SpecialSeasonDateList> studentSeasonDateList;
-	
+
 	public SpecialSeason(Integer id) {
 		this.id = id;
 	}

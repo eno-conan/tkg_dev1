@@ -14,5 +14,7 @@ import com.eno.tkg.entity.master.Student;
 public interface StudentClassSpecialSummaryRepository extends JpaRepository<StudentClassSpecialSummary, Integer> {
 
 	public List<Optional<StudentClassSpecialSummary>> findBySpecialSeasonAndStudent(SpecialSeason specialSeason, Student student);
+	
+	public List<Optional<StudentClassSpecialSummary>> findByIdAndStudent(Integer id, Student student);
 
 }
