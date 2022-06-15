@@ -12,6 +12,7 @@ import AlreadyClassExist from "./AlreadyClassExist";
 import NoClassFrame from "./NoClassFrame";
 import SpecialScheduleSummary from "./SpecialScheduleSummary";
 import UpdateDbSpecialSchedule from "./UpdateDbSpecialSchedule";
+import SpecialScheduleFrame from "./SpecialScheduleFrame";
 
 export type classesPeriodArray = Array<ClassInfo>;
 export type specialSummaryArray = Array<SummaryInfo>;
@@ -148,59 +149,18 @@ const RegistSpecialSchedule = () => {
       <Row className={"tkgTop mt-4"}>
         <Col>
           <div>
-            <Table striped bordered hover responsive>
-              <thead>
-                {/* ヘッダー（日付） */}
-                <tr>
-                  <th></th>
-                  {dateList.map((eachDate) => (
-                    <>
-                      <th className="text-center text-nowrap">{eachDate}</th>
-                    </>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className={"align-middle"}>2</td>
-                  {classesPeriod2.map((eachData) => (
-                    <>
-                      <td className={"align-middle"}>
-                        {eachData.id ? (
-                          <AlreadyClassExist
-                            subject={eachData.subject}
-                            lecturerName={eachData.lecturerName}
-                            dateInfo={eachData.classDate}
-                            checkedSubjectId={checkedSubjectId}
-                            checkedSubjectName={checkedSubjectName}
-                            checkSubjectCount={checkSubjectCount}
-                            setCheckSubjectCount={setCheckSubjectCount}
-                            deleteClassFramePeriod2={deleteClassFramePeriod2}
-                            setDeleteClassFramePeriod2={
-                              setDeleteClassFramePeriod2
-                            }
-                          />
-                        ) : (
-                          <NoClassFrame
-                            subject={eachData.subject}
-                            lecturerName={eachData.lecturerName}
-                            dateInfo={eachData.classDate}
-                            checkedSubjectId={checkedSubjectId}
-                            checkedSubjectName={checkedSubjectName}
-                            checkSubjectCount={checkSubjectCount}
-                            setCheckSubjectCount={setCheckSubjectCount}
-                            selectClassFramePeriod2={selectClassFramePeriod2}
-                            setSelectClassFramePeriod2={
-                              setSelectClassFramePeriod2
-                            }
-                          />
-                        )}
-                      </td>
-                    </>
-                  ))}
-                </tr>
-              </tbody>
-            </Table>
+            <SpecialScheduleFrame
+              dateList={dateList}
+              classesPeriod2={classesPeriod2}
+              checkedSubjectId={checkedSubjectId}
+              checkedSubjectName={checkedSubjectName}
+              checkSubjectCount={checkSubjectCount}
+              setCheckSubjectCount={setCheckSubjectCount}
+              selectClassFramePeriod2={selectClassFramePeriod2}
+              setSelectClassFramePeriod2={setSelectClassFramePeriod2}
+              deleteClassFramePeriod2={deleteClassFramePeriod2}
+              setDeleteClassFramePeriod2={setDeleteClassFramePeriod2}
+            />
           </div>
         </Col>
       </Row>
