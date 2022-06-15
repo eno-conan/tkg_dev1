@@ -121,7 +121,7 @@ const RegistSpecialSchedule = () => {
   //この処理は別Componentでやろう:DB更新
   const updateSchedule = () => {
     const studentId = "1";
-    const subjectId = checkedSubjectId; //本当は科目ごとに保持できるといい
+    const subjectId = checkedSubjectId; //本当は科目ごとに保持できるといい=>大がかり
     let sendContent: string[] = [];
 
     sendContent.push(studentId);
@@ -133,7 +133,7 @@ const RegistSpecialSchedule = () => {
         (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
       );
       if (date === "") {
-        sendContent.push("period2");
+        sendContent.push("period2-save");
       } else {
         sendContent.push(filterClassInfo[0].timeTableSpecialId);
       }
@@ -141,22 +141,29 @@ const RegistSpecialSchedule = () => {
 
     //削除分
     for (let date of deleteClassFramePeriod2) {
-      console.log(date);
+      const filterClassInfo = classesPeriod2.filter(
+        (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
+      );
+      if (date === "") {
+        sendContent.push("period2-delete");
+      } else {
+        sendContent.push(filterClassInfo[0].timeTableSpecialId);
+      }
     }
 
-    // const options = {
-    //   method: "PUT",
-    //   body: sendContent.toString(),
-    // };
-    // fetch(`${API_BASE_URL}/student/update-special-schedule`, options)
-    //   .then((response) => response.json())
-    //   .then((updateTargetClass) => {
-    //     console.log(updateTargetClass);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     alert("couldn't add task");
-    //   });
+    const options = {
+      method: "PUT",
+      body: sendContent.toString(),
+    };
+    fetch(`${API_BASE_URL}/student/update-special-schedule`, options)
+      .then((response) => response.json())
+      .then((updateTargetClass) => {
+        console.log(updateTargetClass);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't add task");
+      });
     navigate(`${PASS_ROUTING.Top}`);
   };
 
@@ -222,6 +229,7 @@ const RegistSpecialSchedule = () => {
                             lecturerName={eachData.lecturerName}
                             dateInfo={eachData.classDate}
                             checkedSubjectId={checkedSubjectId}
+                            checkedSubjectName={checkedSubjectName}
                             checkSubjectCount={checkSubjectCount}
                             setCheckSubjectCount={setCheckSubjectCount}
                             deleteClassFramePeriod2={deleteClassFramePeriod2}

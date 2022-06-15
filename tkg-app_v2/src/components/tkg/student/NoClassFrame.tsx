@@ -55,14 +55,6 @@ const NoClassFrame: React.FC<CheckedCountInfo> = ({
         setCheckSubjectCount(cntWork - 1);
         setSelectClassFramePeriod2(tmpDateList);
       }
-      // else {
-      //   // //外した場合
-      //   // const filterDate = selectClassFramePeriod2.filter(
-      //   //   (date: string) => date !== event.target.value
-      //   // );
-      //   // setSelectClassFramePeriod2(filterDate);
-      //   // setCheckSubjectCount(cntWork + 1);
-      // }
     }
   };
 
@@ -107,7 +99,6 @@ const NoClassFrame: React.FC<CheckedCountInfo> = ({
                     value={dateInfo}
                     onChange={checkOneCell}
                     defaultChecked={false}
-                    // checked={checkedSubjectId !== "0"}
                   />
                 </Col>
               </Row>

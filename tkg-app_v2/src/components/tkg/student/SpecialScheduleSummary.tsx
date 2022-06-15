@@ -21,7 +21,6 @@ interface CheckedCountInfo {
 //講習科目とコマ数表示
 const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
   specialSummary,
-  // checkedSubject,
   checkedSubjectId,
   checkSubjectCount,
   setCheckedSubjectId,

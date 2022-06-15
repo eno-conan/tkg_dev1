@@ -5,12 +5,14 @@ import {
   Row,
   //Button,
 } from "react-bootstrap";
+import { SummaryInfo } from "./initData";
 
 interface PlanClassInfo {
   subject: string;
   lecturerName: string;
   dateInfo: string;
   checkedSubjectId: string;
+  checkedSubjectName: string;
   checkSubjectCount: number;
   setCheckSubjectCount: React.Dispatch<React.SetStateAction<number>>;
   deleteClassFramePeriod2: string[];
@@ -22,6 +24,7 @@ const AlreadyClassExist: React.FC<PlanClassInfo> = ({
   lecturerName,
   dateInfo,
   checkedSubjectId,
+  checkedSubjectName,
   checkSubjectCount,
   setCheckSubjectCount,
   deleteClassFramePeriod2,
@@ -72,23 +75,37 @@ const AlreadyClassExist: React.FC<PlanClassInfo> = ({
           </>
         ) : (
           <>
-            <div className={"text-right"}>
-              <button
-                type={"button"}
-                value={dateInfo}
-                className={"btn btn-outline-dark btn-sm"}
-                onClick={deleteClass}
-              >
-                X
-              </button>
-            </div>
-            <Row>
-              <Col>
-                <div>{subject}</div>
-                {subject ? <div>{"====="}</div> : <div></div>}
-                <div>{lecturerName}</div>
-              </Col>
-            </Row>
+            {subject.toString() === checkedSubjectName.toString() ? (
+              <>
+                <div className={"text-right"}>
+                  <button
+                    type={"button"}
+                    value={dateInfo}
+                    className={"btn btn-outline-dark btn-sm"}
+                    onClick={deleteClass}
+                  >
+                    X
+                  </button>
+                </div>
+                <Row>
+                  <Col>
+                    <div>{subject}</div>
+                    {subject ? <div>{"====="}</div> : <div></div>}
+                    <div>{lecturerName}</div>
+                  </Col>
+                </Row>
+              </>
+            ) : (
+              <>
+                <Row>
+                  <Col>
+                    <div>{subject}</div>
+                    {subject ? <div>{"====="}</div> : <div></div>}
+                    <div>{lecturerName}</div>
+                  </Col>
+                </Row>
+              </>
+            )}
           </>
         )}
       </div>
