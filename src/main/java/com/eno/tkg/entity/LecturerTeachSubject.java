@@ -29,7 +29,7 @@ import lombok.Data;
 public class LecturerTeachSubject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -42,33 +42,26 @@ public class LecturerTeachSubject implements Serializable {
 	@JoinColumn(name = "subject_key")
 	private Subject subject;
 
-	@ManyToOne
-	@JoinColumn(name = "classroom_id", nullable = false)
-	private Classroom classroom;
-
 	@Column(name = "teach_flg", length = 2)
 	private boolean teachFlg;
 
 	@Column(name = "comment", length = 64)
 	private String comment;
-	
-	@Column(name="created_at")
+
+	@Column(name = "created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
-	public LecturerTeachSubject(Lecturer lecturer, Subject subject, Classroom classroom, boolean teachFlg,
-			String comment, Timestamp createdAt, Timestamp updatedAt) {
+	public LecturerTeachSubject(Lecturer lecturer, Subject subject, boolean teachFlg, String comment,
+			Timestamp createdAt, Timestamp updatedAt) {
 		this.lecturer = lecturer;
 		this.subject = subject;
-		this.classroom = classroom;
 		this.teachFlg = teachFlg;
 		this.comment = comment;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
-	
-	
 
 }

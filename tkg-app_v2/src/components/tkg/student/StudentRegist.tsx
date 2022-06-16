@@ -1,85 +1,83 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Table, Form, Container, Col, Row, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import { Classroom, classroomData, Grade, gradeData } from "./initData";
 import "../../tkgStyle.css";
+import { API_STUDENT } from "../../../config";
+import RegistForm from "./RegistForm";
+import RegistConfirmStudentModal from "./RegistConfirmStudentModal";
 
-interface UpdateInfo {}
+export type classroomArray = Array<Classroom>;
+export type gradeArray = Array<Grade>;
 
-const StudentRegist: React.FC<UpdateInfo> = ({}) => {
-  const [newTaskInput, setNewTaskInput] = useState<string>("");
+const StudentRegist = () => {
+  //入力項目の管理
+  const [studentName, setStudentName] = useState<string>("");
+  const [birthday, setBirthday] = useState<string>("");
+  const [classroomName, setClassroomName] = useState<string>("");
+  const [gradeName, setGradeName] = useState<string>("");
+  //DBからの教室情報を管理
+  const [classroomList, setClassroomList] =
+    useState<classroomArray>(classroomData);
+  //DBからの学年情報を管理
+  const [gradeList, setGradeList] = useState<gradeArray>(gradeData);
 
-  const addTask = () => {
-    console.log(newTaskInput);
-    //     const options = {
-    //       method: "POST",
-    //       body: newTaskInput,
-    //     };
+  useEffect(() => {
+    prepareClassroom();
+    prepareGrade();
+  }, []);
 
-    //     fetch(`${API_BASE_URL}/tasks`, options)
-    //       .then((response) => response.json())
-    //       .then((newTask) => setTask((prevState) => [...prevState, newTask]))
-    //       .catch((error) => {
-    //         console.log(error);
-    //         alert("couldn't add task");
-    //       });
+  const prepareClassroom = () => {
+    const options = {
+      method: "GET",
+    };
+    fetch(`${API_STUDENT.PrepareRegistClassroom}`, options)
+      .then((response) => response.json())
+      .then((classroomInfo) => {
+        setClassroomList(classroomInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("教室情報取得できず");
+      });
+  };
+  const prepareGrade = () => {
+    const options = {
+      method: "GET",
+    };
+    fetch(`${API_STUDENT.PrepareRegistGrade}`, options)
+      .then((response) => response.json())
+      .then((gradeInfo) => {
+        setGradeList(gradeInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("学年情報取得できず");
+      });
   };
 
   return (
     <Container>
-      <br />
-      <Row className={"tkgTopHeader"}>
-        <Col md={5}></Col>
-        <Col md={6}>
-          <h3>生徒登録</h3>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
-          <label>Name</label>
-          <input
-            className={"w-100"}
-            type="text"
-            placeholder={"New Task"}
-            value={newTaskInput}
-            onChange={(event) => setNewTaskInput(event.target.value)}
-            // onKeyPress={handleKeyPress}
-          />
-        </Col>
-        <Col md={2}>
-          <Button onClick={addTask}>Submit</Button>
-        </Col>
-      </Row>
+      <RegistForm
+        studentName={studentName}
+        setStudentName={setStudentName}
+        birthday={birthday}
+        setBirthday={setBirthday}
+        setClassroomName={setClassroomName}
+        setGradeName={setGradeName}
+        classroomList={classroomList}
+        gradeList={gradeList}
+      />
+      <RegistConfirmStudentModal
+        studentName={studentName}
+        birthday={birthday}
+        classroomName={classroomName}
+        gradeName={gradeName}
+        classroomList={classroomList}
+        gradeList={gradeList}
+      />
     </Container>
   );
 };
 
 export default StudentRegist;
-// https://github.com/eno-conan/tkg_dev1/blob/b386b5a43b7c7346d7e66c4f26581470c5113577/tkg-app_v2/src/components/sample/InputComponent.tsx
-// const [newTaskInput, setNewTaskInput] = useState<string>("");
-
-//   const handleKeyPress = (
-//     event: DetailedHTMLProps<
-//       InputHTMLAttributes<HTMLInputElement>,
-//       HTMLInputElement
-//     >
-//   ) => {
-//     if (event.key === "Enter") {
-//       addTask();
-//       setNewTaskInput("");
-//     }
-//   };
-
-//   return (
-//     <Row className={"add-task-item mt-5 mb-5"}>
-//       <Col md={10}>
-//         <input
-//           className={"w-100"}
-//           type="text"
-//           placeholder={"New Task"}
-//           value={newTaskInput}
-//           onChange={(event) => setNewTaskInput(event.target.value)}
-//           onKeyPress={handleKeyPress}
-//         />
-//       </Col>
-//     </Row>

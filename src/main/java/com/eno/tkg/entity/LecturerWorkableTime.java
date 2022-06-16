@@ -35,10 +35,6 @@ public class LecturerWorkableTime implements Serializable {
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "classroom_id", nullable = false)
-	private Classroom classroom;
-
-	@ManyToOne
 	@JoinColumn(name = "lecturer_id")
 	private Lecturer lecturer;
 
@@ -49,9 +45,8 @@ public class LecturerWorkableTime implements Serializable {
 	@Column(name = "workable_flg", length = 2)
 	private boolean workableFlg;
 
-	public LecturerWorkableTime(Classroom classroom, Lecturer lecturer, TimeTableNormal timeTableNormal,
+	public LecturerWorkableTime(Lecturer lecturer, TimeTableNormal timeTableNormal,
 			boolean workableFlg) {
-		this.classroom = classroom;
 		this.lecturer = lecturer;
 		this.timeTableNormal = timeTableNormal;
 		this.workableFlg = workableFlg;

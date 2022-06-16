@@ -17,9 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "m_grade")
+@NoArgsConstructor
 @Data
 public class Grade {
 
@@ -36,4 +38,8 @@ public class Grade {
 	@OneToMany(mappedBy = "grade", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Student> students;
 
+	public Grade(String gradeKey) {
+		this.gradeKey = gradeKey;
+	}
+	
 }

@@ -1,5 +1,28 @@
-/* 講習会授業予定表示;*/
+/* 生徒登録*/
+export interface Classroom {
+  id: string;
+  name: string;
+}
+export interface Grade {
+  key: string;
+  name: string;
+}
 
+export const classroomData = [
+  {
+    id: "1",
+    name: "東京",
+  },
+];
+
+export const gradeData = [
+  {
+    key: "j2",
+    name: "中学2年生",
+  },
+];
+
+/* 講習会授業予定表示*/
 //科目とコマ数
 export interface SummaryInfo {
   id: string;

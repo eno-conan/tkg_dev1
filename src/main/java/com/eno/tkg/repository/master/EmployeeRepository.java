@@ -1,4 +1,4 @@
-package com.eno.tkg.repository;
+package com.eno.tkg.repository.master;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

@@ -75,5 +75,13 @@ public class Student {
 	public Student(Integer id) {
 		this.id = id;
 	}
+	
+//	public Student insertStudent() {
+//		Student initState = new Student();
+//		initState.setDeleteFlg(false);
+//		initState.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+//		initState.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+//		return null;
+//	}
 
 }

@@ -25,16 +25,16 @@ import com.eno.tkg.entity.master.Lecturer;
 import com.eno.tkg.entity.master.Prefecture;
 import com.eno.tkg.entity.master.Subject;
 import com.eno.tkg.entity.master.TimeTableNormal;
-import com.eno.tkg.repository.AreaRepository;
 import com.eno.tkg.repository.ClassroomDirectorRepository;
-import com.eno.tkg.repository.ClassroomRepository;
-import com.eno.tkg.repository.EmployeeRepository;
-import com.eno.tkg.repository.GradeRepository;
-import com.eno.tkg.repository.LecturerRepository;
 import com.eno.tkg.repository.LecturerTeachSubjectRepository;
 import com.eno.tkg.repository.LecturerWorkableTimeRepository;
 import com.eno.tkg.repository.StudentScheduleNormalRepository;
 import com.eno.tkg.repository.StudentSubjectRepository;
+import com.eno.tkg.repository.master.AreaRepository;
+import com.eno.tkg.repository.master.ClassroomRepository;
+import com.eno.tkg.repository.master.EmployeeRepository;
+import com.eno.tkg.repository.master.GradeRepository;
+import com.eno.tkg.repository.master.LecturerRepository;
 
 @Service
 public class TkgService1 {
@@ -138,7 +138,7 @@ public class TkgService1 {
 		Classroom classroom = new Classroom(1);
 		// 作成日時、更新日時は同じ
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		LecturerTeachSubject lecturerTeachSubject = new LecturerTeachSubject(lecturer, subject, classroom, true,
+		LecturerTeachSubject lecturerTeachSubject = new LecturerTeachSubject(lecturer, subject,true,
 				"comment", timestamp, timestamp);
 		lecturerTeachSubjectRepository.save(lecturerTeachSubject);
 	}
@@ -154,7 +154,7 @@ public class TkgService1 {
 		Lecturer lecturer = new Lecturer(1);
 		for (int timeTableId = 1; timeTableId <= TIME_TABLE_COUNT; timeTableId++) {
 			TimeTableNormal timeTableNormal = new TimeTableNormal(timeTableId);
-			lecturerWorkableTime.add(new LecturerWorkableTime(targetclassroom, lecturer, timeTableNormal, false));
+			lecturerWorkableTime.add(new LecturerWorkableTime(lecturer, timeTableNormal, false));
 		}
 		lecturerWorkableTimeRepository.saveAll(lecturerWorkableTime);
 	}

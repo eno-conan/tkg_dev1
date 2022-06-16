@@ -24,7 +24,7 @@ import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
-public class StudentSpecialScheduleService {
+class StudentSpecialScheduleService {
 
 	@Autowired
 	private StudentScheduleSpecialRepository studentScheduleSpecialRepository;
@@ -43,7 +43,7 @@ public class StudentSpecialScheduleService {
 	 * @throws JsonProcessingException
 	 *
 	 */
-	public String getSpecialDateList(final String specialSeasonId) throws JsonProcessingException {
+	String getSpecialDateList(final String specialSeasonId) throws JsonProcessingException {
 
 		// 日付取得
 		List<Optional<SpecialSeasonDateList>> specialSeasonDateList = getDateList(specialSeasonId);
@@ -65,7 +65,7 @@ public class StudentSpecialScheduleService {
 	 * @throws JsonProcessingException
 	 *
 	 */
-	public String getTargetStudentSpecialSummary(final String studentId, final String specialSeasonId) throws JsonProcessingException {
+	String getTargetStudentSpecialSummary(final String studentId, final String specialSeasonId) throws JsonProcessingException {
 		List<Optional<StudentClassSpecialSummary>> studentSpecialSummary = studentClassSpecialSummaryRepository
 				.findBySpecialSeasonAndStudent(new SpecialSeason(Integer.parseInt(specialSeasonId)),
 						new Student(Integer.parseInt(studentId)));

@@ -25,16 +25,21 @@ export const StudentTop = () => {
           </Col>
         </Row>
         <Row className={"pt-4"}>
-          <Col md={12} className={"pb-6 pl-4"}>
+          <Col md={6} className={"pb-6 pl-4"}>
+            <Link
+              to={STUDENT_FUNCTION.Regist}
+              className={"btn btn-success btn-lg"}
+            >
+              検索
+            </Link>
+          </Col>
+          <Col md={6} className={"pb-6 pl-4"}>
             <Link
               to={STUDENT_FUNCTION.Regist}
               className={"btn btn-success btn-lg"}
             >
               登録
             </Link>
-            <ul>
-              <li>授業予定表示</li>
-            </ul>
           </Col>
         </Row>
         <br />
