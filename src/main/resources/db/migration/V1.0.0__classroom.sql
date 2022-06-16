@@ -147,13 +147,11 @@ CREATE TABLE `lecturer_teach_subject` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   lecturer_id INTEGER NOT null,
   subject_key CHAR(32) NOT null,
-  classroom_id INTEGER NOT null,
   teach_flg int default 0,
   comment VARCHAR(64) NOT null,
   created_at timestamp,
   updated_at timestamp,
   UNIQUE(lecturer_id,subject_key),
-  FOREIGN KEY (classroom_id) REFERENCES m_classroom(id),
   FOREIGN KEY (lecturer_id) REFERENCES m_lecturer(id),
   FOREIGN KEY (subject_key) REFERENCES m_subject(subject_key)
 );
@@ -176,12 +174,10 @@ CREATE TABLE `student_subject` (
 
 CREATE TABLE `lecturer_workable_time` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  classroom_id INTEGER NOT null,
   lecturer_id INTEGER NOT null,
   time_table_normal_id INTEGER NOT null,
   workable_flg int default 0,
-  UNIQUE(classroom_id,lecturer_id,time_table_normal_id),
-  FOREIGN KEY (classroom_id) REFERENCES m_student(id),
+  UNIQUE(lecturer_id,time_table_normal_id),
   FOREIGN KEY (lecturer_id) REFERENCES m_lecturer(id),
   FOREIGN KEY (time_table_normal_id) REFERENCES time_table_normal(id)
 );

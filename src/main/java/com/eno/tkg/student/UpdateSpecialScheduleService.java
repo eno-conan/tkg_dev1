@@ -1,8 +1,8 @@
 package com.eno.tkg.student;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,21 +11,16 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eno.tkg.entity.SpecialSeasonDateList;
 import com.eno.tkg.entity.StudentClassSpecialSummary;
-import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.entity.master.Lecturer;
-import com.eno.tkg.entity.master.SpecialSeason;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.entity.master.Subject;
 import com.eno.tkg.entity.master.TimeTableSpecial;
 import com.eno.tkg.repository.StudentClassSpecialSummaryRepository;
 import com.eno.tkg.repository.StudentScheduleSpecialRepository;
 import com.eno.tkg.repository.TimeTableSpecialRepository;
-import com.eno.tkg.repository.SpecialSeasonDateListRepository;
 import com.eno.tkg.util.UseOverFunction;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
 public class UpdateSpecialScheduleService {
@@ -35,9 +30,6 @@ public class UpdateSpecialScheduleService {
 
 	@Autowired
 	private StudentClassSpecialSummaryRepository studentClassSpecialSummaryRepository;
-
-	@Autowired
-	private SpecialSeasonDateListRepository specialSeasonDateListRepository;
 
 	@Autowired
 	private TimeTableSpecialRepository timeTableSpecialRepository;
@@ -50,76 +42,134 @@ public class UpdateSpecialScheduleService {
 	 * @throws Exception
 	 *
 	 */
-	// 戻り値はMapを使用
 	@Transactional
 	public String updateTargetStudentSpecialSchedule(final String content) throws Exception {
-		// 1,1,period2-save,253,260,period2-delete,1,8
-		//studentId,specialSummaryId,period2-save,...period2-delete,...
 		System.out.println(content);
-//		String[] requestBoby = content.split(",");
-//		List<String> requestBobyListWhole = Arrays.asList(requestBoby);
-//		if (requestBobyListWhole.isEmpty()) {
-//			return "";
-////			Exception throwする
-//		}
-//
-//		int studentId = Integer.parseInt(requestBobyListWhole.get(0));
-//		int specialSummaryId = Integer.parseInt(requestBobyListWhole.get(1));// このID値から、科目名取得をすること
-//
-//		// 科目キー取得
-//		Optional<StudentClassSpecialSummary> summaryInfo = studentClassSpecialSummaryRepository
-//				.findById(specialSummaryId);
-//		if (summaryInfo.isEmpty()) {
-//			throw new Exception("summaryが存在しません");
-//		}
-//
-//		int idStartrelatedShceduleInfo = 2;
-//		// tableId一覧取得
-//		List<String> relateTimeTableInfoList = requestBobyListWhole.subList(idStartrelatedShceduleInfo,
-//				requestBobyListWhole.size());
-//
-//		for (int i = 0; i < relateTimeTableInfoList.size(); i++) {
-//			System.out.println(relateTimeTableInfoList.get(i));
-//
-//			if (relateTimeTableInfoList.get(i).matches("^period.*$")) {
-//				continue;
-//			}
-//
-//			// 生徒IDとtime_table_special_IDから授業のあり・なしを判定
-//			int eachTimeTableSpecialId = Integer.parseInt(relateTimeTableInfoList.get(i));
-//			Optional<StudentScheduleSpecial> classInfo = studentScheduleSpecialRepository
-//					.findByStudentAndTimeTableSpecial(new Student(studentId),
-//							new TimeTableSpecial(eachTimeTableSpecialId));
-//
-//			if (classInfo.isPresent()) {
-//				System.out.println("授業あり->更新");
-//				StudentScheduleSpecial updateClass = classInfo.get().clone();
-//				updateClass.setSubject(new Subject(summaryInfo.get().getSubject().getSubjectKey()));
-//				updateClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-//				studentScheduleSpecialRepository.save(updateClass);
-//			} else {
-//				System.out.println("授業なし->追加");
-//				StudentScheduleSpecial newClass = new StudentScheduleSpecial();
-//				newClass.setStudent(new Student(studentId));
-//				newClass.setSubject(new Subject(summaryInfo.get().getSubject().getSubjectKey()));
-//				newClass.setLecturer(new Lecturer(1));
-//				newClass.setTimeTableSpecial(new TimeTableSpecial(eachTimeTableSpecialId));
-//
-//				Optional<TimeTableSpecial> getDate = timeTableSpecialRepository.findById(eachTimeTableSpecialId);
-//				newClass.setClassDate(getDate.get().getSpecialSeasonDateList().getClassDate());
-//				newClass.setRescheduleDateStart(UseOverFunction.convertStrDateToDateType("2022/09/14"));
-//				newClass.setRescheduleDateLast(UseOverFunction.convertStrDateToDateType("2022/09/14"));
-//				newClass.setRescheduleFlg(false);
-//				newClass.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-//				newClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-//				studentScheduleSpecialRepository.save(newClass);
-//			}
-//		}
-//		// なし：新しく追加する処理
-//		// あれば、新しくインスタンスを生成して、更新処理
 
-		String strJson = UseOverFunction.getDataToJsonFormat("");
+		String[] requestBoby = content.split(",");
+		List<String> requestBobyListWhole = Arrays.asList(requestBoby);
+		if (requestBobyListWhole.isEmpty()) {
+			throw new Exception("送信内容が存在しません");
+		}
+
+		// 科目の概要取得
+		int specialSummaryId = Integer.parseInt(requestBobyListWhole.get(1));// このID値から、科目名取得をすること
+		Optional<StudentClassSpecialSummary> summaryInfo = studentClassSpecialSummaryRepository
+				.findById(specialSummaryId);
+		if (summaryInfo.isEmpty()) {
+			throw new Exception("summaryが存在しません");
+		}
+
+		try {
+			int studentId = Integer.parseInt(requestBobyListWhole.get(0));
+			int idStartrelatedShceduleInfo = 2;
+			List<String> relateTimeTableInfoList = requestBobyListWhole.subList(idStartrelatedShceduleInfo,
+					requestBobyListWhole.size());// tableId一覧取得
+			updateStudentScheduleSpecialTable(studentId, summaryInfo, relateTimeTableInfoList);
+		} catch (Exception e) {
+			throw new Exception("DB更新でエラーが発生しました");
+		}
+
+		String strJson = UseOverFunction.getDataToJsonFormat("更新処理が完了しました");
 		return strJson;
+	}
+
+	/**
+	 * studentScheduleSpecialテーブルの追加・更新・削除
+	 * 
+	 * @param studentId               生徒ID
+	 * @param summaryInfo             選択科目概要
+	 * @param relateTimeTableInfoList 追加削除のための情報
+	 * 
+	 */
+	@Transactional
+	private void updateStudentScheduleSpecialTable(int studentId, Optional<StudentClassSpecialSummary> summaryInfo,
+			List<String> relateTimeTableInfoList) {
+		int updateUnplaceFrameCount = 0;// summaryテーブルのコマ数増減を管理
+		int operateDataStatus = 0;// 追加・更新/削除か管理
+		List<String> relateTimeTableInfoListReadOnly = Collections.unmodifiableList(relateTimeTableInfoList);
+
+		for (int i = 0; i < relateTimeTableInfoListReadOnly.size(); i++) {
+			// save-period{N}がきたときに保存（更新）
+			if (relateTimeTableInfoListReadOnly.get(i).matches("save-period.*$")) {
+				operateDataStatus = 1;
+				continue;
+				// delete-period{N}がきたときに削除処理に変更
+			} else if (relateTimeTableInfoListReadOnly.get(i).matches("delete-period.*$")) {
+				operateDataStatus = 2;
+				continue;
+			}
+
+			// 生徒IDとtime_table_special_IDから授業のあり・なしを判定
+			int eachTimeTableSpecialId = Integer.parseInt(relateTimeTableInfoList.get(i));
+			Optional<StudentScheduleSpecial> classInfo = studentScheduleSpecialRepository
+					.findByStudentAndTimeTableSpecial(new Student(studentId),
+							new TimeTableSpecial(eachTimeTableSpecialId));
+			
+			if (operateDataStatus == 1) {
+				if (classInfo.isPresent()) {
+					StudentScheduleSpecial updateClass = updateClassInfo(summaryInfo, classInfo);
+					studentScheduleSpecialRepository.save(updateClass);
+				} else {
+					StudentScheduleSpecial newClass = insertClass(studentId, summaryInfo, eachTimeTableSpecialId);
+					studentScheduleSpecialRepository.save(newClass);
+					updateUnplaceFrameCount++;
+				}
+			} else if (operateDataStatus == 2) {
+				studentScheduleSpecialRepository.delete(classInfo.get());
+				updateUnplaceFrameCount--;
+			}
+		}
+
+		// 未配置コマ数の更新
+		StudentClassSpecialSummary updateSummaryInfo = summaryInfo.get().clone();
+		updateSummaryInfo.setUnplaceClassCount(summaryInfo.get().getUnplaceClassCount() - updateUnplaceFrameCount);
+		updateSummaryInfo.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		studentClassSpecialSummaryRepository.save(updateSummaryInfo);
+	}
+
+	/**
+	 * studentScheduleSpecialテーブルのレコード追加のためのデータ準備
+	 * 
+	 * @param studentId              生徒ID
+	 * @param summaryInfo            選択科目概要
+	 * @param eachTimeTableSpecialId eachTimeTableSpecialテーブルのID
+	 * @return newClass 挿入情報
+	 */
+	private StudentScheduleSpecial insertClass(int studentId, Optional<StudentClassSpecialSummary> summaryInfo,
+			int eachTimeTableSpecialId) {
+		System.out.println("授業なし->追加");
+		StudentScheduleSpecial newClass = new StudentScheduleSpecial();
+		newClass.setStudent(new Student(studentId));
+		newClass.setSubject(new Subject(summaryInfo.get().getSubject().getSubjectKey()));
+		newClass.setLecturer(new Lecturer(1));
+		newClass.setTimeTableSpecial(new TimeTableSpecial(eachTimeTableSpecialId));
+
+		Optional<TimeTableSpecial> getDate = timeTableSpecialRepository.findById(eachTimeTableSpecialId);
+		newClass.setClassDate(getDate.get().getSpecialSeasonDateList().getClassDate());
+		newClass.setRescheduleDateStart(UseOverFunction.convertStrDateToDateType("2022/09/14"));
+		newClass.setRescheduleDateLast(UseOverFunction.convertStrDateToDateType("2022/09/14"));
+		newClass.setRescheduleFlg(false);
+		newClass.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		newClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		return newClass;
+	}
+
+	/**
+	 * studentScheduleSpecialテーブルのレコード更新のためのデータ準備
+	 * 
+	 * @param summaryInfo            選択科目概要
+	 * @param classInfo              現在の授業情報
+	 * @param eachTimeTableSpecialId eachTimeTableSpecialテーブルのID
+	 * @return updateClass 更新情報
+	 */
+	private StudentScheduleSpecial updateClassInfo(Optional<StudentClassSpecialSummary> summaryInfo,
+			Optional<StudentScheduleSpecial> classInfo) {
+		System.out.println("授業あり->更新");
+		StudentScheduleSpecial updateClass = classInfo.get().clone();
+		updateClass.setSubject(new Subject(summaryInfo.get().getSubject().getSubjectKey()));
+		updateClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		return updateClass;
 	}
 
 }

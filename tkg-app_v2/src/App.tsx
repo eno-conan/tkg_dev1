@@ -16,9 +16,11 @@ import { ReceivedPathParam } from "./components/pathParam/ReceivedPathParam";
 
 //related tkgApp
 import { TkgTop } from "./components/tkg/TkgTop";
-import { PASS_ROUTING } from "./config";
+import { PASS_MAIN_FUNCTION, STUDENT_FUNCTION } from "./config";
 import { ClassSchedule } from "./components/tkg/ClassSchedule";
 import RegistSpecialSchedule from "./components/tkg/student/RegistSpecialSchedule";
+import { StudentTop } from "./components/tkg/student/StudentTop";
+import StudentRegist from "./components/tkg/student/StudentRegist";
 
 export interface ITask {
   id: number;
@@ -27,17 +29,28 @@ export interface ITask {
 }
 
 const App: React.FC = () => {
-  const routing = PASS_ROUTING;
   return (
     <div className="App">
       <main>
         <Container>
           <Router>
             <Routes>
-              <Route path={routing.Top} element={<TkgTop />} />
-              <Route path={routing.ClassSchedule} element={<ClassSchedule />} />
+              <Route path="/" element={<TkgTop />} />
+              <Route path={PASS_MAIN_FUNCTION.Top} element={<TkgTop />} />
               <Route
-                path="click-button-table"
+                path={PASS_MAIN_FUNCTION.ClassSchedule}
+                element={<ClassSchedule />}
+              />
+              <Route
+                path={PASS_MAIN_FUNCTION.Student}
+                element={<StudentTop />}
+              />
+              <Route
+                path={STUDENT_FUNCTION.Regist}
+                element={<StudentRegist />}
+              />
+              <Route
+                path={STUDENT_FUNCTION.UpdateSpecialSchedule}
                 element={<RegistSpecialSchedule />}
               />
               {/* receievePathParam 220607 */}

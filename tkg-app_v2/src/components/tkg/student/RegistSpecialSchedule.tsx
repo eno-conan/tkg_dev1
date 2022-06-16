@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE_URL, PASS_ROUTING } from "../../../config";
+import { API_BASE_URL, API_STUDENT } from "../../../config";
 import {
   ClassInfo,
   eachClassData,
@@ -69,7 +69,7 @@ const RegistSpecialSchedule = () => {
     function getSpecialSummary(studentId: string, specialSeasonId: string) {
       const options = { method: "GET" };
       fetch(
-        `${API_BASE_URL}/student/special-summary/${studentId}?specialSeasonId=${specialSeasonId}`,
+        `${API_STUDENT.SpecialSummary}/${studentId}?specialSeasonId=${specialSeasonId}`,
         options
       )
         .then((response) => response.json())
@@ -86,10 +86,7 @@ const RegistSpecialSchedule = () => {
     function getSpecialDateList(specialSeasonId: string) {
       const options = { method: "GET" };
       specialSeasonId = "1";
-      fetch(
-        `${API_BASE_URL}/student/special-date-list/${specialSeasonId}`,
-        options
-      )
+      fetch(`${API_STUDENT.SpecialDateList}/${specialSeasonId}`, options)
         .then((response) => response.json())
         .then((fetchDateList) => {
           setDateList(fetchDateList);
@@ -106,7 +103,7 @@ const RegistSpecialSchedule = () => {
     ) {
       const options = { method: "GET" };
       fetch(
-        `${API_BASE_URL}/student/special-schedule/${studentId}?specialSeasonId=${specialSeasonId}`,
+        `${API_STUDENT.SpecialSchedule}/${studentId}?specialSeasonId=${specialSeasonId}`,
         options
       )
         .then((response) => response.json())
@@ -142,8 +139,6 @@ const RegistSpecialSchedule = () => {
             setCheckSubjectCount={setCheckSubjectCount}
           />
         </Col>
-        <Col md={10}></Col>
-        <Col md={2}>{checkSubjectCount}</Col>
       </Row>
 
       <Row className={"tkgTop mt-4"}>
@@ -164,6 +159,7 @@ const RegistSpecialSchedule = () => {
           </div>
         </Col>
       </Row>
+      <br />
       <br />
       <UpdateDbSpecialSchedule
         checkedSubjectId={checkedSubjectId}

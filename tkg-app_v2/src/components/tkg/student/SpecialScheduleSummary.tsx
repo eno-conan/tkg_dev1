@@ -70,14 +70,20 @@ const SpecialScheduleSummary: React.FC<CheckedCountInfo> = ({
       );
 
       //画面表示時のコマ数とチェックに応じて変動するカウントの一致を判定
-      // 一致：特に警告なくチェックを外す
+      // 一致：特に警告なく科目のチェックを外す
       //不一致：チェックを入れた箇所があるので、更新されないことを警告
-      if (filterSummary[0].totalClassCount === checkSubjectCount.toString()) {
+      if (filterSummary[0].unplaceClassCount === checkSubjectCount.toString()) {
         setCheckedSubjectId("0");
       } else {
-        alert("現在チェックした日時の情報は更新されません");
-        //OKと言われれば更新
-        setCheckedSubjectId("0");
+        if (
+          window.confirm(
+            "現在チェックした日時の情報は更新されませんが、よろしいでしょうか"
+          )
+        ) {
+          //OKと言われればリセット
+          setCheckedSubjectId("0");
+          window.location.reload();
+        }
       }
     }
   };

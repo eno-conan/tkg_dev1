@@ -1,9 +1,9 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 // import { useParams } from "react-router";
-import { API_BASE_URL, PASS_ROUTING } from "../../../config";
+import { API_BASE_URL, API_STUDENT, STUDENT_FUNCTION } from "../../../config";
 import { useNavigate } from "react-router-dom";
-import { Container, Button, Col, Row, CloseButton } from "react-bootstrap";
+import { Container, Button, Col, Row } from "react-bootstrap";
 // import Header from "../react-form_220530/Header";
 
 import "../../tkgStyle.css";
@@ -25,10 +25,16 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfo> = ({
 }) => {
   const navigate = useNavigate();
 
+  //キャンセル実行
+  const resetSchedule = () => {
+    window.location.reload();
+  };
+
+  //登録実行
   const updateSchedule = () => {
     const studentId = "1";
-    const subjectId = checkedSubjectId; //本当は科目ごとに保持できるといい=>大がかり
-    let sendContent: string[] = [];
+    const subjectId = checkedSubjectId;
+    let sendContent: string[] = []; //送信内容格納
 
     sendContent.push(studentId);
     sendContent.push(subjectId);
@@ -39,7 +45,7 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfo> = ({
         (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
       );
       if (date === "") {
-        sendContent.push("period2-save");
+        sendContent.push("save-period2");
       } else {
         sendContent.push(filterClassInfo[0].timeTableSpecialId);
       }
@@ -51,7 +57,7 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfo> = ({
         (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
       );
       if (date === "") {
-        sendContent.push("period2-delete");
+        sendContent.push("delete-period2");
       } else {
         sendContent.push(filterClassInfo[0].timeTableSpecialId);
       }
@@ -61,23 +67,27 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfo> = ({
       method: "PUT",
       body: sendContent.toString(),
     };
-    fetch(`${API_BASE_URL}/student/update-special-schedule`, options)
+    fetch(`${API_STUDENT.UpdateSpecialSchedule}`, options)
       .then((response) => response.json())
       .then((updateTargetClass) => {
-        console.log(updateTargetClass);
+        alert(updateTargetClass);
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
-        alert("couldn't add task");
+        alert("スケジュールを更新できませんでした");
       });
-    navigate(`${PASS_ROUTING.Top}`);
   };
   return (
     <>
       <Row>
-        <Col md={10}></Col>
-        <Col>
-          <Button onClick={updateSchedule} className={"btn btn-summary ml-4"}>
+        <Col md={9}></Col>
+        <Col md={3}>
+          <Button onClick={resetSchedule} className={"btn btn-warning"}>
+            キャンセル
+          </Button>
+          <span> </span>
+          <Button onClick={updateSchedule} className={"btn btn-summary pl-4"}>
             登録
           </Button>
         </Col>

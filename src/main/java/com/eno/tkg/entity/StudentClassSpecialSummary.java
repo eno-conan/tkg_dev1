@@ -44,7 +44,7 @@ public class StudentClassSpecialSummary implements Cloneable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "special_season_id", nullable = false)
 	@JsonIgnore
@@ -59,11 +59,11 @@ public class StudentClassSpecialSummary implements Cloneable {
 	@JoinColumn(name = "subject_key")
 	@JsonIgnore
 	private Subject subject;
-	
-	@Column(name="total_class_count",length = 8, nullable = false)
+
+	@Column(name = "total_class_count", length = 8, nullable = false)
 	private int totalClassCount;
-	
-	@Column(name="unplace_class_count",length = 8, nullable = false)
+
+	@Column(name = "unplace_class_count", length = 8, nullable = false)
 	private int unplaceClassCount;
 
 	@Column(name = "created_at")
@@ -71,5 +71,19 @@ public class StudentClassSpecialSummary implements Cloneable {
 
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-	
+
+	@Override
+	public StudentClassSpecialSummary clone() {
+		StudentClassSpecialSummary scss = new StudentClassSpecialSummary();
+		scss.id = id;
+		scss.specialSeason = specialSeason;
+		scss.student = student;
+		scss.subject = subject;
+		scss.totalClassCount = totalClassCount;
+		scss.unplaceClassCount = unplaceClassCount;
+		scss.createdAt = createdAt;
+		scss.updatedAt = updatedAt;
+		return scss;
+	}
+
 }

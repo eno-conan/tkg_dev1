@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { Container, Button, Col, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet";
-import { PASS_ROUTING } from "../../config";
+import { PASS_MAIN_FUNCTION, STUDENT_FUNCTION } from "../../config";
 
 import "../tkgStyle.css";
 
@@ -27,7 +27,7 @@ export const TkgTop = () => {
         <Row className={"pt-4"}>
           <Col md={12} className={"pb-6 pl-4"}>
             <Link
-              to={PASS_ROUTING.ClassSchedule}
+              to={PASS_MAIN_FUNCTION.ClassSchedule}
               className={"btn btn-success btn-lg"}
             >
               授業予定
@@ -41,7 +41,10 @@ export const TkgTop = () => {
         <br />
         <Row className={"pt-4"}>
           <Col md={6} className={"pb-6 pl-4"}>
-            <Link to="/click-button-table" className={"btn btn-success btn-lg"}>
+            <Link
+              to={PASS_MAIN_FUNCTION.Student}
+              className={"btn btn-success btn-lg"}
+            >
               生徒情報
             </Link>
             <ul>

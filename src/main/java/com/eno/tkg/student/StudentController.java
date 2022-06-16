@@ -84,7 +84,6 @@ public class StudentController {
 			try {
 				return updateSpecialScheduleService.updateTargetStudentSpecialSchedule(content);
 			} catch (SQLIntegrityConstraintViolationException e) {
-//				e.printStackTrace();
 				throw new Exception("生徒スケジュール更新：SQL更新でエラーが発生しました");
 			}
 		} catch (JsonProcessingException e) {

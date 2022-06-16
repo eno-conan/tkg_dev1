@@ -1,13 +1,11 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 // import { useParams } from "react-router";
-import { API_BASE_URL, PASS_ROUTING } from "../../../config";
 import { useNavigate } from "react-router-dom";
 import { Table } from "react-bootstrap";
 // import Header from "../react-form_220530/Header";
 
 import "../../tkgStyle.css";
-import { ClassInfo } from "./initData";
 import { classesPeriodArray } from "./RegistSpecialSchedule";
 import AlreadyClassExist from "./AlreadyClassExist";
 import NoClassFrame from "./NoClassFrame";

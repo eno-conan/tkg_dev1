@@ -44,6 +44,11 @@ const NoClassFrame: React.FC<CheckedCountInfo> = ({
 
   //スケジュール部分のチェックボックスに関する処理
   const checkOneCell = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (checkSubjectCount === 0) {
+      alert("残コマ数が0になっているため、これ以上追加できません");
+      event.target.checked = false;
+      return;
+    }
     if (checkedSubjectId === "0") {
       event.target.checked = false;
       alert("科目を選択してください");
