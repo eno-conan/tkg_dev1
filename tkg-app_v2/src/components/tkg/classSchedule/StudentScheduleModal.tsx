@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { API_BASE_URL } from "../../../config";
-import { ClassInfo, classScheduleList, customStyles } from "../ClassSchedule";
+import { ClassInfo, classScheduleList, customStyles } from "./initData";
 import StudentScheduleView from "./StudentScheduleView";
 import Modal from "react-modal";
 import {

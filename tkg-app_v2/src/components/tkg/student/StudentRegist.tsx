@@ -3,16 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import {
   gradeArray,
-  Classroom,
   classroomArray,
   classroomData,
-  Grade,
   gradeData,
 } from "./initData";
 import "../../tkgStyle.css";
 import { API_STUDENT } from "../../../config";
-import RegistForm from "./RegistForm";
-import RegistConfirmStudentModal from "./RegistConfirmStudentModal";
+import RegistForm from "./regist/RegistForm";
+import RegistConfirmStudentModal from "./regist/RegistConfirmStudentModal";
 
 const StudentRegist = () => {
   //入力項目の管理
