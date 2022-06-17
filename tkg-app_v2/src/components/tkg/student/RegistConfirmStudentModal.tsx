@@ -7,7 +7,7 @@ import { customStyles } from "../ClassSchedule";
 import "../../tkgStyle.css";
 import { API_STUDENT } from "../../../config";
 import { Classroom, Grade } from "./initData";
-import { classroomArray, gradeArray } from "./StudentRegist";
+import { classroomArray, gradeArray } from "./initData";
 
 interface RegistStudentModal {
   studentName: string;

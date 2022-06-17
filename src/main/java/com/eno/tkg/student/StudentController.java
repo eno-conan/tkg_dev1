@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eno.tkg.entity.StudentScheduleSpecial;
+import com.eno.tkg.exception.RegistStudentException;
+import com.eno.tkg.exception.UpdateSpecialScheduleException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
@@ -33,6 +35,9 @@ class StudentController {
 
 	@Autowired
 	private RegistStudentService registStudentService;
+	
+	@Autowired
+	private SearchStudentService searchStudentService;
 
 	/**
 	 * 生徒登録に必要なデータ取得（教室情報）
@@ -42,14 +47,12 @@ class StudentController {
 		try {
 			return registStudentService.prepareDataClassroomRegistStudent();
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			return "";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
+			return e.getMessage();
+		} catch (RegistStudentException e) {
+			return e.getMessage();
 		}
 	}
-	
+
 	/**
 	 * 生徒登録に必要なデータ取得（学年情報）
 	 */
@@ -76,6 +79,21 @@ class StudentController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			return "";
+		}
+	}
+
+	/**
+	 * 該当生徒の情報取得
+	 */
+	@GetMapping("/student/search")
+	String searchStudent(@RequestParam(name = "classroomId") final String classroomId,
+			@RequestParam(name = "studentName") final String studentName) {
+		try {
+			return searchStudentService.searchStudent(classroomId, studentName);
+		} catch (JsonProcessingException e) {
+			return e.getMessage();
+		} catch (RegistStudentException e) {
+			return e.getMessage();
 		}
 	}
 
@@ -137,8 +155,8 @@ class StudentController {
 			}
 		} catch (JsonProcessingException e) {
 			return "";
-		} catch (Exception e) {
-			return "";
+		} catch (UpdateSpecialScheduleException e) {
+			return e.getMessage();
 		}
 
 	}

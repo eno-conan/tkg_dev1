@@ -4,6 +4,7 @@ export const API_STUDENT = {
   //GET
   PrepareRegistClassroom: API_BASE_URL + "/student/regist-prepare-classroom", //新規登録に必要な教室取得
   PrepareRegistGrade: API_BASE_URL + "/student/regist-prepare-grade", //新規登録に必要なデータ取得
+  SearchStudent: API_BASE_URL + "/student/search",
   SpecialSummary: API_BASE_URL + "/student/special-summary",
   SpecialDateList: API_BASE_URL + "/student/special-date-list",
   SpecialSchedule: API_BASE_URL + "/student/special-schedule",
@@ -25,6 +26,8 @@ export const STUDENT_FUNCTION = {
   PrepareRegistClassroom: "/student/regist-prepare-classroom", //新規登録に必要なデータ取得
   PrepareRegistGrade: "/student/regist-prepare-grade", //新規登録に必要なデータ取得
   Regist: "/tkg/student/regist", //新規登録
+  SearchStudent: "/tkg/student/search", //検索
+  RegistSubject: "/tkg/student/registSubject", //受講科目登録
   UpdateSpecialSchedule:
     PASS_MAIN_FUNCTION.Student + "/update-student-schedule", //講習スケジュール更新
 };

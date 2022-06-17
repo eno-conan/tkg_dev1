@@ -7,6 +7,8 @@ export interface Grade {
   key: string;
   name: string;
 }
+export type classroomArray = Array<Classroom>;
+export type gradeArray = Array<Grade>;
 
 export const classroomData = [
   {
@@ -19,6 +21,25 @@ export const gradeData = [
   {
     key: "j2",
     name: "中学2年生",
+  },
+];
+
+/* 生徒検索*/
+export interface SearchResultStudent {
+  studentId: string;
+  studentName: string;
+  classroomName: string;
+  prefectureName: string;
+}
+
+export type searchStudentArray = Array<SearchResultStudent>;
+
+export const searchResultStudentData = [
+  {
+    studentId: "",
+    studentName: "",
+    classroomName: "",
+    prefectureName: "",
   },
 ];
 

@@ -21,6 +21,8 @@ import { ClassSchedule } from "./components/tkg/ClassSchedule";
 import RegistSpecialSchedule from "./components/tkg/student/RegistSpecialSchedule";
 import { StudentTop } from "./components/tkg/student/StudentTop";
 import StudentRegist from "./components/tkg/student/StudentRegist";
+import RegistSubject from "./components/tkg/student/RegistSubject";
+import StudentSearch from "./components/tkg/student/StudentSearch";
 
 export interface ITask {
   id: number;
@@ -41,14 +43,27 @@ const App: React.FC = () => {
                 path={PASS_MAIN_FUNCTION.ClassSchedule}
                 element={<ClassSchedule />}
               />
+              {/* 生徒トップ */}
               <Route
                 path={PASS_MAIN_FUNCTION.Student}
                 element={<StudentTop />}
               />
+              {/* 生徒登録 */}
               <Route
                 path={STUDENT_FUNCTION.Regist}
                 element={<StudentRegist />}
               />
+              {/* 生徒登録 */}
+              <Route
+                path={STUDENT_FUNCTION.SearchStudent}
+                element={<StudentSearch />}
+              />
+              {/* 科目登録 */}
+              <Route
+                path={STUDENT_FUNCTION.RegistSubject}
+                element={<RegistSubject />}
+              />
+              {/* 講習スケジュール登録 */}
               <Route
                 path={STUDENT_FUNCTION.UpdateSpecialSchedule}
                 element={<RegistSpecialSchedule />}

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Table } from "react-bootstrap";
 import { Container, Col, Row, Button, CloseButton } from "react-bootstrap";
 import "../../tkgStyle.css";
-import { classroomArray, gradeArray } from "./StudentRegist";
+import { classroomArray, gradeArray } from "./initData";
 
 interface DisplayForm {
   studentName: string;

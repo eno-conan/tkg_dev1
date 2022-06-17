@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.eno.tkg.entity.master.Classroom;
 import com.eno.tkg.entity.master.Grade;
 import com.eno.tkg.entity.master.Student;
+import com.eno.tkg.exception.RegistStudentException;
 import com.eno.tkg.repository.master.ClassroomRepository;
 import com.eno.tkg.repository.master.GradeRepository;
 import com.eno.tkg.repository.master.StudentRepository;
@@ -37,11 +38,19 @@ class RegistStudentService {
 	@Autowired
 	private ClassroomRepository classroomRepository;
 
-	String prepareDataClassroomRegistStudent() throws Exception {
+	/**
+	 * // 教室情報取得
+	 * 
+	 * @return json 整形した教室情報
+	 * @throws RegistStudentException
+	 * @throws JsonProcessingException
+	 *
+	 */
+	String prepareDataClassroomRegistStudent() throws RegistStudentException, JsonProcessingException {
 		List<Classroom> allClassroomInfo = classroomRepository.findAll();
 		if (allClassroomInfo.isEmpty()) {
 			log.error("教室情報が0件の状態");
-			throw new Exception("教室情報に関するエラーが発生しました");
+			throw new RegistStudentException("教室情報取得でエラーが発生しました。少々お待ちください。");
 		}
 
 		// 教室IDと教室名のみ取得
@@ -50,11 +59,19 @@ class RegistStudentService {
 		return strJson;
 	}
 
-	String prepareDataGradeRegistStudent() throws Exception {
+	/**
+	 * // 学年情報取得
+	 * 
+	 * @return json 整形した学年情報
+	 * @throws RegistStudentException
+	 * @throws JsonProcessingException
+	 *
+	 */
+	String prepareDataGradeRegistStudent() throws RegistStudentException, JsonProcessingException {
 		List<Grade> allGradeInfo = gradeRepository.findAll();
 		if (allGradeInfo.isEmpty()) {
 			log.error("学年情報が0件の状態");
-			throw new Exception("学年情報に関するエラーが発生しました");
+			throw new RegistStudentException("学年情報取得でエラーが発生しました。少々お待ちください。");
 		}
 
 		List<Map<String, String>> gradekeyAndNameList = pickupGradeInfo(allGradeInfo);
@@ -62,6 +79,13 @@ class RegistStudentService {
 		return strJson;
 	}
 
+	/**
+	 * 生徒登録
+	 * 
+	 * @param content 登録内容
+	 * @throws JsonProcessingException
+	 *
+	 */
 	@Transactional
 	String registStudent(final String content) throws JsonProcessingException {
 		System.out.println(content);

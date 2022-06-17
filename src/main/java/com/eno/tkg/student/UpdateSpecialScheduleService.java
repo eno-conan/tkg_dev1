@@ -17,6 +17,7 @@ import com.eno.tkg.entity.master.Lecturer;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.entity.master.Subject;
 import com.eno.tkg.entity.master.TimeTableSpecial;
+import com.eno.tkg.exception.UpdateSpecialScheduleException;
 import com.eno.tkg.repository.StudentClassSpecialSummaryRepository;
 import com.eno.tkg.repository.StudentScheduleSpecialRepository;
 import com.eno.tkg.repository.TimeTableSpecialRepository;
@@ -49,7 +50,7 @@ public class UpdateSpecialScheduleService {
 		String[] requestBoby = content.split(",");
 		List<String> requestBobyListWhole = Arrays.asList(requestBoby);
 		if (requestBobyListWhole.isEmpty()) {
-			throw new Exception("送信内容が存在しません");
+			throw new UpdateSpecialScheduleException("送信内容が存在しません");
 		}
 
 		// 科目の概要取得
@@ -57,7 +58,7 @@ public class UpdateSpecialScheduleService {
 		Optional<StudentClassSpecialSummary> summaryInfo = studentClassSpecialSummaryRepository
 				.findById(specialSummaryId);
 		if (summaryInfo.isEmpty()) {
-			throw new Exception("summaryが存在しません");
+			throw new UpdateSpecialScheduleException("summaryが存在しません");
 		}
 
 		try {
@@ -67,7 +68,7 @@ public class UpdateSpecialScheduleService {
 					requestBobyListWhole.size());// tableId一覧取得
 			updateStudentScheduleSpecialTable(studentId, summaryInfo, relateTimeTableInfoList);
 		} catch (Exception e) {
-			throw new Exception("DB更新でエラーが発生しました");
+			throw new UpdateSpecialScheduleException("DB更新でエラーが発生しました");
 		}
 
 		String strJson = UseOverFunction.getDataToJsonFormat("更新処理が完了しました");

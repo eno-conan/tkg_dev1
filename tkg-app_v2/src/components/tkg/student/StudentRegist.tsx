@@ -1,14 +1,18 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
-import { Classroom, classroomData, Grade, gradeData } from "./initData";
+import {
+  gradeArray,
+  Classroom,
+  classroomArray,
+  classroomData,
+  Grade,
+  gradeData,
+} from "./initData";
 import "../../tkgStyle.css";
 import { API_STUDENT } from "../../../config";
 import RegistForm from "./RegistForm";
 import RegistConfirmStudentModal from "./RegistConfirmStudentModal";
-
-export type classroomArray = Array<Classroom>;
-export type gradeArray = Array<Grade>;
 
 const StudentRegist = () => {
   //入力項目の管理
