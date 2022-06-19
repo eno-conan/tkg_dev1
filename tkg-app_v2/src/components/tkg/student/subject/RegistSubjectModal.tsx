@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
-import {
-  Container,
-  Col,
-  Row,
-  Button,
-  CloseButton,
-  Table,
-} from "react-bootstrap";
+import { Col, Row, Button, CloseButton } from "react-bootstrap";
 import {
   customStyles,
   lecturerArray,
   lecturerData,
-  studentSubjArray,
-  studentSubjData,
   subjByGradeArray,
   subjByGradeData,
   timeTableNormalArray,
@@ -22,6 +12,8 @@ import {
 } from "../initData";
 import "../../../tkgStyle.css";
 import { API_STUDENT } from "../../../../config";
+import RegistSubjectModalContent from "./RegistSubjectModalContent";
+import RegistSubjectModalInsertDb from "./RegistSubjectModalInsertDb";
 
 interface RegistSubjectProps {
   checkedStudentId: string;
@@ -33,14 +25,13 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
   //モーダル管理
   const [registSubjectModalIsOpen, setRegistSubjectModalIsOpen] =
     useState<boolean>(false);
-  const [studentSubjectList, setStudentSubjectList] =
-    useState<studentSubjArray>(studentSubjData);
-  //科目情報
+
+  //科目一覧（既に受講済みの科目は除外）
   const [subjectsByGradeList, setSubjectsByGradeList] =
     useState<subjByGradeArray>(subjByGradeData);
   //講師一覧
   const [lecturerList, setLecturerList] = useState<lecturerArray>(lecturerData);
-  //タイムテーブル一覧
+  //タイムテーブル一覧（既に授業が予定されたコマは除外）
   const [timeTableNormalList, setTimeTableNormal] =
     useState<timeTableNormalArray>(timeTableNormalData);
 
@@ -50,6 +41,7 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
   const [lecturer, setLecturer] = useState<string>("");
   let subtitle: HTMLHeadingElement | null;
 
+  //モーダル関連
   function openModalRegistSubject() {
     getSubjectsByGrade();
     getTimeTableNormal();
@@ -133,47 +125,6 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
     }
   };
 
-  //プルダウンで値選択
-  const selectSubject = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSubject(event.target.value);
-  };
-  const selectTimeTable = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTimetable(event.target.value);
-  };
-  const selectLecturer = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setLecturer(event.target.value);
-  };
-
-  const inserTableStudentSubject = () => {
-    if (!subject || !timetable || !lecturer) {
-      alert("科目・コマ・講師のいずれかが選択されていません");
-    } else {
-      //重複登録していないかチェックを実施/
-      const sendContent: string[] = [];
-      sendContent.push(checkedStudentId);
-      sendContent.push(subject);
-      sendContent.push(timetable);
-      sendContent.push(lecturer);
-      const options = {
-        method: "POST",
-        body: sendContent.toString(),
-      };
-      fetch(`${API_STUDENT.RegistSubject}`, options)
-        .then((response) => response.json())
-        .then((insertSubject) => {
-          // console.log(insertSubject);
-          alert(
-            "受講科目を追加しました。「受講科目確認」から登録内容を確認できます"
-          );
-          setRegistSubjectModalIsOpen(false);
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("科目追加が行えませんでした");
-        });
-    }
-  };
-
   return (
     <>
       <Col md={2}>
@@ -197,77 +148,21 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
                 <CloseButton onClick={closeModalRegistSubject} />
               </Col>
             </Row>
-            <Row>
-              <Col md={4}></Col>
-              <Col md={8} className={"mb-4"}>
-                <h4>受講科目登録</h4>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={4}></Col>
-              <Col md={8} className={"mb-4"}>
-                <label className={"mb-1"}>学年</label>
-                <div>
-                  <select onChange={selectSubject}>
-                    <option value="" selected>
-                      プルダウンから選択してください
-                    </option>
-                    {subjectsByGradeList.map((subject) => (
-                      <option value={subject.subjectKey}>
-                        {subject.subjectName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={4}></Col>
-              <Col md={8} className={"mb-4"}>
-                <label className={"mb-1"}>定期コマ</label>
-                <div>
-                  <select onChange={selectTimeTable}>
-                    <option value="" selected>
-                      プルダウンから選択してください
-                    </option>
-                    {timeTableNormalList.map((timetable) => (
-                      <option value={timetable.timeTableId}>
-                        {timetable.dateOfWeekFrame}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={4}></Col>
-              <Col md={8} className={"mb-4"}>
-                <label className={"mb-1"}>担当講師</label>
-                <div>
-                  <select onChange={selectLecturer}>
-                    <option value="" selected>
-                      プルダウンから選択してください
-                    </option>
-                    {lecturerList.map((lec) => (
-                      <option value={lec.lecturerId}>{lec.lecturerName}</option>
-                    ))}
-                  </select>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={10}></Col>
-              <Col md={2}>
-                <button
-                  className="btn btn-success float-right w-100"
-                  name="abc"
-                  id="serachResult"
-                  onClick={inserTableStudentSubject}
-                >
-                  登録
-                </button>
-              </Col>
-            </Row>
+            <RegistSubjectModalContent
+              subjectsByGradeList={subjectsByGradeList}
+              timeTableNormalList={timeTableNormalList}
+              lecturerList={lecturerList}
+              setSubject={setSubject}
+              setTimetable={setTimetable}
+              setLecturer={setLecturer}
+            />
+            <RegistSubjectModalInsertDb
+              checkedStudentId={checkedStudentId}
+              subject={subject}
+              timetable={timetable}
+              lecturer={lecturer}
+              setRegistSubjectModalIsOpen={setRegistSubjectModalIsOpen}
+            />
           </>
         </Modal>
       </Col>
