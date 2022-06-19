@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.eno.tkg.entity.master.Lecturer;
 import com.eno.tkg.entity.master.Prefecture;
@@ -29,9 +30,11 @@ import com.eno.tkg.entity.master.Subject;
 import com.eno.tkg.entity.master.TimeTableNormal;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "student_subject")
+@NoArgsConstructor
 @Data
 public class StudentSubject implements Serializable{
 
@@ -62,5 +65,13 @@ public class StudentSubject implements Serializable{
 
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
+	
+	@Transient
+	private String receiveErrorMessage;
+
+	public StudentSubject(String receiveErrorMessage) {
+		this.receiveErrorMessage = receiveErrorMessage;
+	}
+	
 
 }

@@ -49,7 +49,7 @@ public class Subject {
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
-	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	@OneToMany(mappedBy = "subject", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = false)
 	@JsonIgnore
 	private List<StudentSubject> studentSubjects;
 
@@ -68,7 +68,7 @@ public class Subject {
 	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	@JsonIgnore
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
-	
+
 	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<SubjectTargetGrade> subjectTargetGrade;
 

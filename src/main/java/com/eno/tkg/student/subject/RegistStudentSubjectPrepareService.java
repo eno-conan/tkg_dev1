@@ -18,6 +18,7 @@ import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.entity.master.Subject;
 import com.eno.tkg.entity.master.SubjectTargetGrade;
 import com.eno.tkg.entity.master.TimeTableNormal;
+import com.eno.tkg.entity.master.TimeTableSpecial;
 import com.eno.tkg.exception.RegistStudentException;
 import com.eno.tkg.exception.StudentSubjectException;
 import com.eno.tkg.repository.SubjectTargetGradeRepository;
@@ -59,8 +60,9 @@ public class RegistStudentSubjectPrepareService {
 			log.warn("既に在籍していない生徒の可能性あり");
 			throw new StudentSubjectException("生徒情報取得でエラーが発生しました。少々お待ちください。");
 		}
+		//生徒の学年で受講できる科目、かつ、まだ受講登録していない科目のみ取得
 		Optional<List<SubjectTargetGrade>> subjectsByGrade = subjectTargetGradeRepository
-				.findByGrade(new Grade(studentinfo.get().get(0).getGrade().getGradeKey()));
+				.getSubjectsByGradeAndNotRegistered(studentId);
 		if (subjectsByGrade.isEmpty()) {
 			log.error("この学年が受講できる受講科目が存在しない");
 			throw new StudentSubjectException("科目情報取得でエラーが発生しました。少々お待ちください。");
@@ -83,12 +85,12 @@ public class RegistStudentSubjectPrepareService {
 			log.warn("既に在籍していない生徒の可能性あり");
 			throw new StudentSubjectException("生徒情報取得でエラーが発生しました。少々お待ちください。");
 		}
-		// 講師一覧取得（生徒が在籍する教室の講師を先に取得（NativeQuery使用）
+		// 講師一覧取得（生徒が在籍する教室の講師を先に取得
 		Optional<List<Lecturer>> lecturers = lecturerRepository
 				.findLecturerStudentWithClassroomTop(studentinfo.get().get(0).getClassroom().getId());
 		if (lecturers.isEmpty()) {
-			log.error("この学年が受講できる受講科目が存在しない");
-			throw new StudentSubjectException("科目情報取得でエラーが発生しました。少々お待ちください。");
+			log.error("講師が1人も存在しない");
+			throw new StudentSubjectException("講師情報取得でエラーが発生しました。少々お待ちください。");
 		}
 		List<Map<String, Object>> subjectList = pickupLecturerInfo(Collections.unmodifiableList(lecturers.get()));
 		String strJson = UseOverFunction.getDataToJsonFormat(subjectList);
@@ -96,20 +98,20 @@ public class RegistStudentSubjectPrepareService {
 	}
 
 	/**
-	 * 生徒科目登録のデータ準備（講師情報）
+	 * 生徒科目登録のデータ準備（タイムテーブル情報）
 	 * 
 	 * @param studentId 登録内容
 	 * @throws JsonProcessingException
 	 *
 	 */
-	String prepareDataTimeTable() throws JsonProcessingException {
-		List<TimeTableNormal> timeTableInfo = timeTableNormalRepository.findAll();
+	String prepareDataTimeTable(final String studentId) throws JsonProcessingException {
+		Optional<List<TimeTableNormal>> timeTableInfo = timeTableNormalRepository.getFramesTargetStudentNoClass(studentId);
 		if (timeTableInfo.isEmpty()) {
 			log.error("タイムテーブルデータが0件");
 			throw new StudentSubjectException("科目情報取得でエラーが発生しました。少々お待ちください。");
 		}
 
-		List<Map<String, Object>> subjectList = pickupTimeTableInfo(Collections.unmodifiableList(timeTableInfo));
+		List<Map<String, Object>> subjectList = pickupTimeTableInfo(Collections.unmodifiableList(timeTableInfo.get()));
 		String strJson = UseOverFunction.getDataToJsonFormat(subjectList);
 		return strJson;
 	}
@@ -161,6 +163,8 @@ public class RegistStudentSubjectPrepareService {
 		List<Map<String, Object>> returnJsonLiteral = new ArrayList<>();
 		for (SubjectTargetGrade info : subjectsByGrade) {
 			Map<String, Object> infoMap = new LinkedHashMap<>();
+			System.out.println(info.getSubject().getSubjectKey());
+			System.out.println(info.getSubject().getDisplayName());
 			infoMap.put("subjectKey", info.getSubject().getSubjectKey());
 			infoMap.put("subjectName", info.getSubject().getDisplayName());
 			returnJsonLiteral.add(infoMap);

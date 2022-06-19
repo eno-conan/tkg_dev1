@@ -43,6 +43,11 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
   //タイムテーブル一覧
   const [timeTableNormalList, setTimeTableNormal] =
     useState<timeTableNormalArray>(timeTableNormalData);
+
+  //選択した値を管理
+  const [subject, setSubject] = useState<string>("");
+  const [timetable, setTimetable] = useState<string>("");
+  const [lecturer, setLecturer] = useState<string>("");
   let subtitle: HTMLHeadingElement | null;
 
   function openModalRegistSubject() {
@@ -81,12 +86,16 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
     }
   };
 
+  //タイムテーブルを取得
   const getTimeTableNormal = () => {
     if (!checkedStudentId) {
       alert("対象の生徒を選択してください。");
     } else {
       const options = { method: "GET" };
-      fetch(`${API_STUDENT.PrepareTimeTableNormal}`, options)
+      fetch(
+        `${API_STUDENT.PrepareTimeTableNormal}/${checkedStudentId}`,
+        options
+      )
         .then((response) => response.json())
         .then((result) => {
           if (result === "0") {
@@ -102,6 +111,7 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
     }
   };
 
+  //講師を取得
   const getLecturer = () => {
     if (!checkedStudentId) {
       alert("対象の生徒を選択してください。");
@@ -119,6 +129,47 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
         .catch((error) => {
           console.log(error);
           alert("couldn't fetch tasks");
+        });
+    }
+  };
+
+  //プルダウンで値選択
+  const selectSubject = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSubject(event.target.value);
+  };
+  const selectTimeTable = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTimetable(event.target.value);
+  };
+  const selectLecturer = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setLecturer(event.target.value);
+  };
+
+  const inserTableStudentSubject = () => {
+    if (!subject || !timetable || !lecturer) {
+      alert("科目・コマ・講師のいずれかが選択されていません");
+    } else {
+      //重複登録していないかチェックを実施/
+      const sendContent: string[] = [];
+      sendContent.push(checkedStudentId);
+      sendContent.push(subject);
+      sendContent.push(timetable);
+      sendContent.push(lecturer);
+      const options = {
+        method: "POST",
+        body: sendContent.toString(),
+      };
+      fetch(`${API_STUDENT.RegistSubject}`, options)
+        .then((response) => response.json())
+        .then((insertSubject) => {
+          // console.log(insertSubject);
+          alert(
+            "受講科目を追加しました。「受講科目確認」から登録内容を確認できます"
+          );
+          setRegistSubjectModalIsOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("科目追加が行えませんでした");
         });
     }
   };
@@ -157,7 +208,7 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
               <Col md={8} className={"mb-4"}>
                 <label className={"mb-1"}>学年</label>
                 <div>
-                  <select>
+                  <select onChange={selectSubject}>
                     <option value="" selected>
                       プルダウンから選択してください
                     </option>
@@ -175,7 +226,7 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
               <Col md={8} className={"mb-4"}>
                 <label className={"mb-1"}>定期コマ</label>
                 <div>
-                  <select>
+                  <select onChange={selectTimeTable}>
                     <option value="" selected>
                       プルダウンから選択してください
                     </option>
@@ -193,7 +244,7 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
               <Col md={8} className={"mb-4"}>
                 <label className={"mb-1"}>担当講師</label>
                 <div>
-                  <select>
+                  <select onChange={selectLecturer}>
                     <option value="" selected>
                       プルダウンから選択してください
                     </option>
@@ -211,7 +262,7 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
                   className="btn btn-success float-right w-100"
                   name="abc"
                   id="serachResult"
-                  // onClick={searchStudentByClassroomAndName}
+                  onClick={inserTableStudentSubject}
                 >
                   登録
                 </button>

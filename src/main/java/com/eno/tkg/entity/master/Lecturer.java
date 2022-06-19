@@ -61,7 +61,7 @@ public class Lecturer {
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
-	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	@OneToMany(mappedBy = "lecturer", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = false)
 	private List<StudentSubject> studentSubjects;
 
 	@OneToMany(mappedBy = "lecturer", cascade = CascadeType.PERSIST, orphanRemoval = false)

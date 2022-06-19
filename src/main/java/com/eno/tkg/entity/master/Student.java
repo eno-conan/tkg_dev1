@@ -34,48 +34,48 @@ public class Student {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "classroom_id")
 	@JsonIgnore
 	private Classroom classroom;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "grade_key")
 	@JsonIgnore
 	private Grade grade;
 
-	@Column(name="name",length = 128, nullable = false, unique = true)
+	@Column(name = "name", length = 128, nullable = false, unique = true)
 	private String studentName;
-	
-	@Column(name="birthday")
+
+	@Column(name = "birthday")
 	private Date birthday;
-	
-	@Column(name="delete_flg",length = 2)
+
+	@Column(name = "delete_flg", length = 2)
 	private boolean deleteFlg;
 
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-	
-	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
+
+	@OneToMany(mappedBy = "student", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = false)
 	private List<StudentSubject> studentSubjects;
-	
+
 	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentScheduleNormal> studentScheduleNormal;
-	
+
 	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentScheduleSpecial> studentScheduleSpecial;
-	
+
 	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
-	
+
 	public Student(Integer id) {
 		this.id = id;
 	}
-	
+
 //	public Student insertStudent() {
 //		Student initState = new Student();
 //		initState.setDeleteFlg(false);
