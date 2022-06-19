@@ -21,9 +21,8 @@ import { ClassSchedule } from "./components/tkg/ClassSchedule";
 import RegistSpecialSchedule from "./components/tkg/student/RegistSpecialSchedule";
 import { StudentTop } from "./components/tkg/student/StudentTop";
 import StudentRegist from "./components/tkg/student/StudentRegist";
-import RegistSubject from "./components/tkg/student/SubjectRegist";
 import StudentSearch from "./components/tkg/student/StudentSearch";
-import SubjectRegist from "./components/tkg/student/SubjectRegist";
+import SubjectRegist from "./components/tkg/student/subject/ShowCurrentSubject";
 import ShowSubjectWindow from "./components/tkg/student/subject/ShowSubjectWindow";
 
 export interface ITask {
@@ -65,11 +64,7 @@ const App: React.FC = () => {
                 path={`${STUDENT_FUNCTION.SearchStudent}/:checkedStudentId`}
                 element={<ShowSubjectWindow />}
               />
-              {/* 科目登録 */}
-              <Route
-                path={STUDENT_FUNCTION.RegistSubject}
-                element={<SubjectRegist />}
-              />
+
               {/* 講習スケジュール登録 */}
               <Route
                 path={STUDENT_FUNCTION.UpdateSpecialSchedule}

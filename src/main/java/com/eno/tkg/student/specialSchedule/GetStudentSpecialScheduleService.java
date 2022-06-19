@@ -1,4 +1,4 @@
-package com.eno.tkg.student;
+package com.eno.tkg.student.specialSchedule;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -49,7 +49,7 @@ public class GetStudentSpecialScheduleService {
 	 *
 	 */
 	// 戻り値はMapを使用
-	public String getTargetStudentSpecialSchedule(final String studentId, final String specialSeasonId)
+	String getTargetStudentSpecialSchedule(final String studentId, final String specialSeasonId)
 			throws JsonProcessingException {
 
 		// 講習日程取得

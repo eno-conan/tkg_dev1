@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Col, Row, Button, CloseButton } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import "../../tkgStyle.css";
-import { API_STUDENT, STUDENT_FUNCTION } from "../../../config";
+import { API_STUDENT } from "../../../config";
 import {
   classroomArray,
   classroomData,
@@ -14,10 +14,9 @@ import {
 import SearchForm from "./studentSearch/SearchForm";
 import ResultTable from "./studentSearch/ResultTable";
 import RegistSubjectModal from "./subject/RegistSubjectModal";
+import ShowCurrentSubject from "./subject/ShowCurrentSubject";
 
 const StudentSearch = () => {
-  const navigate = useNavigate();
-
   //DBからの教室情報を管理
   const [classroomList, setClassroomList] =
     useState<classroomArray>(classroomData);
@@ -56,28 +55,15 @@ const StudentSearch = () => {
       });
   };
 
-  //テスト用
-  const checkStudentSubject = () => {
-    if (checkedStudentId) {
-      window.open(
-        `${STUDENT_FUNCTION.SearchStudent}/${checkedStudentId}`,
-        "",
-        "width=800,height=400,left=200,top=150"
-      );
-    } else {
-      alert("対象の生徒を選択してください。");
-    }
-  };
-
-  //テスト用
-  const checkStudentInfo = () => {
-    // navigate(`/receive-param/${id}`);
-    // window.open(
-    //   `${STUDENT_FUNCTION.SearchStudent}/${checkedStudentId}`,
-    //   "",
-    //   "width=600,height=400,left=200,top=200"
-    // );
-  };
+  // //テスト用
+  // const checkStudentInfo = () => {
+  //   // navigate(`/receive-param/${id}`);
+  //   // window.open(
+  //   //   `${STUDENT_FUNCTION.SearchStudent}/${checkedStudentId}`,
+  //   //   "",
+  //   //   "width=600,height=400,left=200,top=200"
+  //   // );
+  // };
 
   return (
     <div id="app">
@@ -107,35 +93,15 @@ const StudentSearch = () => {
       {displayStudentFlg ? (
         <>
           <Row className={"pt-4"}>
-            <Col md={2}>
-              <Button
-                onClick={checkStudentSubject}
-                className={"btn btn-secondary ml-4"}
-              >
-                受講科目確認
-              </Button>
-            </Col>
-            <Col md={2}>
-              <RegistSubjectModal checkedStudentId={checkedStudentId} />
-            </Col>
+            {/* 受講科目表示 */}
+            <ShowCurrentSubject checkedStudentId={checkedStudentId} />
+            {/* 受講科目登録 */}
+            <RegistSubjectModal checkedStudentId={checkedStudentId} />
           </Row>
           <Row className={"pt-4"}></Row>
         </>
       ) : (
-        <>
-          {/* <Row className={"pt-4"}>
-            <Col md={2}>
-              <button
-                className="btn btn-secondary float-right w-50"
-                name="abc"
-                id="serachResult"
-                onClick={checkStudentInfo}
-              >
-                値Check!
-              </button>
-            </Col>
-          </Row> */}
-        </>
+        <></>
       )}
     </div>
   );

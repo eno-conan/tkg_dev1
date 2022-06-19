@@ -1,4 +1,4 @@
-package com.eno.tkg.student;
+package com.eno.tkg.student.specialSchedule;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;

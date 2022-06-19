@@ -164,8 +164,13 @@ const AlterDateModal: React.FC<ReceiveClassSchedule> = ({
         onAfterOpen={afterOpenModalAlterClass}
         onRequestClose={closeModalAlterClass}
       >
-        <CloseButton onClick={closeModalAlterClass} />
         <form>
+          <Row>
+            <Col md={11}></Col>
+            <Col md={1}>
+              <CloseButton onClick={closeModalAlterClass} />
+            </Col>
+          </Row>
           <Row>
             <h4>振替設定</h4>
             <p>{alterClassSpan}</p>

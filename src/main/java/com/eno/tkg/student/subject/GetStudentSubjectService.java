@@ -1,4 +1,4 @@
-package com.eno.tkg.student;
+package com.eno.tkg.student.subject;
 
 import java.util.ArrayList;
 import java.util.Collections;

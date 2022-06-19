@@ -1,6 +1,4 @@
-package com.eno.tkg.student;
-
-import java.util.List;
+package com.eno.tkg.student.subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,80 +17,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/tkg")
-class StudentController {
-
-	@Autowired
-	private RegistStudentService registStudentService;
-
-	@Autowired
-	private SearchStudentService searchStudentService;
+class StudentSubjectController {
 	
 	@Autowired
 	private GetStudentSubjectService getStudentSubjectService;
 	
 	@Autowired
 	private RegistStudentSubjectService registStudentSubjectService;
+	
+	@Autowired
+	private RegistStudentSubjectPrepareService registStudentSubjectPrepareService;
+
 
 	/**
-	 * 生徒登録に必要なデータ取得（教室情報）
-	 */
-	@GetMapping("/student/regist-prepare-classroom")
-	String prepareDataClassroomRegistStudent() {
-		try {
-			return registStudentService.prepareDataClassroomRegistStudent();
-		} catch (JsonProcessingException e) {
-			return e.getMessage();
-		} catch (RegistStudentException e) {
-			return e.getMessage();
-		}
-	}
-
-	/**
-	 * 生徒登録に必要なデータ取得（学年情報）
-	 */
-	@GetMapping("/student/regist-prepare-grade")
-	String prepareDataGradeRegistStudent() {
-		try {
-			return registStudentService.prepareDataGradeRegistStudent();
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			return "";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	/**
-	 * 生徒登録
-	 */
-	@PostMapping("/student/regist")
-	String registStudent(@RequestBody final String content) {
-		try {
-			return registStudentService.registStudent(content);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	/**
-	 * 該当生徒の情報取得
-	 */
-	@GetMapping("/student/search")
-	String searchStudent(@RequestParam(name = "classroomId") final String classroomId,
-			@RequestParam(name = "studentName") final String studentName) {
-		try {
-			return searchStudentService.searchStudent(classroomId, studentName);
-		} catch (JsonProcessingException e) {
-			return e.getMessage();
-		} catch (RegistStudentException e) {
-			return e.getMessage();
-		}
-	}
-
-	/**
-	 * 該当生徒の受講科目取得
+	 * チェックした生徒の受講科目取得
 	 */
 	@GetMapping("/student/search-subject/{studentId}")
 	String getStudentSubject(@PathVariable(name = "studentId") final String studentId) {
@@ -113,7 +51,7 @@ class StudentController {
 	String prepareDataSubjectByGrade(@PathVariable(name = "studentId") final String studentId) {
 		
 		try {
-			return registStudentSubjectService.prepareDataSubjectByGrade(studentId);
+			return registStudentSubjectPrepareService.prepareDataSubjectByGrade(studentId);
 		} catch (JsonProcessingException e) {
 			return e.getMessage();
 		} catch (RegistStudentException e) {
@@ -122,13 +60,13 @@ class StudentController {
 	}
 	
 	/**
-	 * 該当生徒学年に基づいて、科目候補を取得
+	 * 該当生徒学年に基づいて、講師候補を取得
 	 */
 	@GetMapping("/student/regist-subject-prepare-lecturer/{studentId}")
 	String prepareDataLecturer(@PathVariable(name = "studentId") final String studentId) {
 		
 		try {
-			return registStudentSubjectService.prepareDataLecurer(studentId);
+			return registStudentSubjectPrepareService.prepareDataLecurer(studentId);
 		} catch (JsonProcessingException e) {
 			return e.getMessage();
 		} catch (RegistStudentException e) {
@@ -143,11 +81,26 @@ class StudentController {
 	String prepareDataTimeTableNormal() {
 		
 		try {
-			return registStudentSubjectService.prepareDataTimeTable();
+			return registStudentSubjectPrepareService.prepareDataTimeTable();
 		} catch (JsonProcessingException e) {
 			return e.getMessage();
 		} catch (RegistStudentException e) {
 			return e.getMessage();
 		}
 	}
+	
+	/**
+	 * 科目登録
+	 */
+	@PostMapping("/student/regist-subject")
+	String registStudent(@RequestBody final String content) {
+		try {
+			return registStudentSubjectService.registStudentSubject(content);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	
+	
 }

@@ -1,4 +1,4 @@
-package com.eno.tkg.student;
+package com.eno.tkg.student.specialSchedule;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class UpdateSpecialScheduleService {
 	 *
 	 */
 	@Transactional
-	public String updateTargetStudentSpecialSchedule(final String content) throws Exception {
+	String updateTargetStudentSpecialSchedule(final String content) throws Exception {
 		System.out.println(content);
 
 		String[] requestBoby = content.split(",");

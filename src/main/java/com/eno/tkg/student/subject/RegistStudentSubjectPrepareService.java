@@ -1,4 +1,4 @@
-package com.eno.tkg.student;
+package com.eno.tkg.student.subject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,13 +32,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class RegistStudentSubjectService {
+public class RegistStudentSubjectPrepareService {
 
 	@Autowired
 	private StudentRepository studentRepository;
-
-	@Autowired
-	private SubjectRepository subjectRepository;
 
 	@Autowired
 	private SubjectTargetGradeRepository subjectTargetGradeRepository;
@@ -128,7 +125,7 @@ public class RegistStudentSubjectService {
 		List<Map<String, Object>> returnJsonLiteral = new ArrayList<>();
 		for (TimeTableNormal info : timeTableInfo) {
 			Map<String, Object> infoMap = new LinkedHashMap<>();
-			infoMap.put("timeTableId", info.getId());
+			infoMap.put("timeTableId", String.valueOf(info.getId()));
 			infoMap.put("dateOfWeekFrame", info.getDayOfWeekJa() + info.getPeriod());
 			returnJsonLiteral.add(infoMap);
 		}
@@ -146,8 +143,8 @@ public class RegistStudentSubjectService {
 		List<Map<String, Object>> returnJsonLiteral = new ArrayList<>();
 		for (Lecturer info : lecturers) {
 			Map<String, Object> infoMap = new LinkedHashMap<>();
-			infoMap.put("lecturerId", info.getId());
-			infoMap.put("lecturerName", info.getLecturerName());
+			infoMap.put("lecturerId", String.valueOf(info.getId()));
+			infoMap.put("lecturerName", info.getLecturerName() + " | " + info.getClassroom().getClassroomName() + "教室");
 			returnJsonLiteral.add(infoMap);
 		}
 		return Collections.unmodifiableList(returnJsonLiteral);
@@ -169,19 +166,6 @@ public class RegistStudentSubjectService {
 			returnJsonLiteral.add(infoMap);
 		}
 		return Collections.unmodifiableList(returnJsonLiteral);
-	}
-
-	/**
-	 * 生徒科目登録
-	 * 
-	 * @param content 登録内容
-	 * @throws JsonProcessingException
-	 *
-	 */
-	String registStudentSubject(final String content) throws JsonProcessingException {
-		String[] requestBoby = content.split(",");
-		List<String> requestBodyList = Arrays.asList(requestBoby);
-		return "";
 	}
 
 }

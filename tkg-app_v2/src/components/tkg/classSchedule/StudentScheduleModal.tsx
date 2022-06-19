@@ -105,8 +105,13 @@ const StudentScheduleModal: React.FC<ReceiveClassSchedule> = ({
         onAfterOpen={afterOpenModalStudentSchedule}
         onRequestClose={closeModalStudentSchedule}
       >
-        <CloseButton onClick={closeModalStudentSchedule} />
         <form>
+          <Row>
+            <Col md={11}></Col>
+            <Col md={1}>
+              <CloseButton onClick={closeModalStudentSchedule} />
+            </Col>
+          </Row>
           <Row>
             <h4>生徒予定</h4>
           </Row>

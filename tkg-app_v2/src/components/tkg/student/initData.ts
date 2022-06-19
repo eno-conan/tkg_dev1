@@ -43,7 +43,7 @@ export const searchResultStudentData = [
   },
 ];
 
-/* 生徒科目表示・登録*/
+/* 生徒科目表示*/
 export interface StudentSubject {
   studentId: string;
   subjectName: string;
@@ -59,6 +59,32 @@ export const studentSubjData = [
     lecturerName: "",
     dateOfweekFrame: "",
   },
+];
+
+/* 生徒科目登録*/
+//学年に応じた科目一覧
+export interface SubjectsByGrade {
+  subjectKey: string;
+  subjectName: string;
+}
+export type subjByGradeArray = Array<SubjectsByGrade>;
+export const subjByGradeData = [{ subjectKey: "m3", subjectName: "数学IA" }];
+
+//講師一覧
+export interface LecturerWithStudentClassroom {
+  lecturerId: string;
+  lecturerName: string;
+}
+export type lecturerArray = Array<LecturerWithStudentClassroom>;
+export const lecturerData = [{ lecturerId: "1", lecturerName: "講師" }];
+//タイムテーブル一覧
+export interface TimeTableNormal {
+  timeTableId: string;
+  dateOfWeekFrame: string;
+}
+export type timeTableNormalArray = Array<TimeTableNormal>;
+export const timeTableNormalData = [
+  { timeTableId: "1", dateOfWeekFrame: "月" },
 ];
 
 /* 講習会授業予定表示*/

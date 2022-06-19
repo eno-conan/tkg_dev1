@@ -1,4 +1,4 @@
-package com.eno.tkg.student;
+package com.eno.tkg.student.regist;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -27,10 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-class RegistStudentService {
-
-	@Autowired
-	private StudentRepository studentRepository;
+class RegistStudentPrepareService {
 
 	@Autowired
 	private GradeRepository gradeRepository;
@@ -79,32 +76,7 @@ class RegistStudentService {
 		return strJson;
 	}
 
-	/**
-	 * 生徒登録
-	 * 
-	 * @param content 登録内容
-	 * @throws JsonProcessingException
-	 *
-	 */
-	@Transactional
-	String registStudent(final String content) throws JsonProcessingException {
-		System.out.println(content);
-		String[] requestBoby = content.split(",");
-		List<String> requestBodyList = Arrays.asList(requestBoby);
-
-		Student insertInfo = new Student();
-		insertInfo.setStudentName(requestBodyList.get(0));
-		insertInfo.setBirthday(UseOverFunction.convertStrDateToDateType(requestBodyList.get(1)));
-		insertInfo.setClassroom(new Classroom(Integer.parseInt(requestBodyList.get(2))));
-		insertInfo.setGrade(new Grade(requestBodyList.get(3)));
-		insertInfo.setDeleteFlg(false);
-		insertInfo.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		insertInfo.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		studentRepository.save(insertInfo);
-		String strJson = UseOverFunction.getDataToJsonFormat("生徒登録処理が完了しました");
-		return strJson;
-	}
-
+	
 	private List<Map<String, String>> pickupClassroomInfo(List<Classroom> allClassroomInfo) {
 		List<Map<String, String>> returnJsonLiteral = new ArrayList<>();
 		for (Classroom info : allClassroomInfo) {
