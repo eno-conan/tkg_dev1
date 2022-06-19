@@ -98,7 +98,8 @@ CREATE TABLE `m_student` (
 CREATE TABLE `time_table_normal` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   day_of_week CHAR(8) NOT null,
-  period CHAR(8) NOT null
+  period CHAR(8) NOT null,
+  day_of_week_ja CHAR(16) NOT null
 );
 
 CREATE TABLE `special_season` (

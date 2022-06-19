@@ -13,8 +13,11 @@ import {
 } from "./initData";
 import SearchForm from "./studentSearch/SearchForm";
 import ResultTable from "./studentSearch/ResultTable";
+import RegistSubjectModal from "./studentSearch/RegistSubjectModal";
 
 const StudentSearch = () => {
+  const navigate = useNavigate();
+
   //DBからの教室情報を管理
   const [classroomList, setClassroomList] =
     useState<classroomArray>(classroomData);
@@ -55,8 +58,13 @@ const StudentSearch = () => {
 
   //テスト用
   const checkStudentInfo = () => {
-    console.log(studentList);
-    console.log(checkedStudentId);
+    // navigate(`/receive-param/${id}`);
+
+    window.open(
+      "/router-breadcrumbs",
+      "",
+      "width=600,height=400,left=200,top=200"
+    );
   };
 
   return (
@@ -86,17 +94,10 @@ const StudentSearch = () => {
       />
       {displayStudentFlg ? (
         <>
-          {" "}
-          <Row className={"pt-4"}>
-            <Col md={4}>
-              <Button
-                // onClick={}
-                className={"btn btn-secondary ml-4"}
-              >
-                受講科目登録
-              </Button>
-            </Col>
-          </Row>
+          <RegistSubjectModal checkedStudentId={checkedStudentId} />
+        </>
+      ) : (
+        <>
           <Row className={"pt-4"}>
             <Col md={2}>
               <button
@@ -110,8 +111,6 @@ const StudentSearch = () => {
             </Col>
           </Row>
         </>
-      ) : (
-        <></>
       )}
     </div>
   );

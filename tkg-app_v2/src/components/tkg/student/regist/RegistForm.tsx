@@ -4,7 +4,7 @@ import { Container, Col, Row, Button, CloseButton } from "react-bootstrap";
 import "../../../tkgStyle.css";
 import { classroomArray, gradeArray } from "../initData";
 
-interface DisplayForm {
+interface DisplayFormProps {
   studentName: string;
   setStudentName: React.Dispatch<React.SetStateAction<string>>;
   birthday: string;
@@ -15,7 +15,7 @@ interface DisplayForm {
   gradeList: gradeArray;
 }
 
-const RegistForm: React.FC<DisplayForm> = ({
+const RegistForm: React.FC<DisplayFormProps> = ({
   studentName,
   setStudentName,
   birthday,

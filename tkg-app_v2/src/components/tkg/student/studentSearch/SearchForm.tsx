@@ -6,7 +6,7 @@ import "../../../tkgStyle.css";
 import { classroomArray, searchStudentArray } from "../initData";
 import { API_STUDENT } from "../../../../config";
 
-interface SearchStudentForm {
+interface SearchStudentFormProps {
   classroomList: classroomArray;
   classroomFilterList: classroomArray;
   setClassroomFilterclassroomFilterList: React.Dispatch<
@@ -16,7 +16,7 @@ interface SearchStudentForm {
   setStudentList: React.Dispatch<React.SetStateAction<searchStudentArray>>;
 }
 
-const SearchForm: React.FC<SearchStudentForm> = ({
+const SearchForm: React.FC<SearchStudentFormProps> = ({
   classroomList,
   classroomFilterList,
   setClassroomFilterclassroomFilterList,
@@ -87,10 +87,10 @@ const SearchForm: React.FC<SearchStudentForm> = ({
               placeholder={"北海道、東京"}
               value={classroomFilterValue || ""}
               onChange={filterClassroom}
-            />
+            />{" "}
             <select onChange={selectClassroom}>
               <option value="" selected>
-                プルダウンから選択してください
+                全教室
               </option>
               {classroomFilterList.map((classroom) => (
                 <option value={classroom.id}>{classroom.name} 教室</option>

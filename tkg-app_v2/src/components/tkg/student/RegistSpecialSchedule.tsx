@@ -8,11 +8,11 @@ import {
 } from "./initData";
 // import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Table, Button } from "react-bootstrap";
-import AlreadyClassExist from "./AlreadyClassExist";
-import NoClassFrame from "./NoClassFrame";
-import SpecialScheduleSummary from "./SpecialScheduleSummary";
-import UpdateDbSpecialSchedule from "./UpdateDbSpecialSchedule";
-import SpecialScheduleFrame from "./SpecialScheduleFrame";
+import AlreadyClassExist from "./specialSchedule/AlreadyClassExist";
+import NoClassFrame from "./specialSchedule/NoClassFrame";
+import SpecialScheduleSummary from "./specialSchedule/SpecialScheduleSummary";
+import UpdateDbSpecialSchedule from "./specialSchedule/UpdateDbSpecialSchedule";
+import SpecialScheduleFrame from "./specialSchedule/SpecialScheduleFrame";
 
 export type classesPeriodArray = Array<ClassInfo>;
 export type specialSummaryArray = Array<SummaryInfo>;

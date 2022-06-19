@@ -43,6 +43,24 @@ export const searchResultStudentData = [
   },
 ];
 
+/* 生徒科目表示・登録*/
+export interface StudentSubject {
+  studentId: string;
+  subjectName: string;
+  lecturerName: string;
+  dateOfweekFrame: string;
+}
+
+export type studentSubjArray = Array<StudentSubject>;
+export const studentSubjData = [
+  {
+    studentId: "",
+    subjectName: "",
+    lecturerName: "",
+    dateOfweekFrame: "",
+  },
+];
+
 /* 講習会授業予定表示*/
 //科目とコマ数
 export interface SummaryInfo {

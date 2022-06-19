@@ -8,7 +8,7 @@ import "../../../tkgStyle.css";
 import { API_STUDENT } from "../../../../config";
 import { Classroom, Grade, classroomArray, gradeArray } from "../initData";
 
-interface RegistStudentModal {
+interface RegistStudentProps {
   studentName: string;
   birthday: string;
   classroomName: string;
@@ -17,7 +17,7 @@ interface RegistStudentModal {
   gradeList: gradeArray;
 }
 
-const RegistConfirmStudentModal: React.FC<RegistStudentModal> = ({
+const RegistConfirmStudentModal: React.FC<RegistStudentProps> = ({
   studentName,
   birthday,
   classroomName,

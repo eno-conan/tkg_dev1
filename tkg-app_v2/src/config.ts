@@ -4,9 +4,10 @@ export const API_STUDENT = {
   //GET
   PrepareRegistClassroom: API_BASE_URL + "/student/regist-prepare-classroom", //新規登録に必要な教室取得
   PrepareRegistGrade: API_BASE_URL + "/student/regist-prepare-grade", //新規登録に必要なデータ取得
-  SearchStudent: API_BASE_URL + "/student/search",
-  SpecialSummary: API_BASE_URL + "/student/special-summary",
-  SpecialDateList: API_BASE_URL + "/student/special-date-list",
+  SearchStudent: API_BASE_URL + "/student/search", //生徒検索
+  SearchSubject: API_BASE_URL + "/student/search-subject", //生徒検索
+  SpecialSummary: API_BASE_URL + "/student/special-summary", //講習会スケジュール概要
+  SpecialDateList: API_BASE_URL + "/student/special-date-list", //講習会日程情報
   SpecialSchedule: API_BASE_URL + "/student/special-schedule",
   //POST
   RegistStudent: API_BASE_URL + "/student/regist",

@@ -9,11 +9,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eno.tkg.entity.StudentSubject;
 import com.eno.tkg.entity.master.Classroom;
 import com.eno.tkg.entity.master.Grade;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.exception.RegistStudentException;
 import com.eno.tkg.exception.SearchStudentException;
+import com.eno.tkg.repository.StudentSubjectRepository;
 import com.eno.tkg.repository.master.StudentRepository;
 import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,10 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class SearchStudentService {
+public class GetStudentSubjectService {
 
 	@Autowired
 	private StudentRepository studentRepository;
+	@Autowired
+	private StudentSubjectRepository studentSubjectRepository;
 
 	/**
 	 * // 生徒情報取得
@@ -35,41 +39,34 @@ public class SearchStudentService {
 	 * @throws JsonProcessingException
 	 *
 	 */
-	public String searchStudent(final String classroomId, final String studentName) throws JsonProcessingException {
+	public String getStudentSubject(final String studentId) throws JsonProcessingException {
 
 		// 結果格納
-		List<Student> studentWholeInfo = new ArrayList<>();
-		//教室名を条件に設定しているかどうかで取得方法を変える
-		if ("".equals(classroomId)) {
-			studentWholeInfo = studentRepository.findByStudentNameLike("%" + studentName + "%");
-		} else {
-			studentWholeInfo = studentRepository.findByClassroomAndStudentNameLike(
-					new Classroom(Integer.parseInt(classroomId)), "%" + studentName + "%");
-		}
-		if (studentWholeInfo.isEmpty()) {
-			log.info("生徒情報が0件の状態");
+		List<StudentSubject> studentSubjectInfo = studentSubjectRepository
+				.findByStudent(new Student(Integer.parseInt(studentId)));
+		if (studentSubjectInfo.isEmpty()) {
+			log.info("生徒科目情報が0件の状態");
 			return UseOverFunction.getDataToJsonFormat("0");
-
 		}
 
 //		// 教室IDと教室名のみ取得
-		List<Map<String, Object>> studentIdAndNameList = pickupstudentInfo(
-				Collections.unmodifiableList(studentWholeInfo));
-		String strJson = UseOverFunction.getDataToJsonFormat(studentIdAndNameList);
+		List<Map<String, Object>> studentSubjectList = pickupstudentSubjectInfo(
+				Collections.unmodifiableList(studentSubjectInfo));
+		String strJson = UseOverFunction.getDataToJsonFormat(studentSubjectList);
 		return strJson;
 	}
 
-	private List<Map<String, Object>> pickupstudentInfo(List<Student> studentWholeInfo) {
+	private List<Map<String, Object>> pickupstudentSubjectInfo(List<StudentSubject> studentSubjectInfo) {
 		List<Map<String, Object>> returnJsonLiteral = new ArrayList<>();
-		for (Student info : studentWholeInfo) {
+		for (StudentSubject info : studentSubjectInfo) {
 			Map<String, Object> infoMap = new LinkedHashMap<>();
 			infoMap.put("studentId", info.getId());
-			infoMap.put("studentName", info.getStudentName());
-			infoMap.put("classroomName", info.getClassroom().getClassroomName());
-			infoMap.put("prefectureName", info.getClassroom().getMPrefecture().getPrefectureName());
+			infoMap.put("subjectName", info.getSubject().getDisplayName());
+			infoMap.put("lecturerName", info.getLecturer().getLecturerName());
+			infoMap.put("dateOfweekFrame",
+					info.getTimeTableNormal().getDayOfWeekJa() + info.getTimeTableNormal().getPeriod());
 			returnJsonLiteral.add(infoMap);
 		}
 		return Collections.unmodifiableList(returnJsonLiteral);
 	}
-
 }

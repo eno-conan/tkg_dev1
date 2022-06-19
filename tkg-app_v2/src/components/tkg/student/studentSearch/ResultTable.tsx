@@ -8,7 +8,7 @@ import SortIcon from "@material-ui/icons/ArrowDownward";
 import "../../../tkgStyle.css";
 import { searchStudentArray } from "../initData";
 
-interface Result {
+interface ResultProps {
   studentList: searchStudentArray;
   displayStudentFlg: boolean;
   setCheckedStudentId: React.Dispatch<React.SetStateAction<string>>;
@@ -20,14 +20,14 @@ const StudentTableColumns = [
     sortable: false,
   },
   {
-    name: "都道府県 |教室名",
+    name: "都道府県 | 教室名",
     selector: (row: { prefectureName: string; classroomName: string }) =>
       row.prefectureName + " | " + row.classroomName,
     sortable: false,
   },
 ];
 
-const ResultTable: React.FC<Result> = ({
+const ResultTable: React.FC<ResultProps> = ({
   studentList,
   displayStudentFlg,
   setCheckedStudentId,

@@ -29,11 +29,15 @@ public class TimeTableNormal {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "day_of_week", length = 128, nullable = false)
+	//要らないかも
+	@Column(name = "day_of_week", length = 16, nullable = false)
 	private String dayOfWeek;
 
-	@Column(name = "period", length = 128, nullable = false)
+	@Column(name = "period", length = 16, nullable = false)
 	private String period;
+	
+	@Column(name = "day_of_week_ja", length = 16, nullable = false)
+	private String dayOfWeekJa;
 
 	@OneToMany(mappedBy = "timeTableNormal", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentSubject> studentSubjects;

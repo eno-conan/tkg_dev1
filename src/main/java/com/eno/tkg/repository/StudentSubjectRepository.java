@@ -12,7 +12,7 @@ import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.entity.master.TimeTableNormal;
 
 @Repository
-public interface StudentSubjectRepository extends CrudRepository<StudentSubject, Integer>{
+public interface StudentSubjectRepository extends JpaRepository<StudentSubject, Integer>{
 		
 	public List<StudentSubject> findByTimeTableNormalIn(List<TimeTableNormal> timeTableNormalIds);
 	
