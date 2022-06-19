@@ -27,8 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 public class GetStudentSubjectService {
 
 	@Autowired
-	private StudentRepository studentRepository;
-	@Autowired
 	private StudentSubjectRepository studentSubjectRepository;
 
 	/**

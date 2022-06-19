@@ -37,6 +37,9 @@ public class Grade {
 	
 	@OneToMany(mappedBy = "grade", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Student> students;
+	
+	@OneToMany(mappedBy = "grade", cascade = CascadeType.PERSIST, orphanRemoval = true)
+	private List<SubjectTargetGrade> subjectTargetGrade;
 
 	public Grade(String gradeKey) {
 		this.gradeKey = gradeKey;

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Button, CloseButton } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import "../../tkgStyle.css";
-import { API_STUDENT } from "../../../config";
+import { API_STUDENT, STUDENT_FUNCTION } from "../../../config";
 import {
   classroomArray,
   classroomData,
@@ -13,7 +13,7 @@ import {
 } from "./initData";
 import SearchForm from "./studentSearch/SearchForm";
 import ResultTable from "./studentSearch/ResultTable";
-import RegistSubjectModal from "./studentSearch/RegistSubjectModal";
+import RegistSubjectModal from "./subject/RegistSubjectModal";
 
 const StudentSearch = () => {
   const navigate = useNavigate();
@@ -57,14 +57,26 @@ const StudentSearch = () => {
   };
 
   //テスト用
+  const checkStudentSubject = () => {
+    if (checkedStudentId) {
+      window.open(
+        `${STUDENT_FUNCTION.SearchStudent}/${checkedStudentId}`,
+        "",
+        "width=800,height=400,left=200,top=150"
+      );
+    } else {
+      alert("対象の生徒を選択してください。");
+    }
+  };
+
+  //テスト用
   const checkStudentInfo = () => {
     // navigate(`/receive-param/${id}`);
-
-    window.open(
-      "/router-breadcrumbs",
-      "",
-      "width=600,height=400,left=200,top=200"
-    );
+    // window.open(
+    //   `${STUDENT_FUNCTION.SearchStudent}/${checkedStudentId}`,
+    //   "",
+    //   "width=600,height=400,left=200,top=200"
+    // );
   };
 
   return (
@@ -94,11 +106,24 @@ const StudentSearch = () => {
       />
       {displayStudentFlg ? (
         <>
-          <RegistSubjectModal checkedStudentId={checkedStudentId} />
+          <Row className={"pt-4"}>
+            <Col md={2}>
+              <Button
+                onClick={checkStudentSubject}
+                className={"btn btn-secondary ml-4"}
+              >
+                受講科目確認
+              </Button>
+            </Col>
+            <Col md={2}>
+              <RegistSubjectModal checkedStudentId={checkedStudentId} />
+            </Col>
+          </Row>
+          <Row className={"pt-4"}></Row>
         </>
       ) : (
         <>
-          <Row className={"pt-4"}>
+          {/* <Row className={"pt-4"}>
             <Col md={2}>
               <button
                 className="btn btn-secondary float-right w-50"
@@ -109,7 +134,7 @@ const StudentSearch = () => {
                 値Check!
               </button>
             </Col>
-          </Row>
+          </Row> */}
         </>
       )}
     </div>

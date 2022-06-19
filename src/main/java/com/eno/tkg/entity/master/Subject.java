@@ -68,6 +68,9 @@ public class Subject {
 	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	@JsonIgnore
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
+	
+	@OneToMany(mappedBy = "subject", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	private List<SubjectTargetGrade> subjectTargetGrade;
 
 	public Subject(String subjectKey) {
 		this.subjectKey = subjectKey;

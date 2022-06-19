@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eno.tkg.exception.RegistStudentException;
+import com.eno.tkg.exception.StudentSubjectException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
@@ -28,6 +29,9 @@ class StudentController {
 	
 	@Autowired
 	private GetStudentSubjectService getStudentSubjectService;
+	
+	@Autowired
+	private RegistStudentSubjectService registStudentSubjectService;
 
 	/**
 	 * 生徒登録に必要なデータ取得（教室情報）
@@ -95,6 +99,51 @@ class StudentController {
 		
 		try {
 			return getStudentSubjectService.getStudentSubject(studentId);
+		} catch (JsonProcessingException e) {
+			return e.getMessage();
+		} catch (StudentSubjectException e) {
+			return e.getMessage();
+		}
+	}
+	
+	/**
+	 * 該当生徒学年に基づいて、科目候補を取得
+	 */
+	@GetMapping("/student/regist-subject-prepare-grade/{studentId}")
+	String prepareDataSubjectByGrade(@PathVariable(name = "studentId") final String studentId) {
+		
+		try {
+			return registStudentSubjectService.prepareDataSubjectByGrade(studentId);
+		} catch (JsonProcessingException e) {
+			return e.getMessage();
+		} catch (RegistStudentException e) {
+			return e.getMessage();
+		}
+	}
+	
+	/**
+	 * 該当生徒学年に基づいて、科目候補を取得
+	 */
+	@GetMapping("/student/regist-subject-prepare-lecturer/{studentId}")
+	String prepareDataLecturer(@PathVariable(name = "studentId") final String studentId) {
+		
+		try {
+			return registStudentSubjectService.prepareDataLecurer(studentId);
+		} catch (JsonProcessingException e) {
+			return e.getMessage();
+		} catch (RegistStudentException e) {
+			return e.getMessage();
+		}
+	}
+	
+	/**
+	 * 該当生徒学年に基づいて、科目候補を取得
+	 */
+	@GetMapping("/student/regist-subject-prepare-timetable")
+	String prepareDataTimeTableNormal() {
+		
+		try {
+			return registStudentSubjectService.prepareDataTimeTable();
 		} catch (JsonProcessingException e) {
 			return e.getMessage();
 		} catch (RegistStudentException e) {

@@ -75,6 +75,7 @@ CREATE TABLE `m_subject` (
 );
 
 CREATE TABLE `m_subject_target_grade` (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
   grade_key CHAR(32),
   subject_key CHAR(32),
   UNIQUE(grade_key,subject_key),

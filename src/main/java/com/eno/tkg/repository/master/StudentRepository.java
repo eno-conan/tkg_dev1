@@ -1,6 +1,7 @@
 package com.eno.tkg.repository.master;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -15,6 +16,8 @@ import com.eno.tkg.entity.master.Student;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
 
 	public List<Student> findAll();
+	
+	public Optional<List<Student>> findByIdAndDeleteFlgFalse(Integer studentId);
 
 	public List<Student> findByStudentNameLike(String studentName);
 	

@@ -24,6 +24,7 @@ import StudentRegist from "./components/tkg/student/StudentRegist";
 import RegistSubject from "./components/tkg/student/SubjectRegist";
 import StudentSearch from "./components/tkg/student/StudentSearch";
 import SubjectRegist from "./components/tkg/student/SubjectRegist";
+import ShowSubjectWindow from "./components/tkg/student/subject/ShowSubjectWindow";
 
 export interface ITask {
   id: number;
@@ -58,6 +59,11 @@ const App: React.FC = () => {
               <Route
                 path={STUDENT_FUNCTION.SearchStudent}
                 element={<StudentSearch />}
+              />
+              {/* 受講科目表示 */}
+              <Route
+                path={`${STUDENT_FUNCTION.SearchStudent}/:checkedStudentId`}
+                element={<ShowSubjectWindow />}
               />
               {/* 科目登録 */}
               <Route
