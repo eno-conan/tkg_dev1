@@ -24,6 +24,7 @@ import StudentRegist from "./components/tkg/student/StudentRegist";
 import StudentSearch from "./components/tkg/student/StudentSearch";
 import SubjectRegist from "./components/tkg/student/subject/ShowCurrentSubject";
 import ShowSubjectWindow from "./components/tkg/student/subject/ShowSubjectWindow";
+import MultiCheckbox from "./components/pathParam/MultiCheckbox";
 
 export interface ITask {
   id: number;
@@ -70,6 +71,7 @@ const App: React.FC = () => {
                 path={STUDENT_FUNCTION.UpdateSpecialSchedule}
                 element={<RegistSpecialSchedule />}
               />
+              <Route path="/multi-check" element={<MultiCheckbox />} />
               {/* receievePathParam 220607 */}
               <Route
                 path="/receive-param/:id"
