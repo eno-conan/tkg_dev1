@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import com.eno.tkg.entity.LecturerWorkableTime;
 import com.eno.tkg.entity.SpecialSeasonDateList;
+import com.eno.tkg.entity.StudentAttendanceSpecial;
 import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.entity.StudentScheduleSpecial;
 import com.eno.tkg.entity.StudentSubject;
@@ -44,6 +45,9 @@ public class TimeTableSpecial {
 	
 	@OneToMany(mappedBy = "timeTableSpecial", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval=true)
 	private List<StudentScheduleSpecial> studentScheduleSpecial;
+	
+	@OneToMany(mappedBy = "timeTableSpecial", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval=true)
+	private List<StudentAttendanceSpecial> studentAttendanceSpecial;
 	
 //	@OneToMany(mappedBy = "TimeTableSpecial", cascade = CascadeType.ALL, orphanRemoval = true)
 //	private List<StudentSubject> studentSubjects;

@@ -48,7 +48,7 @@ export const StudentTop = () => {
               to={STUDENT_FUNCTION.UpdateSpecialSchedule}
               className={"btn btn-success"}
             >
-              講習会予定作成
+              授業予定？？
             </Link>
           </Col>
           <Col md={6} className={"pb-6 pl-4"}>
@@ -57,6 +57,26 @@ export const StudentTop = () => {
               className={"btn btn-warning"}
             >
               受講科目登録（検索画面から遷移させる）
+            </Link>
+          </Col>
+        </Row>
+        <br />
+        <br />
+        <Row className={"pt-4"}>
+          <Col md={6} className={"pb-6 pl-4"}>
+            <Link
+              to={STUDENT_FUNCTION.InputSpecialAttendance}
+              className={"btn btn-success"}
+            >
+              講習会通塾時間設定
+            </Link>
+          </Col>
+          <Col md={6} className={"pb-6 pl-4"}>
+            <Link
+              to={STUDENT_FUNCTION.UpdateSpecialSchedule}
+              className={"btn btn-success"}
+            >
+              講習会授業予定作成
             </Link>
           </Col>
         </Row>

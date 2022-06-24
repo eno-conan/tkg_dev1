@@ -18,6 +18,7 @@ export const API_STUDENT = {
   RegistStudent: API_BASE_URL + "/student/regist", //生徒登録
   RegistSubject: API_BASE_URL + "/student/regist-subject", //生徒科目登録
   //PUT
+  UpdateSpecialAttendance: API_BASE_URL + "/student/update-special-attendance",
   UpdateSpecialSchedule: API_BASE_URL + "/student/update-special-schedule", //講習スケジュール更新
 };
 
@@ -35,6 +36,7 @@ export const STUDENT_FUNCTION = {
   Regist: "/tkg/student/regist", //新規登録
   SearchStudent: "/tkg/student/search", //検索
   ShowSubject: "/tkg/student/showSubject", //検索
+  InputSpecialAttendance: "/tkg/student/input-special-attendance", //受講科目登録
   RegistSubject: "/tkg/student/registSubject", //受講科目登録
   UpdateSpecialSchedule:
     PASS_MAIN_FUNCTION.Student + "/update-student-schedule", //講習スケジュール更新

@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.eno.tkg.entity.StudentAttendanceSpecial;
 import com.eno.tkg.entity.StudentClassSpecialSummary;
 import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.entity.StudentScheduleSpecial;
@@ -71,6 +72,10 @@ public class Student {
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
 	private List<StudentClassSpecialSummary> studentClassSpecialSummary;
+	
+	@OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = false)
+	private List<StudentAttendanceSpecial> studentAttendanceSpecial;
+
 
 	public Student(Integer id) {
 		this.id = id;

@@ -256,6 +256,19 @@ CREATE TABLE `student_schedule_special` (
   FOREIGN KEY (time_table_special_id) REFERENCES time_table_special(id)
 );
 
+CREATE TABLE `student_attendance_special` (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  special_season_id INTEGER NOT null,
+  student_id INTEGER NOT null,
+  time_table_special_id INTEGER NOT null,
+  created_at timestamp,
+  updated_at timestamp,
+  UNIQUE(student_id,time_table_special_id,time_table_special_id),
+  FOREIGN KEY (student_id) REFERENCES m_student(id),
+  FOREIGN KEY (time_table_special_id) REFERENCES time_table_special(id),
+  FOREIGN KEY (special_season_id) REFERENCES special_season(id)
+);
+
 CREATE TABLE `portal_user` (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   classroom_id INTEGER NOT null,

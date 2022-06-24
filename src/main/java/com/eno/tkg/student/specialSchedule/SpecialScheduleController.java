@@ -32,6 +32,9 @@ class SpecialScheduleController {
 
 	@Autowired
 	private UpdateSpecialScheduleService updateSpecialScheduleService;
+	
+	@Autowired
+	private UpdateSpecialAttendanceService updateSpecialAttendanceService;
 
 	/**
 	 * 講習期間の日付取得
@@ -74,9 +77,27 @@ class SpecialScheduleController {
 		}
 
 	}
+	
+	/**
+	 * 講習会参加予定作成
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@PutMapping("/student/update-special-attendance")
+	String updateTargetStudentSpecialAttendance(@RequestBody final String content) throws Exception {
+		try {
+			return updateSpecialAttendanceService.updateAttendance(content);
+		} catch (JsonProcessingException e) {
+			return "";
+		} catch (UpdateSpecialScheduleException e) {
+			return e.getMessage();
+		}
+
+	}
 
 	/**
-	 * スケジュール更新（追加のみ、削除はまだ）
+	 * スケジュール更新
 	 * 
 	 * @throws Exception
 	 * 
