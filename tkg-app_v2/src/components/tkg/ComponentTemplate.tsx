@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Button, CloseButton } from "react-bootstrap";
-import "../../../tkgStyle.css";
 
 interface UpdateInfo {
   // setBirthday: React.Dispatch<React.SetStateAction<string>>;

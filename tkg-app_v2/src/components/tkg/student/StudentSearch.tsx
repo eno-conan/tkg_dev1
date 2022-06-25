@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import "../../tkgStyle.css";
-import { API_STUDENT } from "../../../config";
+import { API_STUDENT, STUDENT_FUNCTION } from "../../../config";
 import {
   classroomArray,
   classroomData,
@@ -97,6 +97,15 @@ const StudentSearch = () => {
             <ShowCurrentSubject checkedStudentId={checkedStudentId} />
             {/* 受講科目登録 */}
             <RegistSubjectModal checkedStudentId={checkedStudentId} />
+            {/* 講習会出欠入力 */}
+            <Col md={4}>
+              <Link
+                to={`${STUDENT_FUNCTION.InputSpecialAttendance}/${checkedStudentId}`}
+                className={"btn btn-secondary ml-4"}
+              >
+                講習会通塾時間設定
+              </Link>
+            </Col>
           </Row>
           <Row className={"pt-4"}></Row>
         </>

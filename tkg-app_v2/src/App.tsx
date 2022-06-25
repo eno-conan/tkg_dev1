@@ -25,7 +25,7 @@ import StudentSearch from "./components/tkg/student/StudentSearch";
 import SubjectRegist from "./components/tkg/student/subject/ShowCurrentSubject";
 import ShowSubjectWindow from "./components/tkg/student/subject/ShowSubjectWindow";
 import MultiCheckbox from "./components/pathParam/MultiCheckbox";
-import InputAttendance from "./components/tkg/student/specialSchedule/InputAttendance";
+import InputAttendance from "./components/tkg/student/specialAttendance/InputAttendance";
 
 export interface ITask {
   id: number;
@@ -68,7 +68,7 @@ const App: React.FC = () => {
               />
               {/* 講習出欠日程入力 */}
               <Route
-                path={`${STUDENT_FUNCTION.InputSpecialAttendance}`}
+                path={`${STUDENT_FUNCTION.InputSpecialAttendance}/:checkedStudentId`}
                 element={<InputAttendance />}
               />
               {/* 講習スケジュール登録 */}

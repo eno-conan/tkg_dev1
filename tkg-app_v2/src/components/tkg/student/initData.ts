@@ -87,6 +87,45 @@ export const timeTableNormalData = [
   { timeTableId: "1", dateOfWeekFrame: "月" },
 ];
 
+/* */
+export interface dateAndFrame {
+  // We only use these three ones
+  date: string;
+  ids: number[];
+}
+
+export interface idAndCheckInfoIF {
+  timeTableId: string;
+  checkedFlg: boolean;
+}
+
+export interface currentCheckedStatusIF {
+  date: string;
+  idAndCheckInfo: idAndCheckInfoIF[];
+}
+
+export const dateFrameData = [
+  {
+    date: "",
+    ids: [1, 2, 3, 4, 5, 6, 7],
+  },
+];
+
+export const hopeShape = [
+  {
+    date: "2022/07/19",
+    idAndCheckInfo: [
+      { timeTableId: "1", checkedFlg: true },
+      { timeTableId: "2", checkedFlg: true },
+      { timeTableId: "3", checkedFlg: true },
+      { timeTableId: "4", checkedFlg: true },
+      { timeTableId: "5", checkedFlg: true },
+      { timeTableId: "6", checkedFlg: true },
+      { timeTableId: "7", checkedFlg: true },
+    ],
+  },
+];
+
 /* 講習会授業予定表示*/
 //科目とコマ数
 export interface SummaryInfo {
