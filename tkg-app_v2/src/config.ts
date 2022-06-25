@@ -13,6 +13,7 @@ export const API_STUDENT = {
     API_BASE_URL + "/student/regist-subject-prepare-timetable", //タイムテーブル（通常）の取得
   SpecialSummary: API_BASE_URL + "/student/special-summary", //講習会スケジュール概要
   SpecialDateList: API_BASE_URL + "/student/special-date-list", //講習会日程情報
+  SpecialAttendance: API_BASE_URL + "/student/current-attendance-special", //講習会出欠情報
   SpecialSchedule: API_BASE_URL + "/student/special-schedule",
   //POST
   RegistStudent: API_BASE_URL + "/student/regist", //生徒登録
