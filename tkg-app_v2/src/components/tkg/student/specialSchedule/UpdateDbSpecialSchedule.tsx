@@ -71,7 +71,7 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfoProps> = ({
       method: "PUT",
       body: sendContent.toString(),
     };
-    fetch(`${API_STUDENT.UpdateSpecialSchedule}`, options)
+    fetch(`${API_STUDENT.SpecialSchedule}`, options)
       .then((response) => response.json())
       .then((updateTargetClass) => {
         alert(updateTargetClass);

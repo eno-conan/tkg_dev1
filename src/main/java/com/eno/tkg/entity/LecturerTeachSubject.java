@@ -9,22 +9,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.eno.tkg.entity.master.Classroom;
 import com.eno.tkg.entity.master.Lecturer;
 import com.eno.tkg.entity.master.Subject;
-import com.eno.tkg.entity.master.TimeTableNormal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "lecturer_teach_subject")
+@NoArgsConstructor
 @Data
 public class LecturerTeachSubject implements Serializable {
 
@@ -36,10 +33,12 @@ public class LecturerTeachSubject implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "lecturer_id")
+	@JsonIgnore
 	private Lecturer lecturer;
 
 	@ManyToOne
 	@JoinColumn(name = "subject_key")
+	@JsonIgnore
 	private Subject subject;
 
 	@Column(name = "teach_flg", length = 2)

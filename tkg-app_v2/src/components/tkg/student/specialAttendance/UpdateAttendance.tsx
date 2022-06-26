@@ -30,7 +30,7 @@ const UpdateAttendance: React.FC<UpdateInfoProps> = ({
       method: "PUT",
       body: sendContent.toString(),
     };
-    fetch(`${API_STUDENT.UpdateSpecialAttendance}`, options)
+    fetch(`${API_STUDENT.SpecialAttendance}`, options)
       .then((response) => response.json())
       .then((updateSuccessMessage) => {
         alert(updateSuccessMessage);

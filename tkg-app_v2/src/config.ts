@@ -11,16 +11,13 @@ export const API_STUDENT = {
     API_BASE_URL + "/student/regist-subject-prepare-lecturer", //講師一覧取得（生徒が在籍する教室の講師を先頭に表示）
   PrepareTimeTableNormal:
     API_BASE_URL + "/student/regist-subject-prepare-timetable", //タイムテーブル（通常）の取得
-  SpecialSummary: API_BASE_URL + "/student/special-summary", //講習会スケジュール概要
-  SpecialDateList: API_BASE_URL + "/student/special-date-list", //講習会日程情報
-  SpecialAttendance: API_BASE_URL + "/student/current-attendance-special", //講習会出欠情報
-  SpecialSchedule: API_BASE_URL + "/student/special-schedule",
+  SpecialSummary: API_BASE_URL + "/student/summary-special", //講習会スケジュール概要
+  SpecialDateList: API_BASE_URL + "/student/date-list-special", //講習会日程情報
+  SpecialAttendance: API_BASE_URL + "/student/attendance-special", //講習会出欠情報
+  SpecialSchedule: API_BASE_URL + "/student/schedule-special", //講習スケジュール更新
   //POST
   RegistStudent: API_BASE_URL + "/student/regist", //生徒登録
   RegistSubject: API_BASE_URL + "/student/regist-subject", //生徒科目登録
-  //PUT
-  UpdateSpecialAttendance: API_BASE_URL + "/student/update-special-attendance",
-  UpdateSpecialSchedule: API_BASE_URL + "/student/update-special-schedule", //講習スケジュール更新
 };
 
 /* フロント */
@@ -37,7 +34,7 @@ export const STUDENT_FUNCTION = {
   Regist: "/tkg/student/regist", //新規登録
   SearchStudent: "/tkg/student/search", //検索
   ShowSubject: "/tkg/student/showSubject", //検索
-  InputSpecialAttendance: "/tkg/student/input-special-attendance", //受講科目登録
+  InputSpecialAttendance: "/tkg/student/attendance-special", //受講科目登録
   RegistSubject: "/tkg/student/registSubject", //受講科目登録
   UpdateSpecialSchedule:
     PASS_MAIN_FUNCTION.Student + "/update-student-schedule", //講習スケジュール更新

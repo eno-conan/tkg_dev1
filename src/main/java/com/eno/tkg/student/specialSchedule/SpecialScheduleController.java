@@ -32,7 +32,7 @@ class SpecialScheduleController {
 	/**
 	 * 講習期間の日付取得
 	 */
-	@GetMapping("/student/special-date-list/{specialSeasonId}")
+	@GetMapping("/student/date-list-special/{specialSeasonId}")
 	String etSpecialDateList(@PathVariable(name = "specialSeasonId") final String specialSeasonId) {
 		try {
 			return studentSpecialScheduleService.getSpecialDateList(specialSeasonId);
@@ -42,10 +42,25 @@ class SpecialScheduleController {
 	}
 
 	/**
+	 * 講習期間の{studentId}の受講科目とコマ数情報取得
+	 * 
+	 */
+	@GetMapping("/student/summary-special/{studentId}")
+	String getTargetStudentSpecialSummary(@PathVariable(name = "studentId") final String studentId,
+			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
+		try {
+			return studentSpecialScheduleService.getTargetStudentSpecialSummary(studentId, specialSeasonId);
+		} catch (JsonProcessingException e) {
+			return "";
+
+		}
+	}
+
+	/**
 	 * 講習期間の{studentId}のスケジュール取得
 	 * 
 	 */
-	@GetMapping("/student/special-schedule/{studentId}")
+	@GetMapping("/student/schedule-special/{studentId}")
 	String getTargetStudentSpecialSchedule(@PathVariable(name = "studentId") final String studentId,
 			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
 		try {
@@ -56,28 +71,12 @@ class SpecialScheduleController {
 	}
 
 	/**
-	 * 講習期間の{studentId}の受講科目とコマ数情報取得
-	 * 
-	 */
-	@GetMapping("/student/special-summary/{studentId}")
-	String getTargetStudentSpecialSummary(@PathVariable(name = "studentId") final String studentId,
-			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
-		try {
-			return studentSpecialScheduleService.getTargetStudentSpecialSummary(studentId, specialSeasonId);
-		} catch (JsonProcessingException e) {
-			return "";
-
-		}
-
-	}
-
-	/**
 	 * スケジュール更新
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@PutMapping("/student/update-special-schedule")
+	@PutMapping("/student/schedule-special")
 	String updateTargetStudentSpecialSchedule(@RequestBody final String content) throws Exception {
 		try {
 			try {

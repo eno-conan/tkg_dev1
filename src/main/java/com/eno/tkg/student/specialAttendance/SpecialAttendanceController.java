@@ -27,7 +27,7 @@ class SpecialAttendanceController {
 	/**
 	 * 講習期間の生徒の出欠予定取得
 	 */
-	@GetMapping("/student/current-attendance-special/{studentId}")
+	@GetMapping("/student/attendance-special/{studentId}")
 	String getCurrentAttendanceSpecial(@PathVariable(name = "studentId") final String studentId,
 			@RequestParam(name = "specialSeasonId") final String specialSeasonId) {
 		try {
@@ -43,7 +43,8 @@ class SpecialAttendanceController {
 	 * @throws Exception
 	 * 
 	 */
-	@PutMapping("/student/update-special-attendance")
+//	@PutMapping("/student/update-special-attendance")
+	@PutMapping("/student/attendance-special")
 	String updateTargetStudentSpecialAttendance(@RequestBody final String content) throws Exception {
 		try {
 			return updateSpecialAttendanceService.updateAttendance(content);

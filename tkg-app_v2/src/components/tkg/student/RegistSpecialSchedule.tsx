@@ -78,7 +78,7 @@ const RegistSpecialSchedule = () => {
         })
         .catch((error) => {
           console.log(error);
-          alert("couldn't fetch tasks");
+          alert("講習会科目コマ数が取得できませんでした。");
         });
     }
 
@@ -93,7 +93,7 @@ const RegistSpecialSchedule = () => {
         })
         .catch((error) => {
           console.log(error);
-          alert("couldn't fetch tasks");
+          alert("講習会日程が取得できませんでした。");
         });
     }
     // 指定した生徒の講習期間スケジュールを取得
@@ -113,7 +113,7 @@ const RegistSpecialSchedule = () => {
         })
         .catch((error) => {
           console.log(error);
-          alert("couldn't fetch tasks");
+          alert("講習会スケジュールが取得できませんでした。");
         });
     }
   }, []);

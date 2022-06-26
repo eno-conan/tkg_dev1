@@ -1,0 +1,112 @@
+# swaggerバージョン宣言
+# https://zenn.dev/nekoniki/articles/acd946cc349d1e
+# https://swagger.io/docs/specification/describing-parameters/
+
+swagger: "2.0"
+
+# 基本情報
+info:
+  # バージョン表記
+  version: 1.0.0
+  # タイトル
+  title: TKG
+  # 説明
+  description: |
+    - 各APIの呼び出しURL
+# リクエスト方式
+schemes:
+  - http
+  - https
+# ホスト
+host: localhost:8080
+# 基底パス
+basePath: /tkg/
+# タグ定義
+tags:
+  - name: "ClassSchedule"
+    description: 授業予定に関するAPI
+    externalDocs:
+      description: "AAAAAAAAAA"
+      url: "http://hogehoge"
+  - name: "Book"
+    description: 書籍に関するエンドポイント
+    externalDocs:
+      description: "BBBBBBBBBB"
+      url: "http://fugafuga"
+# エンドポイント
+paths:
+  /class-schedule:
+    get:
+      summary: 授業一覧を取得
+      tags:
+        - ClassSchedule
+      responses:
+        200:
+          description: 授業予定取得
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+      parameters:
+        - name: targetDate
+          in: query
+          schema:
+            type: string
+          description: The number of items to skip before starting to collect the result set
+  /articles/{id}:
+    get:
+      summary: 指定した記事の詳細を取得
+      tags:
+        - Article
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: ef304778ada8a6
+              author:
+                type: string
+                example: ネコニキ
+              title:
+                type: string
+                example: ReactNative@v0.63で追加されたPressableが地味にすごい
+              link:
+                type: string
+                example: https://zenn.dev/nekoniki/articles/ef304778ada8a6
+      parameters:
+        - name: id
+          in: header
+          type: string
+          required: true
+  /books/{id}:
+    delete:
+      summary: 指定した書籍の削除
+      tags:
+        - Book
+      produces:
+        - application/x-www-form-urlencoded
+      consumes:
+        - application/text/plain
+      responses:
+        200:
+          description: 削除完了時のレスポンス
+      parameters:
+        - name: id
+          in: header
+          type: string
+          required: true
