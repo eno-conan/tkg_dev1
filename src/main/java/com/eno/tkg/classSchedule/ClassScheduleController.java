@@ -30,8 +30,18 @@ public class ClassScheduleController {
 	@Autowired
 	private UpdateSelectClassScheduleService updateSelectClassScheduleService;
 
+	@Autowired
+	private GetLecturerTargetSubjectTeachService getLecturerTargetSubjectTeachService;
+
+	/**
+	 * 授業一覧取得
+	 * 
+	 * @param dateStr 日付（基本敵に当日の情報）
+	 * @return 更新情報
+	 *
+	 */
 	@GetMapping("/class-schedule")
-	public String getTargetDateClassSchedule(@RequestParam(name = "targetDate") final String dateStr) {
+	String getTargetDateClassSchedule(@RequestParam(name = "targetDate") final String dateStr) {
 		Date date = UseOverFunction.convertStrDateToDateType(dateStr);
 		try {
 			return getTargetDateClassesService.getTargetDateClassSchedule(date);
@@ -41,8 +51,15 @@ public class ClassScheduleController {
 		}
 	}
 
+	/**
+	 * 生徒授業予定取得
+	 * 
+	 * @param studentId 生徒ID
+	 * @return 更新情報
+	 *
+	 */
 	@GetMapping("/class-schedule/student-schedule/{studentId}")
-	public String getStudentClassSchedule(@PathVariable(name = "studentId") final String studentId) {
+	String getStudentClassSchedule(@PathVariable(name = "studentId") final String studentId) {
 		try {
 			return getSelectStudentClassesService.getSelectStudentClassSchedule(studentId);
 		} catch (JsonProcessingException e) {
@@ -51,8 +68,32 @@ public class ClassScheduleController {
 		}
 	}
 
+	/**
+	 * 講師変更（特定科目対応可能講師取得）
+	 * 
+	 * @param studentId 生徒ID
+	 * @return 更新情報
+	 *
+	 */
+	@GetMapping("/class-schedule/subject-teach-lecturer/{scheduleNormalId}")
+	String getLecturerTargetSubjectTeach(@PathVariable(name = "scheduleNormalId") final String scheduleNormalId) {
+		try {
+			return getLecturerTargetSubjectTeachService.getLecturerTargetSubjectTeach(scheduleNormalId);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	/**
+	 * 振替実行
+	 * 
+	 * @param content 更新情報
+	 * @return 更新結果
+	 *
+	 */
 	@PutMapping("/class-schedule/update")
-	public StudentScheduleNormal updateTargetClassSchedule(@RequestBody final String content) {
+	StudentScheduleNormal updateTargetClassSchedule(@RequestBody final String content) {
 		try {
 			return updateSelectClassScheduleService.updateTargetClassSchedule(content);
 		} catch (Exception e) {

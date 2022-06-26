@@ -1,4 +1,4 @@
-package com.eno.tkg.student.specialSchedule;
+package com.eno.tkg.student.specialAttendance;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

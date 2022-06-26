@@ -3,6 +3,9 @@ package com.eno.tkg.classSchedule;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.eno.tkg.classSchedule.item.DayOfWeekTimeTableNormal;
+import com.eno.tkg.classSchedule.item.PeriodTimeTableNormal;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,16 +26,17 @@ class CalcTimeTableNormalId {
 	}
 
 	/**
-	 * time_table_normalのIDを計算
-	 * 各曜日の6コマのID：1,4,7,10,13,16（月曜日スタート）
-	 * 各曜日の7コマのID：6コマの値に+1
-	 * 各曜日の8コマのID：6コマの値に+2
+	 * time_table_normalのIDを計算 各曜日の6コマのID：1,4,7,10,13,16（月曜日スタート）
+	 * 各曜日の7コマのID：6コマの値に+1 各曜日の8コマのID：6コマの値に+2
 	 *
 	 */
 	public int calcResult() {
 		return getValueFromdayOfWeekMap() + getValueFromdayPeriodMap();
 	}
 
+	/**
+	 * 週の何日目か変換を行う
+	 */
 	private void composeDayOfWeekMap() {
 		dayOfWeekTimeTableNormalMap = new LinkedHashMap<>();
 		dayOfWeekTimeTableNormalMap.put(DayOfWeekTimeTableNormal.MONDAY.getDayOfWeekNumber(),
@@ -41,8 +45,17 @@ class CalcTimeTableNormalId {
 				DayOfWeekTimeTableNormal.TUESDAY.getElementTimeTableNormalId());
 		dayOfWeekTimeTableNormalMap.put(DayOfWeekTimeTableNormal.WEDNESDAY.getDayOfWeekNumber(),
 				DayOfWeekTimeTableNormal.WEDNESDAY.getElementTimeTableNormalId());
+		dayOfWeekTimeTableNormalMap.put(DayOfWeekTimeTableNormal.THURSDAY.getDayOfWeekNumber(),
+				DayOfWeekTimeTableNormal.THURSDAY.getElementTimeTableNormalId());
+		dayOfWeekTimeTableNormalMap.put(DayOfWeekTimeTableNormal.FRIDAY.getDayOfWeekNumber(),
+				DayOfWeekTimeTableNormal.FRIDAY.getElementTimeTableNormalId());
+		dayOfWeekTimeTableNormalMap.put(DayOfWeekTimeTableNormal.SATURDAY.getDayOfWeekNumber(),
+				DayOfWeekTimeTableNormal.SATURDAY.getElementTimeTableNormalId());
 	}
 
+	/**
+	 * 何コマ目か変換を行う
+	 */
 	private void composePeriodMap() {
 		periodTimeTableNormalMap = new LinkedHashMap<>();
 		periodTimeTableNormalMap.put(PeriodTimeTableNormal.PERIOD_6.getInputPeriod(),

@@ -18,6 +18,7 @@ import com.eno.tkg.entity.master.TimeTableSpecial;
 @Repository
 public interface TimeTableNormalRepository extends JpaRepository<TimeTableNormal, Integer>{ 
 
+	//ある生徒に関して、まだ授業が組まれていない曜日・コマ一覧取得
 	@Query(value = 
 			"select * from time_table_normal as ttn "
 			+"where not ttn.id in "

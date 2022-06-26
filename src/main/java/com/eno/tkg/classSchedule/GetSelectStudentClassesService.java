@@ -1,7 +1,5 @@
 package com.eno.tkg.classSchedule;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -17,7 +15,6 @@ import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.repository.StudentScheduleNormalRepository;
 import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 class GetSelectStudentClassesService {
@@ -42,26 +39,13 @@ class GetSelectStudentClassesService {
 		return strJson;
 	}
 
-	// 文字列型の日付をDate型に変更
-	Date convertStrDateToDateType(final String dateStr) {
-		String strDate = dateStr.replace("-", "/");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Date date = null;
-		try {
-			date = dateFormat.parse(strDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return date;
-	}
-	
 	// 生徒予定表示用に整形
 	private List<Map<String, Object>> prepareStudentScheduleInfo(List<StudentScheduleNormal> studentSchedule) {
 		List<Map<String, Object>> returnJsonLiteral = setEachClassInfoToMap(studentSchedule);
 		return Collections.unmodifiableList(returnJsonLiteral);
 	}
 
-	//画面表示用に、Map生成
+	// 画面表示用に、Map生成
 	private List<Map<String, Object>> setEachClassInfoToMap(List<StudentScheduleNormal> studentSchedule) {
 		List<Map<String, Object>> returnJsonLiteral = new ArrayList<>();
 		for (StudentScheduleNormal eachClass : studentSchedule) {
@@ -78,10 +62,6 @@ class GetSelectStudentClassesService {
 
 			String classDate = UseOverFunction.dateToDateStr(eachClass.getClassDate());
 			eachRowInfoMap.put("classDate", classDate.replace("-", "/"));
-//				String rescheduleDateStart = dateToDateStr(eachClass.getRescheduleDateStart());
-//				String rescheduleDateEnd = dateToDateStr(eachClass.getRescheduleDateLast());
-//				eachRowInfoMap.put("rescheduleDateStart", rescheduleDateStart.replace("-", "/"));
-//				eachRowInfoMap.put("rescheduleDateEnd", rescheduleDateEnd.replace("-", "/"));
 			returnJsonLiteral.add(eachRowInfoMap);
 		}
 		return returnJsonLiteral;

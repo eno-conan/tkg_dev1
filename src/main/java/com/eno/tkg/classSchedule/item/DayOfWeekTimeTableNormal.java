@@ -1,4 +1,4 @@
-package com.eno.tkg.classSchedule;
+package com.eno.tkg.classSchedule.item;
 
 public enum DayOfWeekTimeTableNormal {
 

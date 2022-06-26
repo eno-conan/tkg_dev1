@@ -85,26 +85,6 @@ export const ClassSchedule = () => {
     setCalender(today);
   }, []);
 
-  //カレンダーに今日を初期表示（yyyy-mm-dd以外受付けしないみたい）
-  const formatDate = (date: Date) => {
-    const y = date.getFullYear();
-    const m = ("00" + (date.getMonth() + 1)).slice(-2);
-    const d = ("00" + date.getDate()).slice(-2);
-    return y + "-" + m + "-" + d;
-  };
-
-  //change Lecturer======================================
-  function openModalChangeLecturer() {
-    setChangeLecturerModalIsOpen(true);
-  }
-  function afterOpenModalChangeLecturer() {
-    if (subtitle) subtitle.style.color = "#f00";
-  }
-  function closeModalChangeLecturer() {
-    setChangeLecturerModalIsOpen(false);
-  }
-  //===================================================
-
   // 指定した日付の全授業を取得
   const getTargetDateClassSchedule = (targetDate: string) => {
     setFrame(""); //コマのプルダウンを初期値に戻す
@@ -120,6 +100,30 @@ export const ClassSchedule = () => {
         alert("couldn't fetch tasks");
       });
   };
+
+  //カレンダーに今日を初期表示（yyyy-mm-dd以外受付けしないみたい）
+  const formatDate = (date: Date) => {
+    const y = date.getFullYear();
+    const m = ("00" + (date.getMonth() + 1)).slice(-2);
+    const d = ("00" + date.getDate()).slice(-2);
+    return y + "-" + m + "-" + d;
+  };
+
+  //講師変更処理
+  function openModalChangeLecturer() {
+    if (!targetClass) {
+      alert("操作する授業にチェックを入れてください");
+      return;
+    }
+    setChangeLecturerModalIsOpen(true);
+  }
+  function afterOpenModalChangeLecturer() {
+    if (subtitle) subtitle.style.color = "#f00";
+  }
+  function closeModalChangeLecturer() {
+    setChangeLecturerModalIsOpen(false);
+  }
+  //===================================================
 
   //プルダウンで表示したい日付を選択（画面上部）
   const selectDateAtCalender = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,7 +163,7 @@ export const ClassSchedule = () => {
     <>
       <div id="app">
         <Helmet>
-          <title>ClassSchedule Page</title>
+          <title>授業一覧</title>
         </Helmet>
         <Container className={"tkgTop mt-4"}>
           <Row className={"tkgTopHeader"}>

@@ -48,30 +48,13 @@ export const StudentTop = () => {
               to={STUDENT_FUNCTION.UpdateSpecialSchedule}
               className={"btn btn-success"}
             >
-              授業予定？？
-            </Link>
-          </Col>
-          <Col md={6} className={"pb-6 pl-4"}>
-            <Link
-              to={STUDENT_FUNCTION.RegistSubject}
-              className={"btn btn-warning"}
-            >
-              受講科目登録（検索画面から遷移させる）
+              講習会授業予定？？（検索画面から遷移）
             </Link>
           </Col>
         </Row>
         <br />
         <br />
-        <Row className={"pt-4"}>
-          <Col md={6} className={"pb-6 pl-4"}>
-            <Link
-              to={STUDENT_FUNCTION.UpdateSpecialSchedule}
-              className={"btn btn-success"}
-            >
-              講習会授業予定作成
-            </Link>
-          </Col>
-        </Row>
+        <Row className={"pt-4"}></Row>
       </Container>
     </>
   );

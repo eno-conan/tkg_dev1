@@ -32,8 +32,8 @@ const UpdateAttendance: React.FC<UpdateInfoProps> = ({
     };
     fetch(`${API_STUDENT.UpdateSpecialAttendance}`, options)
       .then((response) => response.json())
-      .then((updateTargetClass) => {
-        alert("更新完了");
+      .then((updateSuccessMessage) => {
+        alert(updateSuccessMessage);
         window.location.reload();
       })
       .catch((error) => {

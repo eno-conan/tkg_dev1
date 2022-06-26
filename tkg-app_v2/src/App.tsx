@@ -56,7 +56,7 @@ const App: React.FC = () => {
                 path={STUDENT_FUNCTION.Regist}
                 element={<StudentRegist />}
               />
-              {/* 生徒登録 */}
+              {/* 生徒検索 */}
               <Route
                 path={STUDENT_FUNCTION.SearchStudent}
                 element={<StudentSearch />}

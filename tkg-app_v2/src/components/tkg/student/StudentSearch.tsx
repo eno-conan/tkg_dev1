@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Button } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import "../../tkgStyle.css";
 import { API_STUDENT, STUDENT_FUNCTION } from "../../../config";
@@ -17,6 +17,7 @@ import RegistSubjectModal from "./subject/RegistSubjectModal";
 import ShowCurrentSubject from "./subject/ShowCurrentSubject";
 
 const StudentSearch = () => {
+  const navigate = useNavigate();
   //DBからの教室情報を管理
   const [classroomList, setClassroomList] =
     useState<classroomArray>(classroomData);
@@ -55,15 +56,16 @@ const StudentSearch = () => {
       });
   };
 
-  // //テスト用
-  // const checkStudentInfo = () => {
-  //   // navigate(`/receive-param/${id}`);
-  //   // window.open(
-  //   //   `${STUDENT_FUNCTION.SearchStudent}/${checkedStudentId}`,
-  //   //   "",
-  //   //   "width=600,height=400,left=200,top=200"
-  //   // );
-  // };
+  //講習会出欠予定表作成
+  const openSpecialAttendance = () => {
+    if (!checkedStudentId) {
+      alert("対象の生徒を選択してください。");
+    } else {
+      navigate(
+        `${STUDENT_FUNCTION.InputSpecialAttendance}/${checkedStudentId}`
+      );
+    }
+  };
 
   return (
     <div id="app">
@@ -99,12 +101,18 @@ const StudentSearch = () => {
             <RegistSubjectModal checkedStudentId={checkedStudentId} />
             {/* 講習会出欠入力 */}
             <Col md={4}>
-              <Link
+              <Button
+                onClick={openSpecialAttendance}
+                className={"btn btn-secondary ml-2"}
+              >
+                講習会通塾時間設定
+              </Button>
+              {/* <Link
                 to={`${STUDENT_FUNCTION.InputSpecialAttendance}/${checkedStudentId}`}
                 className={"btn btn-secondary ml-4"}
               >
                 講習会通塾時間設定
-              </Link>
+              </Link> */}
             </Col>
           </Row>
           <Row className={"pt-4"}></Row>

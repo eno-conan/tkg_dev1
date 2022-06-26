@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Container, Col, Row, Table } from "react-bootstrap";
 import { API_STUDENT } from "../../../../config";
+import { Helmet } from "react-helmet";
 import UpdateAttendance from "./UpdateAttendance";
 import {
   currentCheckedStatusIF,
@@ -12,6 +13,8 @@ import {
   idAndCheckInfoIF,
 } from "../initData";
 import OperateCheckbox from "./OperateCheckbox";
+import TableHeader from "./TableHeader";
+import TableFooter from "./TableFooter";
 
 //www.kindacode.com/article/react-typescript-multiple-dynamic-checkboxes/
 
@@ -105,6 +108,9 @@ const InputAttendance = () => {
 
   return (
     <>
+      <Helmet>
+        <title>講習会出欠予定表</title>
+      </Helmet>
       <Container>
         <Row>
           <Col md={4}></Col>
@@ -116,18 +122,7 @@ const InputAttendance = () => {
           <Col md={2}></Col>
           <Col md={8}>
             <Table striped bordered hover responsive>
-              <thead className={"sticky-top h-100"}>
-                <th className="text-center text-nowrap">日付</th>
-                <th className="text-center text-nowrap">2</th>
-                <th className="text-center text-nowrap">3</th>
-                <th className="text-center text-nowrap">4</th>
-                <th className="text-center text-nowrap">5</th>
-                <th className="text-center text-nowrap">6</th>
-                <th className="text-center text-nowrap">7</th>
-                <th className="text-center text-nowrap">8</th>
-                <th className="text-center text-nowrap">全選択</th>
-                <th className="text-center text-nowrap">全削除</th>
-              </thead>
+              <TableHeader />
               <OperateCheckbox
                 ids={ids}
                 dateFrameList={dateFrameList}
@@ -135,18 +130,7 @@ const InputAttendance = () => {
                 setCurrentCheckedStatusList={setCurrentCheckedStatusList}
                 setIds={setIds}
               />
-              <tfoot className={"sticky-top h-100"}>
-                <th className="text-center text-nowrap"></th>
-                <th className="text-center text-nowrap">2</th>
-                <th className="text-center text-nowrap">3</th>
-                <th className="text-center text-nowrap">4</th>
-                <th className="text-center text-nowrap">5</th>
-                <th className="text-center text-nowrap">6</th>
-                <th className="text-center text-nowrap">7</th>
-                <th className="text-center text-nowrap">8</th>
-                <th className="text-center text-nowrap"></th>
-                <th className="text-center text-nowrap"></th>
-              </tfoot>
+              <TableFooter />
             </Table>
           </Col>
         </Row>

@@ -71,7 +71,7 @@ public class UpdateSpecialScheduleService {
 			throw new UpdateSpecialScheduleException("DB更新でエラーが発生しました");
 		}
 
-		String strJson = UseOverFunction.getDataToJsonFormat("更新処理が完了しました");
+		String strJson = UseOverFunction.getDataToJsonFormat("スケジュール更新処理が完了しました");
 		return strJson;
 	}
 
@@ -106,7 +106,7 @@ public class UpdateSpecialScheduleService {
 			Optional<StudentScheduleSpecial> classInfo = studentScheduleSpecialRepository
 					.findByStudentAndTimeTableSpecial(new Student(studentId),
 							new TimeTableSpecial(eachTimeTableSpecialId));
-			
+
 			if (operateDataStatus == 1) {
 				if (classInfo.isPresent()) {
 					StudentScheduleSpecial updateClass = updateClassInfo(summaryInfo, classInfo);

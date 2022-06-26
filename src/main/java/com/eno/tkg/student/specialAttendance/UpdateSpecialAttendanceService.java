@@ -1,4 +1,4 @@
-package com.eno.tkg.student.specialSchedule;
+package com.eno.tkg.student.specialAttendance;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
-public class UpdateSpecialAttendanceService {
+class UpdateSpecialAttendanceService {
 
 	@Autowired
 	private StudentAttendanceSpecialRepository studentAttendanceSpecialRepository;
@@ -30,7 +30,7 @@ public class UpdateSpecialAttendanceService {
 	 * @throws Exception
 	 *
 	 */
-	public String updateAttendance(String content) throws JsonProcessingException {
+	String updateAttendance(String content) throws JsonProcessingException {
 		System.out.println(content);
 		String[] requestBoby = content.split(",");
 		List<String> requestBobyListWhole = Arrays.asList(requestBoby);
@@ -77,13 +77,15 @@ public class UpdateSpecialAttendanceService {
 
 		}
 
+		// 追加対象
 		if (!registCheckIds.isEmpty()) {
 			studentAttendanceSpecialRepository.saveAll(registCheckIds);
 		}
+		// 削除対象
 		if (!deleteUnCheckIds.isEmpty()) {
 			studentAttendanceSpecialRepository.deleteAllById(deleteUnCheckIds);
 		}
-		String strJson = UseOverFunction.getDataToJsonFormat("");
+		String strJson = UseOverFunction.getDataToJsonFormat("出欠予定表の更新が完了しました");
 		return strJson;
 	}
 

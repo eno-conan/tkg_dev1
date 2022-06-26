@@ -1,6 +1,5 @@
 package com.eno.tkg.classSchedule;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -13,14 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.eno.tkg.entity.StudentScheduleNormal;
 import com.eno.tkg.repository.StudentScheduleNormalRepository;
+import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 class GetTargetDateClassesService {
-	
+
 	@Autowired
 	private StudentScheduleNormalRepository studentScheduleNormalRepository;
+
 	/**
 	 * // 本日の授業に関する情報を返す
 	 * 
@@ -31,11 +31,12 @@ class GetTargetDateClassesService {
 	 */
 	String getTargetDateClassSchedule(final Date date) throws JsonProcessingException {
 		// 本日の授業に関する情報取得
-		List<StudentScheduleNormal> classes = studentScheduleNormalRepository.findAllByClassDateOrderByTimeTableNormalAsc(date);
+		List<StudentScheduleNormal> classes = studentScheduleNormalRepository
+				.findAllByClassDateOrderByTimeTableNormalAsc(date);
 		// 整形
 		List<Map<String, Object>> returnJsonLiteral = prepareClassInfo(classes);
 		// 文字列変換
-		String strJson = getDataToJsonFormat(returnJsonLiteral);
+		String strJson = UseOverFunction.getDataToJsonFormat(returnJsonLiteral);
 		return strJson;
 	}
 
@@ -54,8 +55,8 @@ class GetTargetDateClassesService {
 			eachRowInfoMap.put("studentName", eachClass.getStudent().getStudentName());
 			eachRowInfoMap.put("lecturerName", eachClass.getLecturer().getLecturerName());
 
-			String rescheduleDateStart = dateToDateStr(eachClass.getRescheduleDateStart());
-			String rescheduleDateEnd = dateToDateStr(eachClass.getRescheduleDateLast());
+			String rescheduleDateStart = UseOverFunction.dateToDateStr(eachClass.getRescheduleDateStart());
+			String rescheduleDateEnd = UseOverFunction.dateToDateStr(eachClass.getRescheduleDateLast());
 			eachRowInfoMap.put("rescheduleDateStart", rescheduleDateStart.replace("-", "/"));
 			eachRowInfoMap.put("rescheduleDateEnd", rescheduleDateEnd.replace("-", "/"));
 
@@ -64,17 +65,4 @@ class GetTargetDateClassesService {
 		return Collections.unmodifiableList(returnJsonLiteral);
 	}
 
-
-	private String dateToDateStr(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		return dateFormat.format(date);
-	}
-
-	// 取得データをJson形式にする
-	private String getDataToJsonFormat(Object returnJsonLiteral) throws JsonProcessingException {
-		ObjectMapper mapper = new ObjectMapper();
-		String strJson = "";
-		strJson = mapper.writeValueAsString(returnJsonLiteral);
-		return strJson;
-	}
 }

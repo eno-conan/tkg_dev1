@@ -5,7 +5,7 @@ import Modal from "react-modal";
 import { Container, Col, Row, Button, CloseButton } from "react-bootstrap";
 import { customStyles } from "../initData";
 import "../../../tkgStyle.css";
-import { API_STUDENT } from "../../../../config";
+import { API_STUDENT, STUDENT_FUNCTION } from "../../../../config";
 import { Classroom, Grade, classroomArray, gradeArray } from "../initData";
 
 interface RegistStudentProps {
@@ -25,6 +25,7 @@ const RegistConfirmStudentModal: React.FC<RegistStudentProps> = ({
   classroomList,
   gradeList,
 }) => {
+  const navigate = useNavigate();
   //モーダル管理
   const [registStudentModalIsOpen, setRegistStudentModalIsOpen] =
     useState<boolean>(false);
@@ -71,11 +72,11 @@ const RegistConfirmStudentModal: React.FC<RegistStudentProps> = ({
       .then((response) => response.json())
       .then((insertResult) => {
         alert(insertResult);
-        window.location.reload();
+        navigate(`${STUDENT_FUNCTION.SearchStudent}`);
       })
       .catch((error) => {
         console.log(error);
-        alert("couldn't add task");
+        alert("生徒登録に失敗しました");
       });
   };
 

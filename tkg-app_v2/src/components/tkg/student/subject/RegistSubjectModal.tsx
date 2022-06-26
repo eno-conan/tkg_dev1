@@ -43,11 +43,15 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
 
   //モーダル関連
   function openModalRegistSubject() {
-    getSubjectsByGrade();
-    getTimeTableNormal();
-    getLecturer();
-    //モーダル表示
-    setRegistSubjectModalIsOpen(true);
+    if (!checkedStudentId) {
+      alert("対象の生徒を選択してください。");
+    } else {
+      getSubjectsByGrade();
+      getTimeTableNormal();
+      getLecturer();
+      //モーダル表示
+      setRegistSubjectModalIsOpen(true);
+    }
   }
   function afterOpenModalRegistSubject() {
     if (subtitle) subtitle.style.color = "#f00";
@@ -58,71 +62,56 @@ const RegistSubjectModal: React.FC<RegistSubjectProps> = ({
 
   //生徒の学年に応じて受講科目を取得
   const getSubjectsByGrade = () => {
-    if (!checkedStudentId) {
-      alert("対象の生徒を選択してください。");
-    } else {
-      const options = { method: "GET" };
-      fetch(`${API_STUDENT.PrepareSubjectList}/${checkedStudentId}`, options)
-        .then((response) => response.json())
-        .then((result) => {
-          if (result === "0") {
-            alert("受講科目が設定されていません");
-          } else {
-            setSubjectsByGradeList(result);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("couldn't fetch tasks");
-        });
-    }
+    const options = { method: "GET" };
+    fetch(`${API_STUDENT.PrepareSubjectList}/${checkedStudentId}`, options)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result === "0") {
+          alert("受講科目が設定されていません");
+        } else {
+          setSubjectsByGradeList(result);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't fetch tasks");
+      });
   };
 
   //タイムテーブルを取得
   const getTimeTableNormal = () => {
-    if (!checkedStudentId) {
-      alert("対象の生徒を選択してください。");
-    } else {
-      const options = { method: "GET" };
-      fetch(
-        `${API_STUDENT.PrepareTimeTableNormal}/${checkedStudentId}`,
-        options
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          if (result === "0") {
-            alert("受講科目が設定されていません");
-          } else {
-            setTimeTableNormal(result);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("couldn't fetch tasks");
-        });
-    }
+    const options = { method: "GET" };
+    fetch(`${API_STUDENT.PrepareTimeTableNormal}/${checkedStudentId}`, options)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result === "0") {
+          alert("受講科目が設定されていません");
+        } else {
+          setTimeTableNormal(result);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't fetch tasks");
+      });
   };
 
   //講師を取得
   const getLecturer = () => {
-    if (!checkedStudentId) {
-      alert("対象の生徒を選択してください。");
-    } else {
-      const options = { method: "GET" };
-      fetch(`${API_STUDENT.PrepareLecutererList}/${checkedStudentId}`, options)
-        .then((response) => response.json())
-        .then((result) => {
-          if (result === "0") {
-            alert("受講科目が設定されていません");
-          } else {
-            setLecturerList(result);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("couldn't fetch tasks");
-        });
-    }
+    const options = { method: "GET" };
+    fetch(`${API_STUDENT.PrepareLecutererList}/${checkedStudentId}`, options)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result === "0") {
+          alert("受講科目が設定されていません");
+        } else {
+          setLecturerList(result);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("couldn't fetch tasks");
+      });
   };
 
   return (
