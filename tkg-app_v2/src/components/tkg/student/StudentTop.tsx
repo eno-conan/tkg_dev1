@@ -44,12 +44,12 @@ export const StudentTop = () => {
         <br />
         <Row className={"pt-4"}>
           <Col md={6} className={"pb-6 pl-4"}>
-            <Link
+            {/* <Link
               to={STUDENT_FUNCTION.UpdateSpecialSchedule}
               className={"btn btn-success"}
             >
               講習会授業予定？？（検索画面から遷移）
-            </Link>
+            </Link> */}
           </Col>
         </Row>
         <br />

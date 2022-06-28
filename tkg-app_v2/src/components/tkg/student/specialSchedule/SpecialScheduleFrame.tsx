@@ -52,37 +52,40 @@ const SpecialScheduleFrame: React.FC<UpdateInfoProps> = ({
         <tbody>
           <tr>
             <td className={"align-middle"}>2</td>
-            {classesPeriod2.map((eachData) => (
-              <>
-                <td className={"align-middle"}>
-                  {eachData.id ? (
-                    <AlreadyClassExist
-                      subject={eachData.subject}
-                      lecturerName={eachData.lecturerName}
-                      dateInfo={eachData.classDate}
-                      checkedSubjectId={checkedSubjectId}
-                      checkedSubjectName={checkedSubjectName}
-                      checkSubjectCount={checkSubjectCount}
-                      setCheckSubjectCount={setCheckSubjectCount}
-                      deleteClassFramePeriod2={deleteClassFramePeriod2}
-                      setDeleteClassFramePeriod2={setDeleteClassFramePeriod2}
-                    />
-                  ) : (
-                    <NoClassFrame
-                      subject={eachData.subject}
-                      lecturerName={eachData.lecturerName}
-                      dateInfo={eachData.classDate}
-                      checkedSubjectId={checkedSubjectId}
-                      checkedSubjectName={checkedSubjectName}
-                      checkSubjectCount={checkSubjectCount}
-                      setCheckSubjectCount={setCheckSubjectCount}
-                      selectClassFramePeriod2={selectClassFramePeriod2}
-                      setSelectClassFramePeriod2={setSelectClassFramePeriod2}
-                    />
-                  )}
-                </td>
-              </>
-            ))}
+            {classesPeriod2 &&
+              classesPeriod2.map((eachData) => (
+                <>
+                  <td className={"align-middle"}>
+                    {eachData.id ? (
+                      <AlreadyClassExist
+                        subject={eachData.subject}
+                        lecturerName={eachData.lecturerName}
+                        dateInfo={eachData.classDate}
+                        checkedSubjectId={checkedSubjectId}
+                        checkedSubjectName={checkedSubjectName}
+                        checkSubjectCount={checkSubjectCount}
+                        setCheckSubjectCount={setCheckSubjectCount}
+                        deleteClassFramePeriod2={deleteClassFramePeriod2}
+                        setDeleteClassFramePeriod2={setDeleteClassFramePeriod2}
+                      />
+                    ) : eachData.timeTableSpecialId !== "stu-abs" ? (
+                      <NoClassFrame
+                        subject={eachData.subject}
+                        lecturerName={eachData.lecturerName}
+                        dateInfo={eachData.classDate}
+                        checkedSubjectId={checkedSubjectId}
+                        checkedSubjectName={checkedSubjectName}
+                        checkSubjectCount={checkSubjectCount}
+                        setCheckSubjectCount={setCheckSubjectCount}
+                        selectClassFramePeriod2={selectClassFramePeriod2}
+                        setSelectClassFramePeriod2={setSelectClassFramePeriod2}
+                      />
+                    ) : (
+                      <>生徒都合</>
+                    )}
+                  </td>
+                </>
+              ))}
           </tr>
         </tbody>
       </Table>

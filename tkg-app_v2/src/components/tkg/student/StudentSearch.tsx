@@ -67,6 +67,15 @@ const StudentSearch = () => {
     }
   };
 
+  //講習会出欠予定表作成
+  const openSpecialSchedule = () => {
+    if (!checkedStudentId) {
+      alert("対象の生徒を選択してください。");
+    } else {
+      navigate(`${STUDENT_FUNCTION.UpdateSpecialSchedule}/${checkedStudentId}`);
+    }
+  };
+
   return (
     <div id="app">
       <Helmet>
@@ -100,19 +109,22 @@ const StudentSearch = () => {
             {/* 受講科目登録 */}
             <RegistSubjectModal checkedStudentId={checkedStudentId} />
             {/* 講習会出欠入力 */}
-            <Col md={4}>
+            <Col md={2}>
               <Button
                 onClick={openSpecialAttendance}
-                className={"btn btn-secondary ml-2"}
-              >
-                講習会通塾時間設定
-              </Button>
-              {/* <Link
-                to={`${STUDENT_FUNCTION.InputSpecialAttendance}/${checkedStudentId}`}
                 className={"btn btn-secondary ml-4"}
               >
-                講習会通塾時間設定
-              </Link> */}
+                講習通塾時間
+              </Button>
+            </Col>
+            {/* 講習会予定作成 */}
+            <Col md={3}>
+              <Button
+                onClick={openSpecialSchedule}
+                className={"btn btn-secondary"}
+              >
+                講習会予定作成
+              </Button>
             </Col>
           </Row>
           <Row className={"pt-4"}></Row>

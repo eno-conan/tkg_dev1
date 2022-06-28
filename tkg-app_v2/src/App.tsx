@@ -22,7 +22,6 @@ import RegistSpecialSchedule from "./components/tkg/student/RegistSpecialSchedul
 import { StudentTop } from "./components/tkg/student/StudentTop";
 import StudentRegist from "./components/tkg/student/StudentRegist";
 import StudentSearch from "./components/tkg/student/StudentSearch";
-import SubjectRegist from "./components/tkg/student/subject/ShowCurrentSubject";
 import ShowSubjectWindow from "./components/tkg/student/subject/ShowSubjectWindow";
 import MultiCheckbox from "./components/pathParam/MultiCheckbox";
 import InputAttendance from "./components/tkg/student/specialAttendance/InputAttendance";
@@ -73,7 +72,7 @@ const App: React.FC = () => {
               />
               {/* 講習スケジュール登録 */}
               <Route
-                path={STUDENT_FUNCTION.UpdateSpecialSchedule}
+                path={`${STUDENT_FUNCTION.UpdateSpecialSchedule}/:checkedStudentId`}
                 element={<RegistSpecialSchedule />}
               />
               <Route path="/multi-check" element={<MultiCheckbox />} />

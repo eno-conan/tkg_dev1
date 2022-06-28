@@ -16,19 +16,11 @@ import com.eno.tkg.entity.master.SpecialSeason;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.repository.SpecialSeasonDateListRepository;
 import com.eno.tkg.repository.StudentAttendanceSpecialRepository;
-import com.eno.tkg.repository.StudentClassSpecialSummaryRepository;
-import com.eno.tkg.repository.StudentScheduleSpecialRepository;
 import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
-class StudentSpecialAttendanceService {
-
-	@Autowired
-	private StudentScheduleSpecialRepository studentScheduleSpecialRepository;
-
-	@Autowired
-	private StudentClassSpecialSummaryRepository studentClassSpecialSummaryRepository;
+class SpecialAttendanceService {
 
 	@Autowired
 	private SpecialSeasonDateListRepository specialSeasonDateListRepository;

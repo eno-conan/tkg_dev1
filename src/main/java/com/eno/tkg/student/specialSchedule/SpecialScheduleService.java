@@ -24,7 +24,7 @@ import com.eno.tkg.util.UseOverFunction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
-class StudentSpecialScheduleService {
+class SpecialScheduleService {
 
 	@Autowired
 	private StudentScheduleSpecialRepository studentScheduleSpecialRepository;

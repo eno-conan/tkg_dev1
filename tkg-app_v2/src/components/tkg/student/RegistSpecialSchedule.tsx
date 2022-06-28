@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { API_BASE_URL, API_STUDENT } from "../../../config";
+import { useParams } from "react-router";
 import {
   ClassInfo,
   eachClassData,
@@ -17,7 +18,13 @@ import SpecialScheduleFrame from "./specialSchedule/SpecialScheduleFrame";
 export type classesPeriodArray = Array<ClassInfo>;
 export type specialSummaryArray = Array<SummaryInfo>;
 
+//生徒一覧画面からチェックした生徒の生徒ID取得
+type Params = {
+  checkedStudentId: string;
+};
+
 const RegistSpecialSchedule = () => {
+  const { checkedStudentId } = useParams<keyof Params>() as Params;
   // 講習日付一覧
   const [dateList, setDateList] = useState<string[]>(["1", "2"]);
   // 講習の授業概要
@@ -61,9 +68,9 @@ const RegistSpecialSchedule = () => {
 
   // テスト取得
   useEffect(() => {
-    getSpecialSummary("1", "1");
+    getSpecialSummary(checkedStudentId, "1");
     getSpecialDateList("1");
-    getTargetDateClassSchedule("1", "1");
+    getTargetDateClassSchedule(checkedStudentId, "1");
 
     // 講習期間概要取得
     function getSpecialSummary(studentId: string, specialSeasonId: string) {
@@ -108,6 +115,7 @@ const RegistSpecialSchedule = () => {
       )
         .then((response) => response.json())
         .then((fetchClassSchedule) => {
+          console.log(fetchClassSchedule["2"]);
           setClassesPeriod2(fetchClassSchedule["2"]);
           setClassesPeriod3(fetchClassSchedule["3"]);
         })

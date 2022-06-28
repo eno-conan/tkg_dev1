@@ -22,7 +22,7 @@ class SpecialAttendanceController {
 	private UpdateSpecialAttendanceService updateSpecialAttendanceService;
 
 	@Autowired
-	private StudentSpecialAttendanceService studentSpecialAttendanceService;
+	private SpecialAttendanceService studentSpecialAttendanceService;
 
 	/**
 	 * 講習期間の生徒の出欠予定取得

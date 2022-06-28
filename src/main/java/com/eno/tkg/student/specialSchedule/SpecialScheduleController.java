@@ -21,10 +21,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 class SpecialScheduleController {
 
 	@Autowired
-	private StudentSpecialScheduleService studentSpecialScheduleService;
+	private SpecialScheduleService studentSpecialScheduleService;
 
 	@Autowired
-	private GetStudentSpecialScheduleService getStudentSpecialScheduleService;
+	private GetSpecialScheduleService getStudentSpecialScheduleService;
 
 	@Autowired
 	private UpdateSpecialScheduleService updateSpecialScheduleService;
