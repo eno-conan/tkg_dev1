@@ -24,15 +24,15 @@ basePath: /tkg/
 # タグ定義
 tags:
   - name: "ClassSchedule"
-    description: 授業予定に関するAPI
-    externalDocs:
-      description: "AAAAAAAAAA"
-      url: "http://hogehoge"
-  - name: "Book"
-    description: 書籍に関するエンドポイント
-    externalDocs:
-      description: "BBBBBBBBBB"
-      url: "http://fugafuga"
+    description: 授業予定に関するエンドポイント
+    # externalDocs:
+    #   description: "AAAAAAAAAA"
+    #   url: "http://hogehoge"
+  - name: "Student"
+    description: 生徒情報に関するエンドポイント
+    # externalDocs:
+    #   description: "BBBBBBBBBB"
+    #   url: "http://fugafuga"
 # エンドポイント
 paths:
   /class-schedule:
@@ -62,9 +62,225 @@ paths:
       parameters:
         - name: targetDate
           in: query
-          schema:
-            type: string
+          type: string
           description: The number of items to skip before starting to collect the result set
+  /student/search:
+    get:
+      summary: 生徒検索
+      tags:
+        - Student
+      responses:
+        200:
+          description: 生徒検索
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+  /student/regist:
+    get:
+      summary: 生徒登録画面表示
+      tags:
+        - Student
+      responses:
+        200:
+          description: 授業予定取得
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+      # parameters:
+      #   - name: targetDate
+      #     in: query
+      #     type: string
+      #     description: The number of items to skip before starting to collect the result set
+    post:
+      summary: 生徒登録
+      tags:
+        - Student
+      responses:
+        200:
+          description: 生徒登録
+          schema:
+            type: object
+            example: [{ "result": "生徒登録正常完了" }]
+  /student/regist-prepare-classroom:
+    get:
+      summary: 生徒登録で使用（教室情報）
+      tags:
+        - Student
+      responses:
+        200:
+          description: 教室情報取得
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+  /student/regist-prepare-grade:
+    get:
+      summary: 生徒登録で使用（学年情報）
+      tags:
+        - Student
+      responses:
+        200:
+          description: 教室情報取得
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+  /student/regist-subject:
+    get:
+      summary: 受講科目登録画面表示
+      tags:
+        - Student
+      responses:
+        200:
+          description: 受講科目登録画面表示
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+    post:
+      summary: 受講科目登録
+      tags:
+        - Student
+      responses:
+        200:
+          description: 受講科目登録
+          schema:
+            type: object
+            example: [{ "result": "生徒登録正常完了" }]
+  /student/regist-subject-prepare-timetable:
+    get:
+      summary: 受講科目登録で使用（時間割情報）
+      tags:
+        - Student
+      responses:
+        200:
+          description: 受講科目登録で使用（時間割情報）
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+  /student/regist-subject-prepare-lecturer:
+    get:
+      summary: 受講科目登録で使用（講師情報）
+      tags:
+        - Student
+      responses:
+        200:
+          description: 受講科目登録で使用（講師情報）
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
+  /student/regist-subject-prepare-grade:
+    get:
+      summary: 受講科目登録で使用（学年情報）
+      tags:
+        - Student
+      responses:
+        200:
+          description: 受講科目登録で使用（学年情報）
+          schema:
+            type: array
+            example:
+              [
+                {
+                  "id": "5",
+                  "period": "8",
+                  "grade": "高校1年生",
+                  "subject": "数学IA",
+                  "studentId": "1",
+                  "studentName": "生徒",
+                  "lecturerName": "講師2",
+                  "rescheduleDateStart": "2022/06/01",
+                  "rescheduleDateEnd": "2022/07/01",
+                },
+              ]
   /articles/{id}:
     get:
       summary: 指定した記事の詳細を取得

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="UTF-8">
+    <title>TKG</title>
+                                                         </head>
+<body>
+<div class="container">
+    <h1>TKG</h1>
+    <p class="sw-info">
+        Base URL: <span class="sw-info-basePath">/tkg/</span>,
+        Version: <span class="sw-info-version">1.0.0</span>
+    </p>
+    <p><ul>
+    <li>各APIの呼び出しURL</li>
+    </ul>
+    </p>
+    
+    
+    <div id="sw-schemes" class="sw-default-value">
+        <span class="sw-default-value-header">Schemes:</span>
+        http, https
+    </div>
+    
+        
+        <h2 id="swagger--summary-tags">Summary</h2>
+            <h3 id="tag-ClassSchedule" class="swagger-summary-tag">Tag: ClassSchedule</h3>
+            <p>授業予定に関するエンドポイント</p>
+        
+            <p class="sw-tag-external-doc">
+            </p>
+            <table class="table table-bordered table-condensed swagger--summary">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#operation--class-schedule-get">GET /class-schedule</a></td>
+                        <td><p>授業一覧を取得</p>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tag-Student" class="swagger-summary-tag">Tag: Student</h3>
+            <p>生徒情報に関するエンドポイント</p>
+        
+            <p class="sw-tag-external-doc">
+            </p>
+            <table class="table table-bordered table-condensed swagger--summary">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#operation--student-search-get">GET /student/search</a></td>
+                        <td><p>生徒検索</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-get">GET /student/regist</a></td>
+                        <td><p>生徒登録画面表示</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-post">POST /student/regist</a></td>
+                        <td><p>生徒登録</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-prepare-classroom-get">GET /student/regist-prepare-classroom</a></td>
+                        <td><p>生徒登録で使用（教室情報）</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-prepare-grade-get">GET /student/regist-prepare-grade</a></td>
+                        <td><p>生徒登録で使用（学年情報）</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-subject-get">GET /student/regist-subject</a></td>
+                        <td><p>受講科目登録画面表示</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-subject-post">POST /student/regist-subject</a></td>
+                        <td><p>受講科目登録</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-subject-prepare-timetable-get">GET /student/regist-subject-prepare-timetable</a></td>
+                        <td><p>受講科目登録で使用（時間割情報）</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-subject-prepare-lecturer-get">GET /student/regist-subject-prepare-lecturer</a></td>
+                        <td><p>受講科目登録で使用（講師情報）</p>
+        </td>
+                    </tr>
+                    <tr>
+                        <td><a href="#operation--student-regist-subject-prepare-grade-get">GET /student/regist-subject-prepare-grade</a></td>
+                        <td><p>受講科目登録で使用（学年情報）</p>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tag-Article" class="swagger-summary-tag">Tag: Article</h3>
+            
+            <p class="sw-tag-external-doc">
+            </p>
+            <table class="table table-bordered table-condensed swagger--summary">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#operation--articles--id--get">GET /articles/{id}</a></td>
+                        <td><p>指定した記事の詳細を取得</p>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 id="tag-Book" class="swagger-summary-tag">Tag: Book</h3>
+            
+            <p class="sw-tag-external-doc">
+            </p>
+            <table class="table table-bordered table-condensed swagger--summary">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#operation--books--id--delete">DELETE /books/{id}</a></td>
+                        <td><p>指定した書籍の削除</p>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+    
+    
+    
+    <h2>Paths</h2>
+    
+        
+        <span id="path--articles--id-"></span>
+            <div id="operation--articles--id--get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x6307;&#x5B9A;&#x3057;&#x305F;&#x8A18;&#x4E8B;&#x306E;&#x8A73;&#x7D30;&#x3092;&#x53D6;&#x5F97;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/articles/{id}</strong></h3>
+                        Tags:
+                            <a href="#tag-Article">Article</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                id
+                                            </td>
+                                            <td></td>
+                                            <td>header</td>
+                                            <td>
+                                        <span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                                    <span class="json-property-required"></span>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>OK</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                            
+                                                                    <section class="json-schema-properties">
+                                                                        <dl>
+                                                                                <dt data-property-name="id">
+                                                                                    <span class="json-property-name">id:</span>
+                                                                                    
+                                                                                    <span class="json-property-type">string</span>
+                                                                                    <span class="json-property-range" title="Value limits"></span>
+                                                                                    
+                                                                                </dt>
+                                                                                <dd>
+                                                                                    
+                                                                                    <div class="json-inner-schema">
+                                                                                            <section class="json-schema-example">
+                                                                                                <pre><code class="language-json">&quot;ef304778ada8a6&quot;</code></pre>
+                                                                                        
+                                                                                            </section>
+                                                                                        
+                                                                                    </div>
+                                                                                </dd>
+                                                                                <dt data-property-name="author">
+                                                                                    <span class="json-property-name">author:</span>
+                                                                                    
+                                                                                    <span class="json-property-type">string</span>
+                                                                                    <span class="json-property-range" title="Value limits"></span>
+                                                                                    
+                                                                                </dt>
+                                                                                <dd>
+                                                                                    
+                                                                                    <div class="json-inner-schema">
+                                                                                            <section class="json-schema-example">
+                                                                                                <pre><code class="language-json">&quot;&#x30CD;&#x30B3;&#x30CB;&#x30AD;&quot;</code></pre>
+                                                                                        
+                                                                                            </section>
+                                                                                        
+                                                                                    </div>
+                                                                                </dd>
+                                                                                <dt data-property-name="title">
+                                                                                    <span class="json-property-name">title:</span>
+                                                                                    
+                                                                                    <span class="json-property-type">string</span>
+                                                                                    <span class="json-property-range" title="Value limits"></span>
+                                                                                    
+                                                                                </dt>
+                                                                                <dd>
+                                                                                    
+                                                                                    <div class="json-inner-schema">
+                                                                                            <section class="json-schema-example">
+                                                                                                <pre><code class="language-json">&quot;ReactNative@v0.63&#x3067;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x305F;Pressable&#x304C;&#x5730;&#x5473;&#x306B;&#x3059;&#x3054;&#x3044;&quot;</code></pre>
+                                                                                        
+                                                                                            </section>
+                                                                                        
+                                                                                    </div>
+                                                                                </dd>
+                                                                                <dt data-property-name="link">
+                                                                                    <span class="json-property-name">link:</span>
+                                                                                    
+                                                                                    <span class="json-property-type">string</span>
+                                                                                    <span class="json-property-range" title="Value limits"></span>
+                                                                                    
+                                                                                </dt>
+                                                                                <dd>
+                                                                                    
+                                                                                    <div class="json-inner-schema">
+                                                                                            <section class="json-schema-example">
+                                                                                                <pre><code class="language-json">&quot;https://zenn.dev/nekoniki/articles/ef304778ada8a6&quot;</code></pre>
+                                                                                        
+                                                                                            </section>
+                                                                                        
+                                                                                    </div>
+                                                                                </dd>
+                                                                        </dl>
+                                                                    </section>
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--books--id-"></span>
+            <div id="operation--books--id--delete" class="swagger--panel-operation-delete panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x6307;&#x5B9A;&#x3057;&#x305F;&#x66F8;&#x7C4D;&#x306E;&#x524A;&#x9664;</div>
+                    <h3 class="panel-title"><span class="operation-name">DELETE</span> <strong>/books/{id}</strong></h3>
+                        Tags:
+                            <a href="#tag-Book">Book</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                        
+                            <section class="sw-request-body">
+                                
+                                    <p><span class="label label-default">application/text/plain</span> 
+                        </p>
+                            </section>        
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                id
+                                            </td>
+                                            <td></td>
+                                            <td>header</td>
+                                            <td>
+                                        <span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                                    <span class="json-property-required"></span>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    
+                        <section class="sw-responses">
+                                <p><span class="label label-default">application/x-www-form-urlencoded</span> 
+                    </p>
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>削除完了時のレスポンス</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                            </div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--class-schedule"></span>
+            <div id="operation--class-schedule-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x6388;&#x696D;&#x4E00;&#x89A7;&#x3092;&#x53D6;&#x5F97;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/class-schedule</strong></h3>
+                        Tags:
+                            <a href="#tag-ClassSchedule">ClassSchedule</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                        <section class="sw-request-params">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="sw-param-name"></th>
+                                    <th class="sw-param-description"></th>
+                                    <th class="sw-param-type"></th>
+                                    <th class="sw-param-data-type"></th>
+                                    <th class="sw-param-annotation"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>
+                                                targetDate
+                                            </td>
+                                            <td><p>The number of items to skip before starting to collect the result set</p>
+                                        </td>
+                                            <td>query</td>
+                                            <td>
+                                        <span class="json-property-type">string</span>
+                                        <span class="json-property-range" title="Value limits"></span>
+                                        
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>授業予定取得</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-regist"></span>
+            <div id="operation--student-regist-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x751F;&#x5F92;&#x767B;&#x9332;&#x753B;&#x9762;&#x8868;&#x793A;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/regist</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>授業予定取得</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+            <div id="operation--student-regist-post" class="swagger--panel-operation-post panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x751F;&#x5F92;&#x767B;&#x9332;</div>
+                    <h3 class="panel-title"><span class="operation-name">POST</span> <strong>/student/regist</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>生徒登録</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;result&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&#x767B;&#x9332;&#x6B63;&#x5E38;&#x5B8C;&#x4E86;&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-regist-prepare-classroom"></span>
+            <div id="operation--student-regist-prepare-classroom-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x751F;&#x5F92;&#x767B;&#x9332;&#x3067;&#x4F7F;&#x7528;&#xFF08;&#x6559;&#x5BA4;&#x60C5;&#x5831;&#xFF09;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/regist-prepare-classroom</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>教室情報取得</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-regist-prepare-grade"></span>
+            <div id="operation--student-regist-prepare-grade-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x751F;&#x5F92;&#x767B;&#x9332;&#x3067;&#x4F7F;&#x7528;&#xFF08;&#x5B66;&#x5E74;&#x60C5;&#x5831;&#xFF09;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/regist-prepare-grade</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>教室情報取得</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-regist-subject"></span>
+            <div id="operation--student-regist-subject-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x53D7;&#x8B1B;&#x79D1;&#x76EE;&#x767B;&#x9332;&#x753B;&#x9762;&#x8868;&#x793A;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/regist-subject</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>受講科目登録画面表示</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+            <div id="operation--student-regist-subject-post" class="swagger--panel-operation-post panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x53D7;&#x8B1B;&#x79D1;&#x76EE;&#x767B;&#x9332;</div>
+                    <h3 class="panel-title"><span class="operation-name">POST</span> <strong>/student/regist-subject</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>受講科目登録</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;result&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&#x767B;&#x9332;&#x6B63;&#x5E38;&#x5B8C;&#x4E86;&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-regist-subject-prepare-grade"></span>
+            <div id="operation--student-regist-subject-prepare-grade-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x53D7;&#x8B1B;&#x79D1;&#x76EE;&#x767B;&#x9332;&#x3067;&#x4F7F;&#x7528;&#xFF08;&#x5B66;&#x5E74;&#x60C5;&#x5831;&#xFF09;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/regist-subject-prepare-grade</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>受講科目登録で使用（学年情報）</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-regist-subject-prepare-lecturer"></span>
+            <div id="operation--student-regist-subject-prepare-lecturer-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x53D7;&#x8B1B;&#x79D1;&#x76EE;&#x767B;&#x9332;&#x3067;&#x4F7F;&#x7528;&#xFF08;&#x8B1B;&#x5E2B;&#x60C5;&#x5831;&#xFF09;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/regist-subject-prepare-lecturer</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>受講科目登録で使用（講師情報）</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-regist-subject-prepare-timetable"></span>
+            <div id="operation--student-regist-subject-prepare-timetable-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x53D7;&#x8B1B;&#x79D1;&#x76EE;&#x767B;&#x9332;&#x3067;&#x4F7F;&#x7528;&#xFF08;&#x6642;&#x9593;&#x5272;&#x60C5;&#x5831;&#xFF09;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/regist-subject-prepare-timetable</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>受講科目登録で使用（時間割情報）</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+        
+        <span id="path--student-search"></span>
+            <div id="operation--student-search-get" class="swagger--panel-operation-get panel">
+                <div class="panel-heading">
+                    <div class="operation-summary">&#x751F;&#x5F92;&#x691C;&#x7D22;</div>
+                    <h3 class="panel-title"><span class="operation-name">GET</span> <strong>/student/search</strong></h3>
+                        Tags:
+                            <a href="#tag-Student">Student</a>
+                </div>
+                <div class="panel-body">
+                    <section class="sw-operation-description">
+                        
+                    </section>
+            
+                    
+                    
+                        <section class="sw-responses">
+                    
+                            <dl>
+                                    <dt class="sw-response-200">
+                                        200 OK
+                                    
+                                    </dt>
+                                    <dd class="sw-response-200">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <p>生徒検索</p>
+                                            
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-6 sw-response-model">
+                                                <div  class="panel panel-definition">
+                                                    <div class="panel-body">
+                                                                <section class="json-schema-example">
+                                                                    <pre><code class="language-json">[<br>    {<br>        <span class="hljs-attr">&quot;grade&quot;</span>: <span class="hljs-string">&quot;&#x9AD8;&#x6821;1&#x5E74;&#x751F;&quot;</span>,<br>        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;5&quot;</span>,<br>        <span class="hljs-attr">&quot;lecturerName&quot;</span>: <span class="hljs-string">&quot;&#x8B1B;&#x5E2B;2&quot;</span>,<br>        <span class="hljs-attr">&quot;period&quot;</span>: <span class="hljs-string">&quot;8&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateEnd&quot;</span>: <span class="hljs-string">&quot;2022/07/01&quot;</span>,<br>        <span class="hljs-attr">&quot;rescheduleDateStart&quot;</span>: <span class="hljs-string">&quot;2022/06/01&quot;</span>,<br>        <span class="hljs-attr">&quot;studentId&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>        <span class="hljs-attr">&quot;studentName&quot;</span>: <span class="hljs-string">&quot;&#x751F;&#x5F92;&quot;</span>,<br>        <span class="hljs-attr">&quot;subject&quot;</span>: <span class="hljs-string">&quot;&#x6570;&#x5B66;IA&quot;</span><br>    }<br>]</code></pre>
+                                                            
+                                                                </section>
+                                                            
+                                                    </div>
+                                                </div></div>
+                                            
+                                            </div>                </dd>
+                            </dl>
+                        </section>
+                </div>
+            </div>
+    
+     
+    
+                       
+    
+</div>
+
+</body>
+</html>
