@@ -1,39 +1,32 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect } from "react";
+import React from "react";
 // import { useParams } from "react-router";
-import {
-  API_BASE_URL,
-  API_STUDENT,
-  STUDENT_FUNCTION,
-} from "../../../../config";
+import { API_STUDENT } from "../../../../config";
 import { useNavigate } from "react-router-dom";
 import { Container, Button, Col, Row } from "react-bootstrap";
 // import Header from "../react-form_220530/Header";
 
 import "../../../tkgStyle.css";
 import { ClassInfo } from "../initData";
-import { addDeleteFrameManageArray } from "../RegistSpecialSchedule";
+import {
+  addDeleteFrameManageArray,
+  classesAllPeriodArray,
+} from "../RegistSpecialSchedule";
 
 interface UpdateInfoProps {
+  checkedStudentId: string;
   checkedSubjectId: string;
-  // classesPeriod2: classesPeriodArray;
-  // selectClassFramePeriod2: string[];
-  // deleteClassFramePeriod2: string[];
   frameAddDeleteManage: addDeleteFrameManageArray;
-  setFrameAddDeleteManage: React.Dispatch<
-    React.SetStateAction<addDeleteFrameManageArray>
-  >;
+  classesAllPeriod: classesAllPeriodArray;
 }
 
 const UpdateDbSpecialSchedule: React.FC<UpdateInfoProps> = ({
+  checkedStudentId,
   checkedSubjectId,
-  // classesPeriod2,
-  // selectClassFramePeriod2,
-  // deleteClassFramePeriod2,
   frameAddDeleteManage,
-  setFrameAddDeleteManage,
+  classesAllPeriod,
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   //キャンセル実行
   const resetSchedule = () => {
@@ -42,40 +35,21 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfoProps> = ({
 
   //登録実行
   const updateSchedule = () => {
-    const studentId = "1";
-    const subjectId = checkedSubjectId;
+    const studentId = checkedStudentId; //生徒ID
+    const subjectId = checkedSubjectId; //科目キー;
     let sendContent: string[] = []; //送信内容格納
 
+    //生徒ID
     sendContent.push(studentId);
     sendContent.push(subjectId);
 
-    //追加分
-    // for (let date of selectClassFramePeriod2) {
-    //   const filterClassInfo = classesPeriod2.filter(
-    //     (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
-    //   );
-    //   if (date === "") {
-    //     sendContent.push("save-period2");
-    //   } else {
-    //     sendContent.push(filterClassInfo[0].timeTableSpecialId);
-    //   }
-    // }
+    const sendContentFinally = extractAddDeleteTimeTableId(sendContent);
 
-    // //削除分
-    // for (let date of deleteClassFramePeriod2) {
-    //   const filterClassInfo = classesPeriod2.filter(
-    //     (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
-    //   );
-    //   if (date === "") {
-    //     sendContent.push("delete-period2");
-    //   } else {
-    //     sendContent.push(filterClassInfo[0].timeTableSpecialId);
-    //   }
-    // }
+    console.log(sendContentFinally);
 
     const options = {
       method: "PUT",
-      body: sendContent.toString(),
+      body: sendContentFinally.toString(),
     };
     fetch(`${API_STUDENT.SpecialSchedule}`, options)
       .then((response) => response.json())
@@ -87,6 +61,48 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfoProps> = ({
         console.log(error);
         alert("スケジュールを更新できませんでした");
       });
+  };
+
+  // 作業メソッド：送信内容生成
+  const extractAddDeleteTimeTableId = (sendContent: string[]) => {
+    let sendContentTmp: string[] = sendContent;
+    // 追加・削除IDの管理：frameAddDeleteManage
+    // 更新前の授業情報を管理：classesAllPeriod
+    for (let periodInfo of frameAddDeleteManage) {
+      let addDateList: any = periodInfo.addDelete.add;
+      let deleteDateList: any = periodInfo.addDelete.delete;
+      let periodIdx = Number(periodInfo.period) - 2;
+
+      for (let date of addDateList) {
+        // 追加分
+        if (date === "") {
+          sendContentTmp.push("save-period" + periodInfo.period);
+        } else {
+          // あるコマの授業情報
+          const filterClassInfo = classesAllPeriod[periodIdx].classes.filter(
+            (classInfo: ClassInfo) => classInfo.classDate === date
+          );
+          if (filterClassInfo) {
+            sendContentTmp.push(filterClassInfo[0].timeTableSpecialId);
+          }
+        }
+      }
+      for (let date of deleteDateList) {
+        // 削除分
+        if (date === "") {
+          sendContentTmp.push("delete-period" + periodInfo.period);
+        } else {
+          // あるコマの授業情報
+          const filterClassInfo = classesAllPeriod[periodIdx].classes.filter(
+            (classInfo: ClassInfo) => classInfo.classDate === date
+          );
+          if (filterClassInfo) {
+            sendContentTmp.push(filterClassInfo[0].timeTableSpecialId);
+          }
+        }
+      }
+    }
+    return sendContentTmp;
   };
   return (
     <>

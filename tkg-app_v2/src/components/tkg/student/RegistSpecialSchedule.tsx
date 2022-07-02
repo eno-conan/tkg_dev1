@@ -41,22 +41,22 @@ export const addDeleteFrameDataArray = [
   {
     period: "2",
     addDelete: {
-      add: ["1", "2"],
-      delete: ["1", "2"],
+      add: [],
+      delete: [],
     },
   },
   {
     period: "3",
     addDelete: {
-      add: ["1", "2"],
-      delete: ["1", "2"],
+      add: [],
+      delete: [],
     },
   },
   {
     period: "4",
     addDelete: {
-      add: ["1", "2"],
-      delete: ["1", "2"],
+      add: [],
+      delete: [],
     },
   },
 ];
@@ -158,7 +158,6 @@ const RegistSpecialSchedule = () => {
 
   const checkFrameId = () => {
     console.log(frameAddDeleteManage);
-    // console.log(classesAllPeriod);
   };
 
   return (
@@ -204,15 +203,10 @@ const RegistSpecialSchedule = () => {
                   classesAllPeriod.map((eachPeriod) => (
                     <SpecialScheduleFrame
                       eachPeriodInfo={eachPeriod}
-                      // classesPeriod2={classesPeriod2}
                       checkedSubjectId={checkedSubjectId}
                       checkedSubjectName={checkedSubjectName}
                       checkSubjectCount={checkSubjectCount}
                       setCheckSubjectCount={setCheckSubjectCount}
-                      // selectClassFramePeriod2={selectClassFramePeriod2}
-                      // setSelectClassFramePeriod2={setSelectClassFramePeriod2}
-                      // deleteClassFramePeriod2={deleteClassFramePeriod2}
-                      // setDeleteClassFramePeriod2={setDeleteClassFramePeriod2}
                       frameAddDeleteManage={frameAddDeleteManage}
                       setFrameAddDeleteManage={setFrameAddDeleteManage}
                     />
@@ -225,12 +219,10 @@ const RegistSpecialSchedule = () => {
       <br />
       <br />
       <UpdateDbSpecialSchedule
+        checkedStudentId={checkedStudentId}
         checkedSubjectId={checkedSubjectId}
-        // classesPeriod2={classesPeriod2}
-        // selectClassFramePeriod2={selectClassFramePeriod2}
-        // deleteClassFramePeriod2={deleteClassFramePeriod2}
         frameAddDeleteManage={frameAddDeleteManage}
-        setFrameAddDeleteManage={setFrameAddDeleteManage}
+        classesAllPeriod={classesAllPeriod}
       />
       <Button onClick={checkFrameId} className={"btn btn-summary pl-4"}>
         コマ数確認（動確用）

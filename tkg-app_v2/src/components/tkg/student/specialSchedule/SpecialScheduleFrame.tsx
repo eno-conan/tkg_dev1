@@ -3,28 +3,19 @@ import React, { useState, useEffect } from "react";
 // import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { Table } from "react-bootstrap";
-// import Header from "../react-form_220530/Header";
 
 import "../../../tkgStyle.css";
-import {
-  addDeleteFrameManage,
-  addDeleteFrameManageArray,
-} from "../RegistSpecialSchedule";
+import { addDeleteFrameManageArray } from "../RegistSpecialSchedule";
 import AlreadyClassExist from "./AlreadyClassExist";
 import NoClassFrame from "./NoClassFrame";
 import { AllClassInfo } from "../initData";
 
 interface UpdateInfoProps {
   eachPeriodInfo: AllClassInfo;
-  // classesPeriod2: classesPeriodArray;
   checkedSubjectId: string;
   checkedSubjectName: string;
   checkSubjectCount: number;
   setCheckSubjectCount: React.Dispatch<React.SetStateAction<number>>;
-  // selectClassFramePeriod2: string[];
-  // setSelectClassFramePeriod2: React.Dispatch<React.SetStateAction<string[]>>;
-  // deleteClassFramePeriod2: string[];
-  // setDeleteClassFramePeriod2: React.Dispatch<React.SetStateAction<string[]>>;
   frameAddDeleteManage: addDeleteFrameManageArray;
   setFrameAddDeleteManage: React.Dispatch<
     React.SetStateAction<addDeleteFrameManageArray>
@@ -33,15 +24,10 @@ interface UpdateInfoProps {
 
 const SpecialScheduleFrame: React.FC<UpdateInfoProps> = ({
   eachPeriodInfo,
-  // classesPeriod2,
   checkedSubjectId,
   checkedSubjectName,
   checkSubjectCount,
   setCheckSubjectCount,
-  // selectClassFramePeriod2,
-  // setSelectClassFramePeriod2,
-  // deleteClassFramePeriod2,
-  // setDeleteClassFramePeriod2,
   frameAddDeleteManage,
   setFrameAddDeleteManage,
 }) => {
@@ -50,19 +36,16 @@ const SpecialScheduleFrame: React.FC<UpdateInfoProps> = ({
   //削除したコマの日付情報を管理（2コマ用）
   const [deleteClassFrame, setDeleteClassFrame] = useState<string[]>([""]);
   useEffect(() => {
+    // 各コマの数字
     let targetPeriod = eachPeriodInfo.period;
+    // 現在の情報取得
     let currentData = [...frameAddDeleteManage];
-    let setData: addDeleteFrameManage = {
-      period: eachPeriodInfo.period,
-      addDelete: {
-        add: ["1", "2"],
-        delete: ["1", "2"],
-      },
-    };
-    setData.addDelete.add = selectClassFrame;
-    setData.addDelete.delete = deleteClassFrame;
-    // indexは0からなので、「コマ数-2」する
-    currentData[Number(targetPeriod) - 2] = setData;
+
+    // 2コマの情報；配列の1要素目（idex:0）のため、2を引く
+    let calcForIndex = Number(targetPeriod) - 2;
+    // 更新
+    currentData[calcForIndex].addDelete.add = selectClassFrame;
+    currentData[calcForIndex].addDelete.delete = deleteClassFrame;
     setFrameAddDeleteManage(currentData);
   }, []);
 
