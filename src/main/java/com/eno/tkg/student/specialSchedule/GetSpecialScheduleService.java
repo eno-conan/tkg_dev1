@@ -68,7 +68,7 @@ public class GetSpecialScheduleService {
 				.findByStudentOrderByClassDate(new Student(Integer.parseInt(studentId)));
 
 		// コマごと、日付ごとに現在の授業情報を取得
-		for (int period = 2; period < 3; period++) {
+		for (int period = 2; period < 5; period++) {
 			String currentPeriod = String.valueOf(period);
 			List<Optional<StudentScheduleSpecial>> divideExistClassOrNotList = setInfroEachPeriod(currentPeriod,
 					studentSchedule, specialSeasonId, currentAttendanceInfo);

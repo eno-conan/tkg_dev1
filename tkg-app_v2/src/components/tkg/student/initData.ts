@@ -164,6 +164,26 @@ export const eachClassData = [
     subject: "",
   },
 ];
+export interface AllClassInfo {
+  period: string;
+  classes: Array<ClassInfo>;
+}
+
+export const classesAllData = [
+  {
+    period: "2",
+    classes: [
+      {
+        id: "1",
+        studentId: "1",
+        lecturerName: "",
+        timeTableSpecialId: "1",
+        classDate: "2022/07/29",
+        subject: "",
+      },
+    ],
+  },
+];
 
 export const customStyles = {
   content: {

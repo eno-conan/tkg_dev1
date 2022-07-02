@@ -6,6 +6,8 @@ import {
   eachClassData,
   SummaryInfo,
   eachSummaryData,
+  classesAllData,
+  AllClassInfo,
 } from "./initData";
 // import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Table, Button } from "react-bootstrap";
@@ -15,13 +17,49 @@ import SpecialScheduleSummary from "./specialSchedule/SpecialScheduleSummary";
 import UpdateDbSpecialSchedule from "./specialSchedule/UpdateDbSpecialSchedule";
 import SpecialScheduleFrame from "./specialSchedule/SpecialScheduleFrame";
 
-export type classesPeriodArray = Array<ClassInfo>;
 export type specialSummaryArray = Array<SummaryInfo>;
+// export type classesPeriodArray = Array<ClassInfo>;
+export type classesAllPeriodArray = Array<AllClassInfo>;
+export type addDeleteFrameManageArray = Array<addDeleteFrameManage>;
 
 //生徒一覧画面からチェックした生徒の生徒ID取得
 type Params = {
   checkedStudentId: string;
 };
+
+//initData移動対象
+export type addDeleteFrameManage = {
+  period: string;
+  addDelete: {
+    add: string[];
+    delete: string[];
+  };
+};
+
+//initData移動対象
+export const addDeleteFrameDataArray = [
+  {
+    period: "2",
+    addDelete: {
+      add: ["1", "2"],
+      delete: ["1", "2"],
+    },
+  },
+  {
+    period: "3",
+    addDelete: {
+      add: ["1", "2"],
+      delete: ["1", "2"],
+    },
+  },
+  {
+    period: "4",
+    addDelete: {
+      add: ["1", "2"],
+      delete: ["1", "2"],
+    },
+  },
+];
 
 const RegistSpecialSchedule = () => {
   const { checkedStudentId } = useParams<keyof Params>() as Params;
@@ -42,29 +80,13 @@ const RegistSpecialSchedule = () => {
   // テーブルID
   const [checkedSubjectId, setCheckedSubjectId] = useState<string>("0");
 
-  /* DB更新*/
-  //追加したコマの日付情報を管理（2コマ用）
-  const [selectClassFramePeriod2, setSelectClassFramePeriod2] = useState<
-    string[]
-  >([""]);
-  //削除したコマの日付情報を管理（2コマ用）
-  const [deleteClassFramePeriod2, setDeleteClassFramePeriod2] = useState<
-    string[]
-  >([""]);
+  // 全コマの増減を一括で管理する
+  const [frameAddDeleteManage, setFrameAddDeleteManage] =
+    useState<addDeleteFrameManageArray>(addDeleteFrameDataArray);
 
-  //コマごとの授業予定を管理
-  const [classesPeriod2, setClassesPeriod2] =
-    useState<classesPeriodArray>(eachClassData);
-  const [classesPeriod3, setClassesPeriod3] =
-    useState<classesPeriodArray>(eachClassData);
-  // const [classesPeriod4, setClassesPeriod4] =
-  //   useState<classesPeriodArray>(eachClassData);
-  // const [classesPeriod5, setClassesPeriod5] =
-  //   useState<classesPeriodArray>(eachClassData);
-  // const [classesPeriod6, setClassesPeriod6] =
-  //   useState<classesPeriodArray>(eachClassData);
-  // const [classesPeriod7, setClassesPeriod7] =
-  //   useState<classesPeriodArray>(eachClassData);
+  //全コマの授業予定
+  const [classesAllPeriod, setClassesAllPeriod] =
+    useState<classesAllPeriodArray>(classesAllData);
 
   // テスト取得
   useEffect(() => {
@@ -115,9 +137,17 @@ const RegistSpecialSchedule = () => {
       )
         .then((response) => response.json())
         .then((fetchClassSchedule) => {
-          console.log(fetchClassSchedule["2"]);
-          setClassesPeriod2(fetchClassSchedule["2"]);
-          setClassesPeriod3(fetchClassSchedule["3"]);
+          // 全コマの授業情報格納
+          let setAllData: classesAllPeriodArray = [];
+          for (let period = 2; period < 5; period++) {
+            // 各コマの授業情報格納
+            let setEachData: AllClassInfo = {
+              period: period.toString(),
+              classes: fetchClassSchedule[period.toString()],
+            };
+            setAllData.push(setEachData);
+          }
+          setClassesAllPeriod(setAllData);
         })
         .catch((error) => {
           console.log(error);
@@ -125,6 +155,11 @@ const RegistSpecialSchedule = () => {
         });
     }
   }, []);
+
+  const checkFrameId = () => {
+    console.log(frameAddDeleteManage);
+    // console.log(classesAllPeriod);
+  };
 
   return (
     <Container>
@@ -152,18 +187,38 @@ const RegistSpecialSchedule = () => {
       <Row className={"tkgTop mt-4"}>
         <Col>
           <div>
-            <SpecialScheduleFrame
-              dateList={dateList}
-              classesPeriod2={classesPeriod2}
-              checkedSubjectId={checkedSubjectId}
-              checkedSubjectName={checkedSubjectName}
-              checkSubjectCount={checkSubjectCount}
-              setCheckSubjectCount={setCheckSubjectCount}
-              selectClassFramePeriod2={selectClassFramePeriod2}
-              setSelectClassFramePeriod2={setSelectClassFramePeriod2}
-              deleteClassFramePeriod2={deleteClassFramePeriod2}
-              setDeleteClassFramePeriod2={setDeleteClassFramePeriod2}
-            />
+            <Table striped bordered hover responsive>
+              <thead>
+                {/* ヘッダー（日付） */}
+                <tr>
+                  <th></th>
+                  {dateList.map((eachDate) => (
+                    <>
+                      <th className="text-center text-nowrap">{eachDate}</th>
+                    </>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {classesAllPeriod &&
+                  classesAllPeriod.map((eachPeriod) => (
+                    <SpecialScheduleFrame
+                      eachPeriodInfo={eachPeriod}
+                      // classesPeriod2={classesPeriod2}
+                      checkedSubjectId={checkedSubjectId}
+                      checkedSubjectName={checkedSubjectName}
+                      checkSubjectCount={checkSubjectCount}
+                      setCheckSubjectCount={setCheckSubjectCount}
+                      // selectClassFramePeriod2={selectClassFramePeriod2}
+                      // setSelectClassFramePeriod2={setSelectClassFramePeriod2}
+                      // deleteClassFramePeriod2={deleteClassFramePeriod2}
+                      // setDeleteClassFramePeriod2={setDeleteClassFramePeriod2}
+                      frameAddDeleteManage={frameAddDeleteManage}
+                      setFrameAddDeleteManage={setFrameAddDeleteManage}
+                    />
+                  ))}
+              </tbody>
+            </Table>
           </div>
         </Col>
       </Row>
@@ -171,10 +226,15 @@ const RegistSpecialSchedule = () => {
       <br />
       <UpdateDbSpecialSchedule
         checkedSubjectId={checkedSubjectId}
-        classesPeriod2={classesPeriod2}
-        selectClassFramePeriod2={selectClassFramePeriod2}
-        deleteClassFramePeriod2={deleteClassFramePeriod2}
+        // classesPeriod2={classesPeriod2}
+        // selectClassFramePeriod2={selectClassFramePeriod2}
+        // deleteClassFramePeriod2={deleteClassFramePeriod2}
+        frameAddDeleteManage={frameAddDeleteManage}
+        setFrameAddDeleteManage={setFrameAddDeleteManage}
       />
+      <Button onClick={checkFrameId} className={"btn btn-summary pl-4"}>
+        コマ数確認（動確用）
+      </Button>
       <Row>
         <Col md={5}></Col>
         <Col md={4}>footerをつくりたい</Col>

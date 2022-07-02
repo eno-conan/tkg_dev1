@@ -12,20 +12,26 @@ import { Container, Button, Col, Row } from "react-bootstrap";
 
 import "../../../tkgStyle.css";
 import { ClassInfo } from "../initData";
-import { classesPeriodArray } from "../RegistSpecialSchedule";
+import { addDeleteFrameManageArray } from "../RegistSpecialSchedule";
 
 interface UpdateInfoProps {
   checkedSubjectId: string;
-  classesPeriod2: classesPeriodArray;
-  selectClassFramePeriod2: string[];
-  deleteClassFramePeriod2: string[];
+  // classesPeriod2: classesPeriodArray;
+  // selectClassFramePeriod2: string[];
+  // deleteClassFramePeriod2: string[];
+  frameAddDeleteManage: addDeleteFrameManageArray;
+  setFrameAddDeleteManage: React.Dispatch<
+    React.SetStateAction<addDeleteFrameManageArray>
+  >;
 }
 
 const UpdateDbSpecialSchedule: React.FC<UpdateInfoProps> = ({
   checkedSubjectId,
-  classesPeriod2,
-  selectClassFramePeriod2,
-  deleteClassFramePeriod2,
+  // classesPeriod2,
+  // selectClassFramePeriod2,
+  // deleteClassFramePeriod2,
+  frameAddDeleteManage,
+  setFrameAddDeleteManage,
 }) => {
   const navigate = useNavigate();
 
@@ -44,28 +50,28 @@ const UpdateDbSpecialSchedule: React.FC<UpdateInfoProps> = ({
     sendContent.push(subjectId);
 
     //追加分
-    for (let date of selectClassFramePeriod2) {
-      const filterClassInfo = classesPeriod2.filter(
-        (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
-      );
-      if (date === "") {
-        sendContent.push("save-period2");
-      } else {
-        sendContent.push(filterClassInfo[0].timeTableSpecialId);
-      }
-    }
+    // for (let date of selectClassFramePeriod2) {
+    //   const filterClassInfo = classesPeriod2.filter(
+    //     (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
+    //   );
+    //   if (date === "") {
+    //     sendContent.push("save-period2");
+    //   } else {
+    //     sendContent.push(filterClassInfo[0].timeTableSpecialId);
+    //   }
+    // }
 
-    //削除分
-    for (let date of deleteClassFramePeriod2) {
-      const filterClassInfo = classesPeriod2.filter(
-        (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
-      );
-      if (date === "") {
-        sendContent.push("delete-period2");
-      } else {
-        sendContent.push(filterClassInfo[0].timeTableSpecialId);
-      }
-    }
+    // //削除分
+    // for (let date of deleteClassFramePeriod2) {
+    //   const filterClassInfo = classesPeriod2.filter(
+    //     (classInfoPeriod2: ClassInfo) => classInfoPeriod2.classDate === date
+    //   );
+    //   if (date === "") {
+    //     sendContent.push("delete-period2");
+    //   } else {
+    //     sendContent.push(filterClassInfo[0].timeTableSpecialId);
+    //   }
+    // }
 
     const options = {
       method: "PUT",

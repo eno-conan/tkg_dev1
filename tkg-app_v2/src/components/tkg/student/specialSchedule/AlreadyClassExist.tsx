@@ -14,8 +14,8 @@ interface PlanClassProps {
   checkedSubjectName: string;
   checkSubjectCount: number;
   setCheckSubjectCount: React.Dispatch<React.SetStateAction<number>>;
-  deleteClassFramePeriod2: string[];
-  setDeleteClassFramePeriod2: React.Dispatch<React.SetStateAction<string[]>>;
+  deleteClassFrame: string[];
+  setDeleteClassFrame: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const AlreadyClassExist: React.FC<PlanClassProps> = ({
@@ -26,8 +26,8 @@ const AlreadyClassExist: React.FC<PlanClassProps> = ({
   checkedSubjectName,
   checkSubjectCount,
   setCheckSubjectCount,
-  deleteClassFramePeriod2,
-  setDeleteClassFramePeriod2,
+  deleteClassFrame,
+  setDeleteClassFrame,
 }) => {
   const [deleteFlg, setDeleteFlg] = useState<boolean>(false);
   let cntWork: number = checkSubjectCount;
@@ -39,10 +39,10 @@ const AlreadyClassExist: React.FC<PlanClassProps> = ({
     } else {
       console.log("Delete:", event.target.value);
       setDeleteFlg(true);
-      const tmpDateList: string[] = deleteClassFramePeriod2;
+      const tmpDateList: string[] = deleteClassFrame;
       tmpDateList.push(event.target.value);
       setCheckSubjectCount(cntWork + 1);
-      setDeleteClassFramePeriod2(tmpDateList);
+      setDeleteClassFrame(tmpDateList);
     }
   };
 
@@ -50,10 +50,10 @@ const AlreadyClassExist: React.FC<PlanClassProps> = ({
   const cancelDelete = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("cancelDelete:", event.target.value);
     //外した場合
-    const filterDate = deleteClassFramePeriod2.filter(
+    const filterDate = deleteClassFrame.filter(
       (date: string) => date !== event.target.value
     );
-    setDeleteClassFramePeriod2(filterDate);
+    setDeleteClassFrame(filterDate);
     setCheckSubjectCount(cntWork - 1);
     setDeleteFlg(false);
   };

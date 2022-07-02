@@ -14,8 +14,8 @@ interface CheckedCountProps {
   checkedSubjectName: string;
   checkSubjectCount: number;
   setCheckSubjectCount: React.Dispatch<React.SetStateAction<number>>;
-  selectClassFramePeriod2: string[];
-  setSelectClassFramePeriod2: React.Dispatch<React.SetStateAction<string[]>>;
+  selectClassFrame: string[];
+  setSelectClassFrame: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const NoClassFrame: React.FC<CheckedCountProps> = ({
@@ -26,8 +26,8 @@ const NoClassFrame: React.FC<CheckedCountProps> = ({
   checkedSubjectName,
   checkSubjectCount,
   setCheckSubjectCount,
-  selectClassFramePeriod2,
-  setSelectClassFramePeriod2,
+  selectClassFrame,
+  setSelectClassFrame,
 }) => {
   const [selectSubject, setSelectSubject] = useState<string>("0");
   const [registFlg, setRegistFlg] = useState<boolean>(false);
@@ -44,31 +44,31 @@ const NoClassFrame: React.FC<CheckedCountProps> = ({
 
   //スケジュール部分のチェックボックスに関する処理
   const checkOneCell = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (checkSubjectCount === 0) {
-      alert("残コマ数が0になっているため、これ以上追加できません");
-      event.target.checked = false;
-      return;
-    }
     if (checkedSubjectId === "0") {
       event.target.checked = false;
       alert("科目を選択してください");
     } else {
+      if (checkSubjectCount === 0) {
+        alert("残コマ数が0になっているため、これ以上追加できません");
+        event.target.checked = false;
+        return;
+      }
       if (event.target.checked) {
         setRegistFlg(true); //登録フラグを立てる
-        const tmpDateList: string[] = selectClassFramePeriod2;
+        const tmpDateList: string[] = selectClassFrame;
         tmpDateList.push(event.target.name);
         setCheckSubjectCount(cntWork - 1);
-        setSelectClassFramePeriod2(tmpDateList);
+        setSelectClassFrame(tmpDateList);
       }
     }
   };
 
   const deleteClass = (event: any) => {
     console.log("Delete:", event.target.value);
-    const filterDate = selectClassFramePeriod2.filter(
+    const filterDate = selectClassFrame.filter(
       (date: string) => date !== event.target.value
     );
-    setSelectClassFramePeriod2(filterDate);
+    setSelectClassFrame(filterDate);
     setCheckSubjectCount(cntWork + 1);
     setRegistFlg(false);
   };

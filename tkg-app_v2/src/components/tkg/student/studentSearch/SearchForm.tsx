@@ -89,12 +89,10 @@ const SearchForm: React.FC<SearchStudentFormProps> = ({
               onChange={filterClassroom}
             />{" "}
             <select onChange={selectClassroom}>
-              <option value="" selected>
-                全教室
-              </option>
               {classroomFilterList.map((classroom) => (
                 <option value={classroom.id}>{classroom.name} 教室</option>
               ))}
+              <option value="">全教室</option>
             </select>
           </div>
         </Col>
