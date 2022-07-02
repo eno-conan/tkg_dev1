@@ -29,18 +29,4 @@ public interface StudentScheduleNormalRepository extends JpaRepository<StudentSc
 	// 生徒の授業予定を取得
 	public List<StudentScheduleNormal> findByStudentAndClassDateAfterOrderByClassDateAsc(Student student, Date date);
 
-//	@Query(value = "select m_lec.* from student_schedule_normal ssn "
-//			+ "left join lecturer_teach_subject lts "
-//			+ "on ssn.subject_key = lts.subject_key "
-//			+ "left join m_subject m_sub "
-//			+ "on lts.subject_key = m_sub.subject_key "
-//			+ "left join m_lecturer m_lec "
-//			+ "on lts.lecturer_id = m_lec.id "
-//			+ "left join m_classroom m_cls "
-//			+ "on m_lec.classroom_id = m_cls.id "
-//			+ "where ssn.id = :scheduleNormalId "
-//			+ "and lts.teach_flg = '1' "
-//			, nativeQuery = true)
-//	public List<StudentScheduleNormal> findTargetSubjectTeachLecturersByScheduleId(@Param("scheduleNormalId") Integer scheduleNormalId);
-
 }

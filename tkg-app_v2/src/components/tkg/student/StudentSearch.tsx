@@ -15,6 +15,7 @@ import SearchForm from "./studentSearch/SearchForm";
 import ResultTable from "./studentSearch/ResultTable";
 import RegistSubjectModal from "./subject/RegistSubjectModal";
 import ShowCurrentSubject from "./subject/ShowCurrentSubject";
+import ShowWholeSchedule from "./wholeSchedule/ShowWholeSchedule";
 
 const StudentSearch = () => {
   const navigate = useNavigate();
@@ -104,7 +105,9 @@ const StudentSearch = () => {
       {displayStudentFlg ? (
         <>
           <Row className={"pt-4"}>
-            {/* 受講科目表示 */}
+            {/* 授業予定表示（別ウインドウ） */}
+            <ShowWholeSchedule checkedStudentId={checkedStudentId} />
+            {/* 受講科目表示（別ウインドウ）*/}
             <ShowCurrentSubject checkedStudentId={checkedStudentId} />
             {/* 受講科目登録 */}
             <RegistSubjectModal checkedStudentId={checkedStudentId} />

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/tkg")
-class StudentSubjectController {
+class SubjectController {
 
 	@Autowired
 	private GetStudentSubjectService getStudentSubjectService;
@@ -27,7 +27,7 @@ class StudentSubjectController {
 	private RegistStudentSubjectService registStudentSubjectService;
 
 	@Autowired
-	private RegistStudentSubjectPrepareService registStudentSubjectPrepareService;
+	private SubjectPrepareService registStudentSubjectPrepareService;
 
 	/**
 	 * チェックした生徒の受講科目取得

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE_URL, API_STUDENT } from "../../../config";
+import { API_STUDENT, STUDENT_FUNCTION } from "../../../config";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import {
-  ClassInfo,
-  eachClassData,
   SummaryInfo,
   eachSummaryData,
   classesAllData,
@@ -11,8 +10,6 @@ import {
 } from "./initData";
 // import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Table, Button } from "react-bootstrap";
-import AlreadyClassExist from "./specialSchedule/AlreadyClassExist";
-import NoClassFrame from "./specialSchedule/NoClassFrame";
 import SpecialScheduleSummary from "./specialSchedule/SpecialScheduleSummary";
 import UpdateDbSpecialSchedule from "./specialSchedule/UpdateDbSpecialSchedule";
 import SpecialScheduleFrame from "./specialSchedule/SpecialScheduleFrame";
@@ -163,6 +160,15 @@ const RegistSpecialSchedule = () => {
   return (
     <Container>
       <br />
+      <Row>
+        <Col md={2}></Col>
+        <Col md={4}>
+          <Link to={`${STUDENT_FUNCTION.SearchStudent}`} className={"mx-4"}>
+            検索画面に戻る
+          </Link>
+        </Col>
+        <Col md={6}></Col>
+      </Row>
       <Row className={"align-center"}>
         <Col md={6}>
           <h3>講習会授業予定作成</h3>

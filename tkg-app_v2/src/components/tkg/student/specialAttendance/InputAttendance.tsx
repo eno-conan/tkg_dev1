@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Container, Col, Row, Table } from "react-bootstrap";
-import { API_STUDENT } from "../../../../config";
+import { API_STUDENT, STUDENT_FUNCTION } from "../../../../config";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom"; //useNavigate
 import UpdateAttendance from "./UpdateAttendance";
 import {
   currentCheckedStatusIF,
@@ -53,6 +54,7 @@ const InputAttendance = () => {
         .then((fetchDateList) => {
           // 講習会の日付一覧、各日付に紐づくtimeTableIdとそれぞれのチェック状態を取得
           const eachDateArray = [...fetchDateList];
+          console.log(eachDateArray);
 
           /*画面表示用に整形*/
           const currentCheckedStatus: any = [];
@@ -112,10 +114,27 @@ const InputAttendance = () => {
         <title>講習会出欠予定表</title>
       </Helmet>
       <Container>
+        <br />
         <Row>
-          <Col md={4}></Col>
+          <Col md={2}></Col>
           <Col md={4}>
+            <Link to={`${STUDENT_FUNCTION.SearchStudent}`} className={"mx-4"}>
+              検索画面に戻る
+            </Link>
+          </Col>
+          <Col md={6}></Col>
+        </Row>
+        <br />
+        <Row>
+          <Col md={3}></Col>
+          <Col md={6}>
             <h2>通塾可能日程調整</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={3}></Col>
+          <Col md={7}>
+            <h6>※既に授業が予定されている箇所は更新できません</h6>
           </Col>
         </Row>
         <Row>

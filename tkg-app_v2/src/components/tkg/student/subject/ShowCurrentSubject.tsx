@@ -25,12 +25,8 @@ const ShowCurrentSubject: React.FC<ShowCurrentSubjectsProps> = ({
   };
   return (
     <>
-      {" "}
       <Col md={2}>
-        <Button
-          onClick={checkStudentSubject}
-          className={"btn btn-secondary ml-4"}
-        >
+        <Button onClick={checkStudentSubject} className={"btn btn-secondary"}>
           受講科目確認
         </Button>
       </Col>

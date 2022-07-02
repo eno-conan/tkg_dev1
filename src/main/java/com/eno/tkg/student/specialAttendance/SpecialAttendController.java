@@ -16,10 +16,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/tkg")
-class SpecialAttendanceController {
+class SpecialAttendController {
 
 	@Autowired
-	private UpdateSpecialAttendanceService updateSpecialAttendanceService;
+	private UpdateSpecialAttendService updateSpecialAttendanceService;
 
 	@Autowired
 	private SpecialAttendanceService studentSpecialAttendanceService;

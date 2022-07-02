@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class RegistStudentSubjectPrepareService {
+public class SubjectPrepareService {
 
 	@Autowired
 	private StudentRepository studentRepository;

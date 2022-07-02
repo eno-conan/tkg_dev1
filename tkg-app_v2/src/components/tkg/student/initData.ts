@@ -97,6 +97,7 @@ export interface dateAndFrame {
 export interface idAndCheckInfoIF {
   timeTableId: string;
   checkedFlg: boolean;
+  notOperateFlg: boolean;
 }
 
 export interface currentCheckedStatusIF {
@@ -115,13 +116,13 @@ export const hopeShape = [
   {
     date: "2022/07/19",
     idAndCheckInfo: [
-      { timeTableId: "1", checkedFlg: true },
-      { timeTableId: "2", checkedFlg: true },
-      { timeTableId: "3", checkedFlg: true },
-      { timeTableId: "4", checkedFlg: true },
-      { timeTableId: "5", checkedFlg: true },
-      { timeTableId: "6", checkedFlg: true },
-      { timeTableId: "7", checkedFlg: true },
+      { timeTableId: "1", checkedFlg: true, notOperateFlg: false },
+      { timeTableId: "2", checkedFlg: true, notOperateFlg: false },
+      { timeTableId: "3", checkedFlg: true, notOperateFlg: false },
+      { timeTableId: "4", checkedFlg: true, notOperateFlg: false },
+      { timeTableId: "5", checkedFlg: true, notOperateFlg: false },
+      { timeTableId: "6", checkedFlg: true, notOperateFlg: false },
+      { timeTableId: "7", checkedFlg: true, notOperateFlg: false },
     ],
   },
 ];

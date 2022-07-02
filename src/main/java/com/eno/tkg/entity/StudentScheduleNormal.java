@@ -1,11 +1,7 @@
 package com.eno.tkg.entity;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,18 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.eno.tkg.entity.master.Lecturer;
-import com.eno.tkg.entity.master.Prefecture;
 import com.eno.tkg.entity.master.Student;
 import com.eno.tkg.entity.master.Subject;
 import com.eno.tkg.entity.master.TimeTableNormal;
@@ -38,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "student_schedule_normal")
 @NoArgsConstructor
 @Data
-public class StudentScheduleNormal implements Cloneable {
+public class StudentScheduleNormal implements Cloneable, StudentSchedule {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,12 +54,11 @@ public class StudentScheduleNormal implements Cloneable {
 	@JoinColumn(name = "time_table_normal_id", nullable = true)
 	@JsonIgnore
 	private TimeTableNormal timeTableNormal;
-	
 
 	@Column(name = "class_date")
 	@Temporal(TemporalType.DATE)
 	private Date classDate;
-	
+
 	@Column(name = "class_date_origin")
 	@Temporal(TemporalType.DATE)
 	private Date classDateOrigin;
@@ -112,8 +102,12 @@ public class StudentScheduleNormal implements Cloneable {
 		ssn.receiveErrorMessage = receiveErrorMessage;
 		return ssn;
 	}
-	
+
 	public StudentScheduleNormal(String message) {
 		this.receiveErrorMessage = message;
+	}
+
+	public StudentScheduleNormal(Integer id) {
+		this.id = id;
 	}
 }

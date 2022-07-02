@@ -16,7 +16,7 @@ import com.eno.tkg.entity.master.TimeTableSpecial;
 import com.eno.tkg.repository.SpecialSeasonDateListRepository;
 
 @Service
-class GetSpecialScheduleServiceSupport {
+class GetClassesServiceSupport {
 
 	@Autowired
 	private SpecialSeasonDateListRepository specialSeasonDateListRepository;

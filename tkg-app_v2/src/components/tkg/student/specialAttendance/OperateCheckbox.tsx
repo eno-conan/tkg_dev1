@@ -1,7 +1,6 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { currentCheckedStatusIF, dateAndFrame } from "../initData";
-
 interface UpdateInfo {
   ids: Array<number>;
   dateFrameList: Array<dateAndFrame>;
@@ -10,7 +9,6 @@ interface UpdateInfo {
   setCurrentCheckedStatusList: React.Dispatch<
     React.SetStateAction<Array<currentCheckedStatusIF>>
   >;
-  // setBirthday: React.Dispatch<React.SetStateAction<string>>;
 }
 const OperateCheckbox: React.FC<UpdateInfo> = ({
   ids,
@@ -33,15 +31,16 @@ const OperateCheckbox: React.FC<UpdateInfo> = ({
       const getCurrentInfo = [...currentCheckedStatusList];
       //「取得したtimeTableId / 7」の切り捨てで何日目のコマか、判断
       let dayIndex: number = Math.floor(Number(selectedId) / 7);
-
       let targetDateCurrentInfo = getCurrentInfo[dayIndex];
 
       //対象コマ情報取得
       const getDayInfo = targetDateCurrentInfo.idAndCheckInfo.filter(
         (info) => info.timeTableId === selectedId
       );
-      //非チェック状態に更新
-      getDayInfo[0].checkedFlg = false;
+      if (getDayInfo.length > 0) {
+        //非チェック状態に更新
+        getDayInfo[0].checkedFlg = false;
+      }
 
       /*画面の表示状態（チェック/非チェック）の更新*/
       setCurrentCheckedStatusList(getCurrentInfo);
@@ -62,7 +61,10 @@ const OperateCheckbox: React.FC<UpdateInfo> = ({
     /*Idsから削除するtimetableId一覧情報を取得*/
     let extractIds: number[] = [];
     unselectCertainDayAll.forEach((each) => {
-      extractIds.push(Number(each.timeTableId));
+      // 既に授業が入っているコマは削除されないようにする
+      if (!each.notOperateFlg) {
+        extractIds.push(Number(each.timeTableId));
+      }
     });
     const currentIds = [...ids];
     let updateIds: number[] = [];
@@ -70,13 +72,17 @@ const OperateCheckbox: React.FC<UpdateInfo> = ({
     /*ID情報更新*/
     setIds(updateIds);
 
+    // 現在の状態更新
     const getCurrentInfo = [...currentCheckedStatusList];
     //クリックした「全削除」の日付に紐づく情報を取得
     let targetDateCurrentInfo = getCurrentInfo[event.target.value];
 
     //チェック状態を解除
     targetDateCurrentInfo.idAndCheckInfo.forEach((idAndCheck) => {
-      idAndCheck.checkedFlg = false;
+      // まだ授業が入っていないコマであれば、チェック解除可能
+      if (!idAndCheck.notOperateFlg) {
+        idAndCheck.checkedFlg = false;
+      }
     });
 
     /*画面の表示状態（チェック/非チェック）の更新*/
@@ -85,12 +91,24 @@ const OperateCheckbox: React.FC<UpdateInfo> = ({
 
   // ある日、全コマ選択
   const selectAllFrameInDay = (event: any) => {
+    // ある日のID情報取得
     const selectCertainDayAll = dateFrameList[Number(event.target.value)].ids;
+    // ある日のチェック状態取得
+    const checkStatusDayAll =
+      currentCheckedStatusList[Number(event.target.value)].idAndCheckInfo;
+    // 現在の全ID情報取得
     const currentIds = [...ids];
-    selectCertainDayAll.map((each) => {
-      const newIds = currentIds.filter((checkedIds) => checkedIds === each);
-      if (newIds.length === 0) {
-        currentIds.push(each);
+    selectCertainDayAll.map((eachId) => {
+      //現在のID管理状態とある日のコマ一覧情報比較
+      const newIds = currentIds.filter((checkedIds) => checkedIds === eachId);
+      //現在のチェック状態とある日のコマ一覧情報比較
+      const checkableId = checkStatusDayAll.filter(
+        (status) =>
+          status.timeTableId.toString() === eachId.toString() &&
+          status.notOperateFlg === false
+      );
+      if (newIds.length === 0 && checkableId.length > 0) {
+        currentIds.push(eachId);
       }
     });
     setIds(currentIds);
@@ -119,6 +137,7 @@ const OperateCheckbox: React.FC<UpdateInfo> = ({
                             ? true
                             : booleanTest(frame.timeTableId)
                         }
+                        disabled={frame.notOperateFlg}
                       />
                     </span>
                   </div>
