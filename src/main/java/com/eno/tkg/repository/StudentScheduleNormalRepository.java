@@ -29,4 +29,7 @@ public interface StudentScheduleNormalRepository extends JpaRepository<StudentSc
 	// 生徒の授業予定を取得
 	public List<StudentScheduleNormal> findByStudentAndClassDateAfterOrderByClassDateAsc(Student student, Date date);
 
+	// 実績漏れ授業の取得（授業日付が実行日より前で、statusが0のままのデータを取得）
+	public List<StudentScheduleNormal> findByStatusAndClassDateBefore(int Status, Date date);
+
 }
