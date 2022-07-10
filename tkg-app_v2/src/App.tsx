@@ -25,6 +25,7 @@ import StudentSearch from "./components/tkg/student/StudentSearch";
 import ShowSubjectWindow from "./components/tkg/student/subject/ShowSubjectWindow";
 import MultiCheckbox from "./components/pathParam/MultiCheckbox";
 import InputAttendance from "./components/tkg/student/specialAttendance/InputAttendance";
+import ShowWholeScheduleWindow from "./components/tkg/student/wholeSchedule/ShowWholeScheduleWindow";
 
 export interface ITask {
   id: number;
@@ -59,6 +60,11 @@ const App: React.FC = () => {
               <Route
                 path={STUDENT_FUNCTION.SearchStudent}
                 element={<StudentSearch />}
+              />
+              {/* 授業予定表示 */}
+              <Route
+                path={`${STUDENT_FUNCTION.ShowSchedule}/:checkedStudentId`}
+                element={<ShowWholeScheduleWindow />}
               />
               {/* 受講科目表示 */}
               <Route

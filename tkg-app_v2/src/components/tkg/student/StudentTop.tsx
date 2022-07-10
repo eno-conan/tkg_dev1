@@ -25,8 +25,18 @@ export const StudentTop = () => {
             <h2>生徒関連</h2>
           </Col>
         </Row>
+        <br />
+        <Row>
+          <Col md={4}>
+            <Link to={`${PASS_MAIN_FUNCTION.Top}`} className={"mx-4"}>
+              トップへ
+            </Link>
+          </Col>
+        </Row>
+        <br />
         <Row className={"pt-4"}>
-          <Col md={6} className={"pb-6 pl-4"}>
+          <Col md={1}></Col>
+          <Col md={5} className={"pb-6 pl-4"}>
             <Link
               to={STUDENT_FUNCTION.SearchStudent}
               className={"btn btn-success"}
@@ -34,7 +44,8 @@ export const StudentTop = () => {
               検索
             </Link>
           </Col>
-          <Col md={6} className={"pb-6 pl-4"}>
+          <Col md={1}></Col>
+          <Col md={5} className={"pb-6 pl-4"}>
             <Link to={STUDENT_FUNCTION.Regist} className={"btn btn-warning"}>
               登録
             </Link>

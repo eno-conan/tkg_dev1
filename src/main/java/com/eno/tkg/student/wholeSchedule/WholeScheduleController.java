@@ -25,6 +25,7 @@ class WholeScheduleController {
 		try {
 			return getService.getWholeSchedule(studentId);
 		} catch (JsonProcessingException e) {
+//			int a =HttpServletResponse.SC_OK;
 			return "";
 		}
 	}

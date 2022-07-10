@@ -1,3 +1,4 @@
+import { StudentSchedule } from "../classSchedule/StudentScheduleModal";
 /* 生徒登録*/
 export interface Classroom {
   id: string;
@@ -43,6 +44,38 @@ export const searchResultStudentData = [
   },
 ];
 
+/* 生徒予定表示*/
+export interface StudentScheduleWhole {
+  classDate: string;
+  id: string;
+  lecturerId: string;
+  normalSpecial: string;
+  period: string;
+  rescheduleDateLast: string;
+  rescheduleDateStart: string;
+  rescheduleFlg: boolean;
+  studentId: string;
+  subjectKey: string;
+  subjectName: string;
+  timeTableId: string;
+}
+export type studentScheduleArray = Array<StudentScheduleWhole>;
+export const studentScheduleData = [
+  {
+    classDate: "2022/07/19",
+    id: "70",
+    lecturerId: "1",
+    normalSpecial: "special",
+    period: "2",
+    rescheduleDateLast: "2022/09/14",
+    rescheduleDateStart: "2022/09/14",
+    rescheduleFlg: false,
+    studentId: "1",
+    subjectKey: "sc2",
+    subjectName: "sc2",
+    timeTableId: "1",
+  },
+];
 /* 生徒科目表示*/
 export interface StudentSubject {
   studentId: string;

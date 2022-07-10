@@ -13,15 +13,15 @@ const ShowWholeSchedule: React.FC<ShowCurrentSubjectsProps> = ({
   checkedStudentId,
 }) => {
   const checkStudentSchedule = () => {
-    // if (checkedStudentId) {
-    //   window.open(
-    //     `${STUDENT_FUNCTION.SearchStudent}/${checkedStudentId}`,
-    //     "",
-    //     "width=800,height=400,left=200,top=150"
-    //   );
-    // } else {
-    //   alert("対象の生徒を選択してください。");
-    // }
+    if (checkedStudentId) {
+      window.open(
+        `${STUDENT_FUNCTION.ShowSchedule}/${checkedStudentId}`,
+        "",
+        "width=800,height=400,left=200,top=150"
+      );
+    } else {
+      alert("対象の生徒を選択してください。");
+    }
   };
   return (
     <>

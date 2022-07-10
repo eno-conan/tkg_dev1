@@ -14,7 +14,8 @@ export const API_STUDENT = {
   SpecialSummary: API_BASE_URL + "/student/summary-special", //講習会スケジュール概要
   SpecialDateList: API_BASE_URL + "/student/date-list-special", //講習会日程情報
   SpecialAttendance: API_BASE_URL + "/student/attendance-special", //講習会出欠情報
-  SpecialSchedule: API_BASE_URL + "/student/schedule-special", //講習スケジュール更新
+  SpecialSchedule: API_BASE_URL + "/student/schedule-special", //講習スケジュール表示更新
+  WholeSchedule: API_BASE_URL + "/student/schedule-whole", //スケジュール（通常・講習セット）
   //POST
   RegistStudent: API_BASE_URL + "/student/regist", //生徒登録
   RegistSubject: API_BASE_URL + "/student/regist-subject", //生徒科目登録
@@ -33,7 +34,8 @@ export const STUDENT_FUNCTION = {
   PrepareRegistGrade: "/student/regist-prepare-grade", //新規登録に必要なデータ取得
   Regist: "/tkg/student/regist", //新規登録
   SearchStudent: "/tkg/student/search", //検索
-  ShowSubject: "/tkg/student/showSubject", //検索
+  ShowSchedule: "/tkg/student/showSchedule", //授業予定
+  ShowSubject: "/tkg/student/showSubject", //受講科目一覧
   InputSpecialAttendance: "/tkg/student/attendance-special", //受講科目登録
   RegistSubject: "/tkg/student/registSubject", //受講科目登録
   UpdateSpecialSchedule:

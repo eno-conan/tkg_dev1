@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Container, Col, Row, Button, CloseButton } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Col, Row, Button } from "react-bootstrap";
 import "../../../tkgStyle.css";
 import { classroomArray, searchStudentArray } from "../initData";
-import { API_STUDENT } from "../../../../config";
+import { API_STUDENT, PASS_MAIN_FUNCTION } from "../../../../config";
 
 interface SearchStudentFormProps {
   classroomList: classroomArray;
@@ -75,6 +75,15 @@ const SearchForm: React.FC<SearchStudentFormProps> = ({
 
   return (
     <>
+      <Row>
+        <Col md={4}>
+          <Link to={`${PASS_MAIN_FUNCTION.Student}`} className={"mx-4"}>
+            生徒トップに戻る
+          </Link>
+        </Col>
+        <Col md={6}></Col>
+      </Row>
+      <br />
       <Row className={"pt-6"}>
         <Col md={6} className={"mb-4"}>
           <label className={"mb-1"}>
@@ -87,7 +96,7 @@ const SearchForm: React.FC<SearchStudentFormProps> = ({
               placeholder={"北海道、東京"}
               value={classroomFilterValue || ""}
               onChange={filterClassroom}
-            />{" "}
+            />
             <select onChange={selectClassroom}>
               {classroomFilterList.map((classroom) => (
                 <option value={classroom.id}>{classroom.name} 教室</option>

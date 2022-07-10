@@ -161,7 +161,6 @@ const RegistSpecialSchedule = () => {
     <Container>
       <br />
       <Row>
-        <Col md={2}></Col>
         <Col md={4}>
           <Link to={`${STUDENT_FUNCTION.SearchStudent}`} className={"mx-4"}>
             検索画面に戻る
