@@ -1,5 +1,6 @@
 # Getting Started with Create React App
 
+v2へ移行するので、このレポジトリは参考程度
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
